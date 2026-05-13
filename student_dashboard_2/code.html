@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flism Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#b7c4ff",
+                        "outline": "#737688",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-secondary-container": "#00616d",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "outline-variant": "#c3c5d9",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "inverse-surface": "#313030",
+                        "secondary-container": "#00e3fd",
+                        "tertiary-fixed": "#dce3eb",
+                        "surface-bright": "#fcf8f8",
+                        "secondary-fixed": "#9cf0ff",
+                        "secondary": "#006875",
+                        "background": "#fcf8f8",
+                        "surface-variant": "#e5e2e1",
+                        "tertiary-container": "#60676e",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-background": "#1c1b1b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dde1ff",
+                        "tertiary": "#484f56",
+                        "primary-container": "#0052ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#ebe7e7",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#dfe3ff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#004ced",
+                        "primary": "#003ec7",
+                        "on-tertiary-fixed": "#151c22",
+                        "surface-container": "#f0edec",
+                        "on-surface-variant": "#434656",
+                        "surface-dim": "#dcd9d9",
+                        "on-surface": "#1c1b1b",
+                        "inverse-on-surface": "#f3f0ef",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001f24",
+                        "on-primary-fixed": "#001452",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#00daf3",
+                        "surface-container-low": "#f6f3f2",
+                        "surface": "#fcf8f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "margin-desktop": "120px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky flex justify-between items-center px-margin-mobile h-16 w-full bg-surface border-b border-outline-variant z-40">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional and friendly portrait of a young African male student with a bright smile. He is wearing a modern casual outfit against a clean, minimalist studio background with soft high-key lighting. The aesthetic is professional yet youthful, reflecting a tech-savvy university student in a modern light-mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBebbfK9XOj51Rq_kxZYleXmkkFrkPEMq6W9-3Nxte5gDzPr_ve6YmTRRD9ZHXGnjnH3Qed59ZWQZAM9kvPzgtAU6SkQyY0ckC0DMv3wzXzXVlDlARjPOgaPaxa2cqmhAFn7Zk45zQnmdORUpZ0qn1QISON8jns_556ANxDjh8-SMEAtonz_cbpoIKEKBaoG6ZOcwhNXCYfUwibgbEEF99JeCFbmD6ytc5stftBrK4HCkUjlrtc4ss7uUFo64da_Wj-EK8D16wzbL4"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary">Flism</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</header>
+<main class="px-margin-mobile md:px-margin-desktop mt-base max-w-7xl mx-auto">
+<!-- Welcome Section -->
+<section class="py-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Hello, Kofi Mensah</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Your financial autonomy at a glance.</p>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Trust Score Card (Glassmorphism & High Contrast) -->
+<div class="md:col-span-4 bg-white border border-outline-variant rounded-xl p-md flex flex-col justify-between h-full relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-secondary-container opacity-20 rounded-full blur-3xl"></div>
+<div>
+<span class="font-label-bold text-label-bold text-outline uppercase tracking-wider">Trust Score</span>
+<div class="flex items-baseline gap-xs mt-xs">
+<span class="font-headline-xl text-headline-xl text-primary">450</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ 500</span>
+</div>
+</div>
+<div class="mt-lg">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[90%] shadow-[0_0_15px_rgba(0,227,253,0.5)]"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">You're in the <span class="text-secondary font-bold">top 5%</span> of students.</p>
+</div>
+</div>
+<!-- Active Loans Card (Gradient & Electric Focus) -->
+<div class="md:col-span-8 bg-gradient-to-br from-primary to-primary-container rounded-xl p-md text-white shadow-[0_20px_40px_rgba(0,62,199,0.2)] flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-bold text-label-bold text-primary-fixed uppercase opacity-80">Total Active Loans</span>
+<h2 class="font-headline-xl text-headline-xl mt-xs">GH₵ 1,500</h2>
+</div>
+<span class="material-symbols-outlined text-4xl opacity-50">account_balance_wallet</span>
+</div>
+<div class="flex gap-gutter mt-lg">
+<button class="flex-1 bg-white text-primary py-sm rounded-lg font-action-lg text-action-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all active:scale-95">
+                        Request Loan
+                    </button>
+<button class="flex-1 border-1.5 border-white border-[1.5px] text-white py-sm rounded-lg font-action-lg text-action-lg hover:bg-white/10 transition-all active:scale-95">
+                        Deposit Collateral
+                    </button>
+</div>
+</div>
+<!-- Upcoming Payments -->
+<div class="md:col-span-7 bg-white border border-outline-variant rounded-xl p-md">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface">Upcoming Payments</h3>
+<span class="material-symbols-outlined text-outline">calendar_month</span>
+</div>
+<div class="space-y-sm">
+<!-- Payment Row 1 -->
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low transition-colors rounded-lg group">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Tuition Installment</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Due: Oct 15, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-md text-body-md font-bold text-on-surface">GH₵ 750.00</p>
+<span class="text-[10px] font-bold uppercase text-error px-2 py-0.5 bg-error-container rounded-full">3 Days Left</span>
+</div>
+</div>
+<!-- Payment Row 2 -->
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low transition-colors rounded-lg group">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Book Grant Repayment</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Due: Nov 02, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-md text-body-md font-bold text-on-surface">GH₵ 250.00</p>
+<span class="text-[10px] font-bold uppercase text-on-surface-variant px-2 py-0.5 bg-surface-container rounded-full">Pending</span>
+</div>
+</div>
+<!-- Payment Row 3 -->
+<div class="flex items-center justify-between p-sm hover:bg-surface-container-low transition-colors rounded-lg group">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined text-primary">laptop_mac</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Equipment Loan</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Due: Nov 15, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-md text-body-md font-bold text-on-surface">GH₵ 500.00</p>
+<span class="text-[10px] font-bold uppercase text-on-surface-variant px-2 py-0.5 bg-surface-container rounded-full">Pending</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Market Overview / Quick Insights -->
+<div class="md:col-span-5 flex flex-col gap-gutter">
+<div class="bg-surface-container-low rounded-xl p-md border border-outline-variant flex-1 flex items-center justify-between overflow-hidden relative">
+<div class="relative z-10">
+<h4 class="font-headline-lg text-headline-lg-mobile text-on-surface">Vault Status</h4>
+<p class="font-body-md text-body-md text-secondary font-bold">85% Secured</p>
+</div>
+<div class="w-24 h-24 relative z-10">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E2E8F0" stroke-width="3"></path>
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#00e3fd" stroke-dasharray="85, 100" stroke-width="3"></path>
+</svg>
+</div>
+</div>
+<div class="bg-white border border-outline-variant rounded-xl p-md flex-1">
+<h4 class="font-label-bold text-label-bold text-outline uppercase mb-sm">Current Collateral</h4>
+<div class="flex items-center gap-sm">
+<img alt="Ethereum" class="w-8 h-8 rounded-full" data-alt="A clean, high-resolution 3D render of a crystalline Ethereum logo icon. The icon is rendered with subtle glassmorphism and light blue highlights, sitting in a minimalist space with soft directional lighting. The overall mood is modern, technical, and financially secure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8UK9HhdKNFMTd_JncyxEu7D94LJt6npgbdKzAE1c1_hKne0H5STaYUB4N-ni_KsBnqwkXP5rZ6CJh5LoZW5AnSADFtWs3dwNIAnfy-sqLVLhjP5UnkJVyoEK5SNXJOfVpcROfxs6BkQwck53pzX5Cuh6-fK2Ix9ucSbZ_I3LEdG_3-thuM7qQnj5xP5Wg8pwG6WhRCWeV_ZkogRxsP_6K3XmQruLROYJznxZCNhEZKbKLymQUjXdIiqilxddtx_UQVBkkDZIYcb8"/>
+<div>
+<p class="font-body-md text-body-md font-bold">0.45 ETH</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">≈ GH₵ 12,400.00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB (Contextual) -->
+<button class="fixed right-margin-mobile bottom-24 w-14 h-14 bg-secondary-container text-on-secondary-container rounded-full shadow-[0_10px_30px_rgba(0,227,253,0.4)] flex items-center justify-center active:scale-90 transition-all duration-200 z-50">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold mt-1">Dashboard</span>
+</a>
+<!-- Loans -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold mt-1">Loans</span>
+</a>
+<!-- Vault -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold mt-1">Vault</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

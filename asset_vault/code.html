@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#b7c4ff",
+                        "outline": "#737688",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-secondary-container": "#00616d",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "outline-variant": "#c3c5d9",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "inverse-surface": "#313030",
+                        "secondary-container": "#00e3fd",
+                        "tertiary-fixed": "#dce3eb",
+                        "surface-bright": "#fcf8f8",
+                        "secondary-fixed": "#9cf0ff",
+                        "secondary": "#006875",
+                        "background": "#fcf8f8",
+                        "surface-variant": "#e5e2e1",
+                        "tertiary-container": "#60676e",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-background": "#1c1b1b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dde1ff",
+                        "tertiary": "#484f56",
+                        "primary-container": "#0052ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#ebe7e7",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#dfe3ff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#004ced",
+                        "primary": "#003ec7",
+                        "on-tertiary-fixed": "#151c22",
+                        "surface-container": "#f0edec",
+                        "on-surface-variant": "#434656",
+                        "surface-dim": "#dcd9d9",
+                        "on-surface": "#1c1b1b",
+                        "inverse-on-surface": "#f3f0ef",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001f24",
+                        "on-primary-fixed": "#001452",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#00daf3",
+                        "surface-container-low": "#f6f3f2",
+                        "surface": "#fcf8f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "margin-desktop": "120px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline w-full top-0 sticky z-50 flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional and clean headshot of a diverse male university student with a friendly expression. The lighting is bright and natural, reflecting a clean and modern academic environment. The background is a soft, out-of-focus university campus setting with vibrant green tones and modern architecture, maintaining a high-contrast and minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkIzSJFqNX8sdngjfEhbq9MX0KFLE51FjdOdZAyewGbma55KjhtOVvCAE5GqGE1hpi9nItyEYcpELL6aw37-iNGJVcYcMx96YiA-o8W0WK8gdzR9r9Z6EyJJfSzTfjUNNe8BumlVx8DMRqbK79FmHCZW_5Zq1nzLk7J8aaZc7OXnKv44WeAjzWKOGO26lLw8BRSLEyZnibC9r3IeN8qo-QpQZPKTBWr8fR6g5kwJLrwyRUrjQKyl9h5-O51PmqOdGjJYdl-13cqH8"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="px-margin-mobile md:px-margin-desktop py-base">
+<!-- Hero Section: Total Liquidation Value -->
+<section class="mt-md mb-lg">
+<div class="bg-gradient-to-br from-primary to-secondary p-lg rounded-xl shadow-[0_20px_40px_rgba(0,62,199,0.2)] text-on-primary relative overflow-hidden">
+<div class="relative z-10">
+<p class="font-label-bold text-label-bold opacity-80 mb-xs">TOTAL LIQUIDATION VALUE</p>
+<h1 class="font-headline-xl text-headline-xl">$3,450.00</h1>
+<div class="flex items-center mt-sm gap-xs">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<p class="font-body-sm text-body-sm">All assets verified and stored securely</p>
+</div>
+</div>
+<!-- Abstract Geometric Decoration -->
+<div class="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute -left-10 -bottom-10 w-48 h-48 bg-secondary-container/20 rounded-full blur-2xl"></div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="flex justify-between items-center mb-md">
+<h2 class="font-headline-lg text-headline-lg text-on-background">Your Vault</h2>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-gutter py-sm rounded-full font-action-lg text-action-lg shadow-[0_0_20px_rgba(0,62,199,0.2)] hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined">add_a_photo</span>
+<span>Add Asset</span>
+</button>
+</section>
+<!-- Bento Grid for Assets -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Asset Card 1: MacBook Pro -->
+<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col md:flex-row gap-md hover:border-primary transition-all group">
+<div class="w-full md:w-1/3 aspect-video md:aspect-square bg-surface-container rounded-lg overflow-hidden">
+<img alt="MacBook Pro M1" class="w-full h-full object-cover" data-alt="A premium MacBook Pro laptop resting on a clean, white minimalist desk. The scene is lit with bright, cool-toned studio lighting that emphasizes the sleek aluminum texture and high-tech aesthetic. The background is a soft blue-grey gradient, creating a professional and secure atmosphere consistent with a fintech vault interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsHpk6dcN_-TRI1lxSexoQgAxzodSKw5fF1LbbJZbAO5AYJbKG4MJKy7-2p3hXMboec4QY57KNEeZuvoXz7yZVepSG6ZZfIEB9Y66OogscAeVKzJdEtDLYU6RKxShCYblW7Y0W-Ab0pdy3glW5E2LOwp87RuIFAxQmBfsz2q0mdb1NHNPM41UlfIISzRs0W_Yq3OgL8Gu7BYfQHOKTnbnEDQuBGickN7svn1Oh3ixyWrm9pv9En7AEoT3hjOkwu5XEf4UdBkJwmyY"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-xs">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">MacBook Pro M1</h3>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-sm py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Verified &amp; Stored
+                            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Serial: C02XG1... • Space Gray</p>
+</div>
+<div class="mt-md md:mt-0 pt-md border-t border-outline-variant flex justify-between items-end">
+<div>
+<p class="font-label-bold text-label-bold text-outline">LIQUIDATION VALUE</p>
+<p class="font-headline-lg text-headline-lg text-primary">$1,200.00</p>
+</div>
+<button class="text-primary hover:bg-surface-container-high p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stats Card / Mini Bento -->
+<div class="md:col-span-4 bg-primary-container text-on-primary-container rounded-xl p-md flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-[48px] mb-sm" style="font-variation-settings: 'FILL' 1;">shield</span>
+<p class="font-label-bold text-label-bold uppercase tracking-widest mb-xs">Vault Security</p>
+<p class="font-headline-lg text-headline-lg">Tier 1 Secure</p>
+<p class="font-body-sm text-body-sm mt-sm opacity-80 text-on-primary-container">Your physical assets are insured up to $10,000 by Flism Custody.</p>
+</div>
+<!-- Asset Card 2: Sony Camera -->
+<div class="md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm hover:border-primary transition-all">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-lg text-[24px] text-on-surface">Sony Alpha a7 III</h3>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-sm py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Verified &amp; Stored
+                    </span>
+</div>
+<div class="w-full h-48 bg-surface-container rounded-lg overflow-hidden">
+<img alt="Sony Alpha Camera" class="w-full h-full object-cover" data-alt="A professional Sony Alpha mirrorless camera positioned on a neutral, bright grey surface. The lighting is sharp and clinical, highlighting the complex dials and high-quality lens glass. The overall mood is technological and precise, featuring a high-contrast aesthetic with deep blacks and bright white reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANEwJpjG6YiDwGuXTmLQ3CQ1RNYNeyZpgawKH23OgCzgcZc0GCi7TTtGvr_KzZWLiarGnA0V2WNdZiR_K32OguodHpPoa5GZpcPjTp6sY02WRshceGaiMnhHZcEaO8_VWclOu1YlhGF39VvmVvnSmoEguX5IS9GvaY8DeMfHC10zx6gH7hQNGyq-liYyvitr4CbbJ0DsDcjeEI3RKK6QNKZWG_pJ0l1atDSaG5GgBt56vLJQ_tLzQabaFHgdWWy1o4ES6EaTjupcE"/>
+</div>
+<div class="flex justify-between items-end mt-xs">
+<div>
+<p class="font-label-bold text-label-bold text-outline">LIQUIDATION VALUE</p>
+<p class="font-headline-lg text-headline-lg text-primary">$1,850.00</p>
+</div>
+<button class="bg-surface-container-high text-on-surface-variant px-gutter py-base rounded-lg font-label-bold text-label-bold hover:bg-outline-variant transition-colors">DETAILS</button>
+</div>
+</div>
+<!-- Asset Card 3: Designer Watch -->
+<div class="md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm hover:border-primary transition-all">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-lg text-[24px] text-on-surface">Seiko Alpinist</h3>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-sm py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Verified &amp; Stored
+                    </span>
+</div>
+<div class="w-full h-48 bg-surface-container rounded-lg overflow-hidden">
+<img alt="Luxury Watch" class="w-full h-full object-cover" data-alt="A detailed close-up of a high-end mechanical wristwatch with a leather strap. The image uses macro photography to capture the intricate details of the watch face. The lighting is soft but high-contrast, with bright highlights on the polished steel casing against a dark, minimalist background. The aesthetic is luxurious yet modern and clinical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSmfv8QUAEdKHpvToElg2cEwtKA3Qg0E6iGDAKXHaf4E-v9hbtsTylYo3_6DCEIqrXF6tg_xHXERpXhWL-fhHAOoNpID_mEjq6ZG7QKRlUoNL3CLTlg0rf2x4kdnrxdPYs8mMQo22VxpXA1CMguckuTUc5Zp27ihcwnkMROsqOoCA4i8J4tIeTMDWU4JuhZx_We8QZv8c8RCHapD73FybFOuhSjyoQwf2LCskIhnOA1JgLn9Wq_GyImyqUr8bt0r40troadex-NUM"/>
+</div>
+<div class="flex justify-between items-end mt-xs">
+<div>
+<p class="font-label-bold text-label-bold text-outline">LIQUIDATION VALUE</p>
+<p class="font-headline-lg text-headline-lg text-primary">$400.00</p>
+</div>
+<button class="bg-surface-container-high text-on-surface-variant px-gutter py-base rounded-lg font-label-bold text-label-bold hover:bg-outline-variant transition-colors">DETAILS</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold mt-1">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-bold text-label-bold mt-1">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

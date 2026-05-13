@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#dde1ff",
+                    "on-primary-fixed": "#001452",
+                    "on-tertiary-container": "#dfe6ee",
+                    "on-primary-fixed-variant": "#0038b6",
+                    "tertiary-fixed": "#dce3eb",
+                    "surface-container-highest": "#e5e2e1",
+                    "primary": "#003ec7",
+                    "primary-container": "#0052ff",
+                    "secondary-fixed-dim": "#00daf3",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "on-tertiary-fixed": "#151c22",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#737688",
+                    "inverse-surface": "#313030",
+                    "tertiary-fixed-dim": "#c0c7cf",
+                    "surface-bright": "#fcf8f8",
+                    "secondary": "#006875",
+                    "surface-container-high": "#ebe7e7",
+                    "secondary-fixed": "#9cf0ff",
+                    "on-secondary-fixed": "#001f24",
+                    "on-surface-variant": "#434656",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#f0edec",
+                    "on-error": "#ffffff",
+                    "tertiary": "#484f56",
+                    "outline-variant": "#c3c5d9",
+                    "surface-container-low": "#f6f3f2",
+                    "on-surface": "#1c1b1b",
+                    "on-primary-container": "#dfe3ff",
+                    "surface-tint": "#004ced",
+                    "surface": "#fcf8f8",
+                    "tertiary-container": "#60676e",
+                    "surface-dim": "#dcd9d9",
+                    "background": "#fcf8f8",
+                    "on-secondary-fixed-variant": "#004f58",
+                    "on-background": "#1c1b1b",
+                    "surface-variant": "#e5e2e1",
+                    "inverse-on-surface": "#f3f0ef",
+                    "secondary-container": "#00e3fd",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#b7c4ff",
+                    "on-secondary-container": "#00616d",
+                    "on-tertiary-fixed-variant": "#40484e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "xl": "80px",
+                    "gutter": "16px",
+                    "md": "24px",
+                    "margin-desktop": "120px",
+                    "sm": "12px",
+                    "xs": "4px",
+                    "lg": "48px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "label-bold": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "action-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline z-50 flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A close-up professional headshot of a stylish university student smiling warmly. The lighting is soft and natural, reflecting a bright and modern light-mode aesthetic with a clean, minimalist background. The overall mood is friendly, tech-savvy, and youthful, consistent with a high-end fintech brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ4IwrKPirajo2BG6ebjFJZlTAsgYKVj65_sopk26U_-x7tH5PN_ngiO5-hxlUEIXTc40uTsu691d-3GNotQmdLuUcU9Cp96dRKjIfpbE8jPJwUjiEqER4ZJ92xvNan7fklpiKzFN159BquJI6078PdKj1gW0KvX61KzoHpzykr5t2Q5vElGcbew_CUSlUrLcT_zj5-bIW4wBuV9zzKawKZun7bdYKNFpRUU-KUcyma6drYnZchrEuI-wrMhufFCyaaC6HJDSfKLc"/>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer hover:bg-surface-container-low transition-colors p-2 rounded-full">notifications</span>
+</div>
+</header>
+<main class="px-margin-mobile pt-base">
+<!-- Rewards Balance Card -->
+<section class="mt-base">
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-container p-md shadow-[0_20px_40px_rgba(0,62,199,0.2)]">
+<div class="flex justify-between items-start mb-base">
+<div>
+<p class="font-label-bold text-label-bold text-on-primary-container opacity-80 uppercase tracking-widest">Rewards Balance</p>
+<h2 class="font-headline-lg text-headline-lg text-on-primary mt-xs">GH₵ 450.00</h2>
+</div>
+<div class="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+<span class="material-symbols-outlined text-on-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-md">
+<span class="material-symbols-outlined text-secondary-container text-[18px]">trending_up</span>
+<p class="font-body-sm text-body-sm text-on-primary-container">+GH₵ 50.00 earned this week</p>
+</div>
+</div>
+</section>
+<!-- Refer-a-Friend Hero -->
+<section class="mt-lg">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Share the Flism Spark</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Invite your friends to manage their capital better. You both get <span class="font-bold text-primary">GH₵ 20.00</span> when they make their first deposit.</p>
+<div class="mt-md bg-surface-container-low border-2 border-dashed border-primary/30 rounded-xl p-md flex items-center justify-between">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-xs">YOUR UNIQUE CODE</p>
+<span class="font-headline-lg text-headline-lg text-primary tracking-widest select-all">FLISM-J48K</span>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-md py-sm rounded-lg font-action-lg text-action-lg flex items-center gap-base transition-all active:scale-95 shadow-[0_0_20px_rgba(0,62,199,0.2)]">
+                        Copy
+                        <span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</section>
+<!-- How It Works Stepper -->
+<section class="mt-lg">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">How it Works</h3>
+<span class="material-symbols-outlined text-primary">help_outline</span>
+</div>
+<div class="space-y-gutter relative">
+<!-- Vertical Line -->
+<div class="absolute left-[19px] top-4 bottom-4 w-0.5 bg-outline-variant"></div>
+<!-- Step 1 -->
+<div class="flex items-start gap-md relative">
+<div class="z-10 w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center border-2 border-surface shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-weight="fill" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Invite your friends</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Share your unique code via WhatsApp, SMS, or Social Media.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-md relative">
+<div class="z-10 w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center border-2 border-surface shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-weight="fill" style="font-variation-settings: 'FILL' 1;">person_add</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Peer joins &amp; verifies</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your friend registers with Flism and completes their identity verification.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-md relative">
+<div class="z-10 w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border-2 border-surface shrink-0">
+<span class="material-symbols-outlined text-on-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Get Rewarded</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Once they make their first deposit, you both receive GH₵ 20.00 instantly.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Referrals -->
+<section class="mt-lg">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-md">Recent Referrals</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-md border-b border-outline-variant last:border-0">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Kofi Mensah</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Completed 2 days ago</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-secondary">+GH₵ 20.00</p>
+<span class="text-[10px] uppercase font-bold text-secondary bg-secondary-fixed/30 px-2 py-0.5 rounded-full">Success</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-md border-b border-outline-variant last:border-0">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Ama Serwaa</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pending first deposit</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-on-surface-variant">GH₵ 0.00</p>
+<span class="text-[10px] uppercase font-bold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">Pending</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-md border-b border-outline-variant last:border-0">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Yaw Boateng</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Completed last week</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-secondary">+GH₵ 20.00</p>
+<span class="text-[10px] uppercase font-bold text-secondary bg-secondary-fixed/30 px-2 py-0.5 rounded-full">Success</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-md py-sm text-primary font-label-bold text-label-bold hover:bg-surface-container-low transition-colors rounded-lg">
+                View All Referrals
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</div>
+<!-- Active Tab: Vault/Rewards logically fits near personal growth/assets -->
+<div class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</div>
+</nav>
+<!-- FAB (Suppressed as per rules on specialized screens, but since this is a Growth screen, we'll keep it focused on the main action if applicable, but per rules, suppress on specialized details) -->
+</body></html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#dde1ff",
+                    "on-primary-fixed": "#001452",
+                    "on-tertiary-container": "#dfe6ee",
+                    "on-primary-fixed-variant": "#0038b6",
+                    "tertiary-fixed": "#dce3eb",
+                    "surface-container-highest": "#e5e2e1",
+                    "primary": "#003ec7",
+                    "primary-container": "#0052ff",
+                    "secondary-fixed-dim": "#00daf3",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "on-tertiary-fixed": "#151c22",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#737688",
+                    "inverse-surface": "#313030",
+                    "tertiary-fixed-dim": "#c0c7cf",
+                    "surface-bright": "#fcf8f8",
+                    "secondary": "#006875",
+                    "surface-container-high": "#ebe7e7",
+                    "secondary-fixed": "#9cf0ff",
+                    "on-secondary-fixed": "#001f24",
+                    "on-surface-variant": "#434656",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#f0edec",
+                    "on-error": "#ffffff",
+                    "tertiary": "#484f56",
+                    "outline-variant": "#c3c5d9",
+                    "surface-container-low": "#f6f3f2",
+                    "on-surface": "#1c1b1b",
+                    "on-primary-container": "#dfe3ff",
+                    "surface-tint": "#004ced",
+                    "surface": "#fcf8f8",
+                    "tertiary-container": "#60676e",
+                    "surface-dim": "#dcd9d9",
+                    "background": "#fcf8f8",
+                    "on-secondary-fixed-variant": "#004f58",
+                    "on-background": "#1c1b1b",
+                    "surface-variant": "#e5e2e1",
+                    "inverse-on-surface": "#f3f0ef",
+                    "secondary-container": "#00e3fd",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#b7c4ff",
+                    "on-secondary-container": "#00616d",
+                    "on-tertiary-fixed-variant": "#40484e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "xl": "80px",
+                    "gutter": "16px",
+                    "md": "24px",
+                    "margin-desktop": "120px",
+                    "sm": "12px",
+                    "xs": "4px",
+                    "lg": "48px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "label-bold": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "action-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .contract-scroll::-webkit-scrollbar { width: 4px; }
+        .contract-scroll::-webkit-scrollbar-track { background: #f0edec; }
+        .contract-scroll::-webkit-scrollbar-thumb { background: #c3c5d9; border-radius: 10px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-margin-mobile">
+<!-- TopAppBar Navigation Shell - Contextual Back Hidden for focused task as per mandate -->
+<header class="bg-surface dark:bg-surface-dim flex justify-between items-center px-margin-mobile h-16 w-full top-0 sticky border-b border-outline-variant dark:border-outline z-50">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism Legal</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-on-surface-variant font-label-bold text-label-bold uppercase tracking-widest">Step 3 of 3</span>
+</div>
+</header>
+<main class="px-margin-mobile pt-base max-w-2xl mx-auto">
+<!-- Intro Header -->
+<section class="mt-base mb-md">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Review Agreement</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Please read the following documents carefully before signing for your loan of GH₵ 5,500.00.</p>
+</section>
+<!-- Document Viewer Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<!-- Tabs for Documents -->
+<div class="flex border-b border-outline-variant overflow-x-auto">
+<button class="px-md py-4 font-label-bold text-label-bold text-primary border-b-2 border-primary whitespace-nowrap">Loan Agreement</button>
+<button class="px-md py-4 font-label-bold text-label-bold text-on-surface-variant hover:bg-surface-container-low transition-colors whitespace-nowrap">Collateral Terms</button>
+<button class="px-md py-4 font-label-bold text-label-bold text-on-surface-variant hover:bg-surface-container-low transition-colors whitespace-nowrap">Privacy Policy</button>
+</div>
+<!-- Scrollable Content -->
+<div class="h-96 overflow-y-auto p-md contract-scroll font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-sm">1. Loan Agreement</h2>
+<p class="mb-md">This agreement is made between Flism Financial Services ("Lender") and the undersigned university student ("Borrower"). By tapping "Sign Agreement," the Borrower acknowledges receipt of <strong>GH₵ 5,500.00</strong> subject to the terms herein.</p>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-xs">1.1 Interest Rates</h3>
+<p class="mb-md">The annual percentage rate (APR) is fixed at 14.5%. Interest is calculated daily on the outstanding principal balance. Late payments incur a penalty fee of 2% of the overdue amount per week.</p>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-xs">1.2 Repayment Schedule</h3>
+<p class="mb-md">Repayment shall occur over 12 monthly installments of <strong>GH₵ 495.00</strong> starting from the 1st of the following month. Payments are automatically deducted via Flism Vault or linked university stipend accounts.</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-lg mb-sm">2. Collateral Terms</h2>
+<p class="mb-md">As security for the performance of the Borrower's obligations, the Borrower hereby grants a first-priority security interest in the digital assets held within the Flism Vault and any specified equipment listed in the application.</p>
+<div class="bg-primary-container/10 p-sm rounded-lg border border-primary/20 mb-md">
+<p class="text-primary font-label-bold italic">Note: Failure to meet three consecutive repayment cycles may result in the temporary freezing of the Flism Vault assets.</p>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-lg mb-sm">3. Privacy Policy</h2>
+<p>Flism Legal ensures that your financial data is encrypted using 256-bit AES protocols. We share information only with registered credit bureaus in Ghana as required by the Bank of Ghana guidelines.</p>
+</div>
+</div>
+<!-- Compliance Checkboxes -->
+<section class="mt-md space-y-sm">
+<label class="flex items-start gap-sm cursor-pointer group">
+<div class="relative flex items-center justify-center mt-1">
+<input class="peer appearance-none w-5 h-5 border-2 border-outline rounded bg-surface checked:bg-primary checked:border-primary transition-all duration-200" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-[16px] opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">I have read and agree to the Loan Agreement and Collateral Terms.</span>
+</label>
+<label class="flex items-start gap-sm cursor-pointer group">
+<div class="relative flex items-center justify-center mt-1">
+<input class="peer appearance-none w-5 h-5 border-2 border-outline rounded bg-surface checked:bg-primary checked:border-primary transition-all duration-200" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-[16px] opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">I consent to the digital processing of my data for credit assessment.</span>
+</label>
+</section>
+<!-- Signature Pad Section -->
+<section class="mt-xl">
+<div class="mb-base flex justify-between items-end">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface uppercase tracking-wider">Digital Signature</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sign inside the box below</p>
+</div>
+<button class="text-primary font-label-bold text-label-bold flex items-center gap-xs hover:underline">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                    Clear
+                </button>
+</div>
+<div class="w-full h-40 bg-surface-container-low border border-dashed border-outline rounded-xl relative flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<img class="w-full h-full object-cover grayscale" data-alt="A clean, minimalist high-key texture of white paper with extremely subtle vertical grain. The lighting is soft and even, typical of a modern professional studio environment, creating a bright and airy atmosphere. The image is devoid of any subjects, focusing purely on the high-contrast aesthetic of a pristine document surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtjl605DClkLxDXjUyj4ZclBZF2ypFvxS4WtOBkNkRB40Oo-y1J3Unpgt-3R60hXQncJZ4ldzX3j_71aGMzFZxRxf7kNc8xg4a7SqgkjWhCNo-AHnyHqI7vTts7K-1LfuRE567shU10WlTIfRoD5dCJBihhi1tHp7iqGgD1kYqKD3L5ECXkLGSjJkc_ZQkgFrikN7Nu24SQu2f_gaC4Bni46SSErYYsNgCkZGFzZw02k7jeBUDlFqSuPBbKmZH_am5-sG_QcMi7vs"/>
+</div>
+<div class="z-10 text-center">
+<span class="material-symbols-outlined text-outline text-4xl mb-xs">draw</span>
+<p class="text-outline font-body-sm text-body-sm">Tap or draw to sign</p>
+</div>
+<!-- Visual Baseline for signature -->
+<div class="absolute bottom-10 left-8 right-8 border-b border-outline-variant/50"></div>
+</div>
+</section>
+<!-- Final Action -->
+<section class="mt-xl flex flex-col items-center">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-action-lg text-action-lg shadow-[0_20px_40px_rgba(0,62,199,0.2)] hover:bg-primary-container active:scale-95 transition-all duration-200">
+                Confirm &amp; Sign Agreement
+            </button>
+<p class="mt-md font-body-sm text-body-sm text-on-surface-variant text-center px-lg">
+                By clicking "Confirm &amp; Sign", you are entering into a legally binding contract under the laws of Ghana.
+            </p>
+</section>
+</main>
+<!-- Bottom Nav Shell Suppression: Mandated for transactional/focused screens -->
+<!-- Floating Action Button Suppression: Mandated for Detail/Transactional screens -->
+</body></html>

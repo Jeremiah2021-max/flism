@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .signature-font {
+            font-family: 'Dancing Script', cursive; /* Fallback to a cursive style if needed, but per prompt using Jakarta with specific styling */
+            font-style: italic;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #E2E8F0;
+        }
+        .electric-glow {
+            box-shadow: 0 10px 40px -10px rgba(0, 76, 237, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#151c22",
+                      "tertiary-container": "#60676e",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#fcf8f8",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#00e3fd",
+                      "outline": "#737688",
+                      "tertiary-fixed": "#dce3eb",
+                      "surface-tint": "#004ced",
+                      "surface": "#fcf8f8",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "on-primary-container": "#dfe3ff",
+                      "on-error-container": "#93000a",
+                      "primary": "#003ec7",
+                      "on-surface": "#1c1b1b",
+                      "tertiary-fixed-dim": "#c0c7cf",
+                      "secondary-fixed": "#9cf0ff",
+                      "outline-variant": "#c3c5d9",
+                      "on-secondary-container": "#00616d",
+                      "surface-container": "#f0edec",
+                      "on-tertiary-container": "#dfe6ee",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#1c1b1b",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-tertiary-fixed-variant": "#40484e",
+                      "inverse-on-surface": "#f3f0ef",
+                      "inverse-surface": "#313030",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#434656",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#fcf8f8",
+                      "on-secondary-fixed": "#001f24",
+                      "secondary": "#006875",
+                      "primary-container": "#0052ff",
+                      "error": "#ba1a1a",
+                      "tertiary": "#484f56",
+                      "surface-variant": "#e5e2e1",
+                      "surface-container-low": "#f6f3f2",
+                      "primary-fixed": "#dde1ff",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container-high": "#ebe7e7",
+                      "secondary-fixed-dim": "#00daf3",
+                      "inverse-primary": "#b7c4ff",
+                      "on-primary-fixed": "#001452",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "48px",
+                      "gutter": "16px",
+                      "base": "8px",
+                      "xl": "80px",
+                      "md": "24px",
+                      "sm": "12px",
+                      "margin-desktop": "120px",
+                      "xs": "4px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "action-lg": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">arrow_back</span>
+</button>
+<h1 class="font-headline-lg text-headline-lg-mobile text-primary dark:text-primary-fixed-dim">Loan Agreement</h1>
+</div>
+<button class="hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">file_download</span>
+</button>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile md:px-0 py-lg space-y-lg">
+<!-- Header Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-base border-b border-outline-variant pb-md">
+<div>
+<span class="font-label-bold text-label-bold text-secondary uppercase tracking-widest">Digital Contract</span>
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface mt-xs">#FL-LOAN-8829</h2>
+</div>
+<div class="flex items-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<p class="font-body-sm text-body-sm">Signed on Oct 24, 2024</p>
+</div>
+</section>
+<!-- Summary Card (Bento-style layout) -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="bg-gradient-to-br from-primary to-primary-container p-md rounded-xl text-on-primary electric-glow flex flex-col justify-between min-h-[160px]">
+<p class="font-label-bold text-label-bold opacity-80 uppercase">Loan Amount</p>
+<div>
+<h3 class="font-headline-xl text-headline-xl">GH₵ 1,500.00</h3>
+<p class="font-body-sm text-body-sm opacity-90 mt-xs">Approved &amp; Disbursed</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl flex flex-col justify-between min-h-[160px]">
+<p class="font-label-bold text-label-bold text-on-surface-variant uppercase">Total Repayment</p>
+<div>
+<h3 class="font-headline-xl text-headline-xl text-primary">GH₵ 1,650.00</h3>
+<div class="flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Incl. 10% Interest</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Contract Sections -->
+<div class="space-y-md">
+<!-- Parties Involved -->
+<section class="bg-white border border-outline-variant rounded-xl p-md">
+<div class="flex items-center gap-base mb-md">
+<span class="material-symbols-outlined text-primary">groups</span>
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface">Parties Involved</h4>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-xs">
+<p class="font-label-bold text-[10px] text-on-surface-variant uppercase">Lender</p>
+<p class="font-action-lg text-action-lg text-on-surface">Flism Microfinance Ltd.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Accra Digital Centre, GH</p>
+</div>
+<div class="space-y-xs">
+<p class="font-label-bold text-[10px] text-on-surface-variant uppercase">Borrower</p>
+<p class="font-action-lg text-action-lg text-on-surface">Kofi Mensah</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ID: GHA-772910-B</p>
+</div>
+</div>
+</section>
+<!-- Terms & Conditions (Scrollable area) -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-md bg-surface-container flex items-center gap-base">
+<span class="material-symbols-outlined text-primary">gavel</span>
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface">Terms &amp; Conditions</h4>
+</div>
+<div class="p-md max-h-64 overflow-y-auto font-body-sm text-body-sm text-on-surface-variant leading-relaxed space-y-md">
+<p><strong>1. Interest Rate:</strong> The loan is subject to a flat interest rate of 10% on the principal amount. This rate is fixed for the duration of the agreement and will not fluctuate with market changes.</p>
+<p><strong>2. Repayment Schedule:</strong> The Borrower agrees to repay the total sum of GH₵ 1,650.00 in four (4) equal monthly installments of GH₵ 412.50. Payments are due on the 30th of each calendar month beginning from November 2024.</p>
+<p><strong>3. Late Fee Penalties:</strong> Failure to make a payment within 48 hours of the due date will attract a penalty fee of GH₵ 50.00 per week of delinquency.</p>
+<p><strong>4. Acceleration:</strong> In the event of a default lasting more than 30 days, Flism Microfinance reserves the right to demand the immediate repayment of the entire outstanding balance.</p>
+<p><strong>5. Governing Law:</strong> This agreement is governed by the laws of the Republic of Ghana, and any disputes shall be resolved through the competent courts of Accra.</p>
+</div>
+</section>
+<!-- Collateral Agreement -->
+<section class="bg-white border border-outline-variant rounded-xl p-md">
+<div class="flex items-center gap-base mb-md">
+<span class="material-symbols-outlined text-primary">lock</span>
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface">Collateral Agreement</h4>
+</div>
+<div class="flex flex-col md:flex-row gap-md">
+<div class="flex-1 bg-surface-container-low p-base rounded-lg border border-outline-variant">
+<p class="font-label-bold text-[10px] text-on-surface-variant uppercase mb-xs">Pledged Asset</p>
+<div class="flex items-center gap-base">
+<div class="bg-white p-base rounded-md">
+<span class="material-symbols-outlined text-primary">laptop_mac</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">MacBook Pro M1</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Serial: FL-8829-X</p>
+</div>
+</div>
+</div>
+<div class="flex-1 flex items-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+                            "The borrower acknowledges that failure to meet repayment terms authorizes the lender to initiate seizure of the specified asset following a 14-day notice period."
+                        </p>
+</div>
+</div>
+</section>
+<!-- Signature Area -->
+<section class="bg-surface-container-lowest border-2 border-dashed border-outline-variant rounded-xl p-md flex flex-col md:flex-row items-center justify-between gap-md">
+<div class="text-center md:text-left">
+<p class="font-label-bold text-label-bold text-on-surface-variant uppercase mb-md">Borrower Signature</p>
+<div class="relative inline-block">
+<p class="text-[40px] font-medium italic text-primary signature-font select-none" style="font-family: 'Georgia', serif;">Kofi Mensah</p>
+<div class="h-px bg-outline-variant w-full mt-2"></div>
+</div>
+</div>
+<div class="bg-secondary-container/10 border border-secondary-container/30 p-md rounded-xl text-center md:text-right">
+<div class="flex items-center justify-center md:justify-end gap-base text-on-secondary-container mb-xs">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<p class="font-label-bold text-label-bold">VERIFIED BY FLISM</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Timestamp: 2024-10-24 14:32:01 GMT</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Auth Hash: 8829-X-FLISM-SECURE</p>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<footer class="flex flex-col md:flex-row gap-md pt-lg pb-xl">
+<button class="flex-1 bg-primary text-on-primary font-action-lg text-action-lg py-md rounded-xl electric-glow hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-base">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+                Download PDF
+            </button>
+<button class="flex-1 bg-transparent border-2 border-primary text-primary font-action-lg text-action-lg py-md rounded-xl hover:bg-primary/5 active:scale-95 transition-all flex items-center justify-center gap-base">
+<span class="material-symbols-outlined">share</span>
+                Share Agreement
+            </button>
+</footer>
+</main>
+<!-- Bottom Navigation Shell (Only for Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-lg">
+<div class="flex justify-around items-center w-full py-base px-gutter">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-bold text-[10px]">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="font-label-bold text-[10px]">Loans</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-bold text-[10px]">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-[10px]">Account</span>
+</div>
+</div>
+</nav>
+</body></html>

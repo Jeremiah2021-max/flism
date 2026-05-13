@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#dcd9d9",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "tertiary": "#484f56",
+                      "inverse-primary": "#b7c4ff",
+                      "secondary-container": "#00e3fd",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "primary": "#003ec7",
+                      "on-primary-fixed": "#001452",
+                      "on-error": "#ffffff",
+                      "on-surface": "#1c1b1b",
+                      "outline": "#737688",
+                      "surface-container-high": "#ebe7e7",
+                      "surface-bright": "#fcf8f8",
+                      "on-surface-variant": "#434656",
+                      "secondary-fixed": "#9cf0ff",
+                      "background": "#fcf8f8",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#f3f0ef",
+                      "on-secondary-fixed": "#001f24",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#c0c7cf",
+                      "on-error-container": "#93000a",
+                      "error-container": "#ffdad6",
+                      "tertiary-container": "#60676e",
+                      "primary-fixed": "#dde1ff",
+                      "surface-variant": "#e5e2e1",
+                      "surface-tint": "#004ced",
+                      "primary-container": "#0052ff",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "on-tertiary-fixed": "#151c22",
+                      "on-primary-container": "#dfe3ff",
+                      "surface-container": "#f0edec",
+                      "on-tertiary-container": "#dfe6ee",
+                      "surface": "#fcf8f8",
+                      "surface-container-low": "#f6f3f2",
+                      "secondary": "#006875",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#c3c5d9",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-secondary-container": "#00616d",
+                      "on-tertiary-fixed-variant": "#40484e",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1c1b1b",
+                      "inverse-surface": "#313030",
+                      "secondary-fixed-dim": "#00daf3",
+                      "tertiary-fixed": "#dce3eb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "12px",
+                      "md": "24px",
+                      "margin-desktop": "120px",
+                      "gutter": "16px",
+                      "base": "8px",
+                      "lg": "48px",
+                      "margin-mobile": "20px",
+                      "xs": "4px",
+                      "xl": "80px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "action-lg": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- Navigation Drawer (SideNav) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-highest border-r border-outline-variant dark:border-outline flex flex-col py-lg z-50">
+<div class="px-md mb-lg flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">shield_person</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-body-md font-bold text-primary dark:text-primary-fixed-dim">Admin Portal</h2>
+<p class="text-label-bold text-on-surface-variant opacity-70">Flism Operations</p>
+</div>
+</div>
+<nav class="flex-1 px-sm space-y-base">
+<div class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-body-md">Applications</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-bold rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-body-md">Verification</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md">Analytics</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</div>
+</nav>
+<div class="px-md mt-auto pt-md border-t border-outline-variant">
+<p class="text-label-bold text-on-surface-variant">v1.0.4</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-sm">
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</h1>
+<span class="text-on-surface-variant opacity-30 text-xl">/</span>
+<span class="text-on-surface font-body-md font-semibold">Asset Verification</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-100">notifications</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+<img alt="Student Profile" data-alt="A close-up professional portrait of a confident woman in a modern office setting. She has a warm, focused expression that suggests competence and trust. The lighting is soft and high-key, aligning with a bright, professional light-mode UI. The background is a clean, slightly blurred minimalist workspace with hints of high-contrast tech elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKgT7m_tb7EnP5ggT7R71fDacZgvF24DW0qzw4WoGCtIyspEt_1zsoxa9jKp_bJDsCRjDz2vn3IkBUp7qOqmi2fM09hf2QOVeEIAIOEjGRinDzVOjqP-7PwwgUne_29MTplBKgE6XCUDYc1rjai_fYa8HmY_W2_aOiJVDLEYIc2FnAiBP__2v45uPLkd0AKG1g2D3_VgokRg30H2XFGtq4-CCn4oRRtyzLyNrlHGiF6ZKOdYktN3SG2kSgc3wuOtZc5Xtiz0jV0sQ"/>
+</div>
+</div>
+</header>
+<div class="p-md lg:p-lg space-y-lg max-w-[1400px] mx-auto w-full">
+<!-- Hero Stats / Search Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex items-center justify-between">
+<div>
+<p class="text-label-bold text-on-surface-variant uppercase tracking-wider">Pending Tasks</p>
+<h3 class="text-headline-lg font-bold text-primary">24</h3>
+</div>
+<span class="material-symbols-outlined text-primary-container text-4xl">inventory_2</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex items-center justify-between">
+<div>
+<p class="text-label-bold text-on-surface-variant uppercase tracking-wider">Inventory Value</p>
+<h3 class="text-headline-lg font-bold text-secondary">GH₵ 142k</h3>
+</div>
+<span class="material-symbols-outlined text-secondary-container text-4xl">account_balance_wallet</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex items-center justify-between">
+<div>
+<p class="text-label-bold text-on-surface-variant uppercase tracking-wider">Avg LTV Approval</p>
+<h3 class="text-headline-lg font-bold text-tertiary">58%</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary-container text-4xl">speed</span>
+</div>
+</div>
+<!-- Bento Layout for Operations -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+<!-- Pending Queue (Col 1-4) -->
+<section class="xl:col-span-4 bg-surface border border-outline-variant rounded-xl overflow-hidden flex flex-col h-[700px]">
+<div class="p-md border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h2 class="font-headline-lg text-body-md font-bold">Pending Queue</h2>
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full text-label-bold">8 NEW</span>
+</div>
+<div class="flex-1 overflow-y-auto divide-y divide-outline-variant">
+<!-- Queue Item 1 (Active) -->
+<div class="p-md bg-secondary-container/10 border-l-4 border-secondary cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<span class="text-label-bold text-secondary">ID: FL-9821</span>
+<span class="text-xs text-on-surface-variant">12 mins ago</span>
+</div>
+<h4 class="font-bold text-body-md">Kofi Mensah</h4>
+<p class="text-body-sm text-on-surface-variant">MacBook Pro M2 (2023)</p>
+<div class="mt-sm flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="text-body-sm">Legon Campus Hub</span>
+</div>
+</div>
+<!-- Queue Item 2 -->
+<div class="p-md cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<span class="text-label-bold text-on-surface-variant">ID: FL-9825</span>
+<span class="text-xs text-on-surface-variant">45 mins ago</span>
+</div>
+<h4 class="font-bold text-body-md">Ama Serwaa</h4>
+<p class="text-body-sm text-on-surface-variant">iPhone 14 Pro Max</p>
+<div class="mt-sm flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="text-body-sm">KNUST Tech Hub</span>
+</div>
+</div>
+<!-- Queue Item 3 -->
+<div class="p-md cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<span class="text-label-bold text-on-surface-variant">ID: FL-9830</span>
+<span class="text-xs text-on-surface-variant">1h ago</span>
+</div>
+<h4 class="font-bold text-body-md">David Osei</h4>
+<p class="text-body-sm text-on-surface-variant">PlayStation 5 Console</p>
+<div class="mt-sm flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="text-body-sm">Legon Campus Hub</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Verification Detail View (Col 5-12) -->
+<section class="xl:col-span-8 space-y-gutter">
+<!-- Verification Header -->
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex flex-wrap justify-between items-center gap-md">
+<div>
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded text-label-bold">PROCESSING</span>
+<h2 class="font-headline-lg text-headline-lg mt-xs">Kofi Mensah - MacBook Pro M2</h2>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface border border-error text-error px-md py-sm rounded-lg font-action-lg hover:bg-error-container transition-all active:scale-95">Reject &amp; Notify</button>
+<button class="bg-primary text-white px-md py-sm rounded-lg font-action-lg shadow-[0_0_20px_rgba(0,62,199,0.2)] hover:shadow-[0_0_30px_rgba(0,227,253,0.4)] transition-all active:scale-95">Approve &amp; Log</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Visual Check & Condition -->
+<div class="bg-surface border border-outline-variant rounded-xl p-md space-y-md">
+<h3 class="font-bold text-body-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary">photo_camera</span>
+                                Visual Inspection
+                            </h3>
+<div class="grid grid-cols-2 gap-sm h-48">
+<div class="rounded-lg overflow-hidden border border-outline-variant relative group">
+<img class="w-full h-full object-cover" data-alt="A high-resolution, sharp photograph of a silver MacBook Pro laptop on a clean white desk. The lighting is crisp and bright, highlighting the metallic texture and pristine condition of the device. The composition is professional and clinical, suitable for a digital inventory verification interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrBZPSXPpXQqgj56j6fG2GSPghxQVNi99e9khGk7p4yL5uPVqy9cy7YkOCxCcgIh7n3C3S023SXOOQsUEN1llO_d0Za2-kvub9WEYOSu8siNnoqwNTQ24ZDZ2jyI0prQhVUIKzsUmX_KpY-_zBhyo6PnYR7ZsvfWm2TCcLNPcBzhP4gMJfTOOSDRqVPJwdDuNsCw4GanWJV8qZ5mrJQUSfb7HZ27XuYGnYli6T97Tx1VJHMRVREkmyHnxL148-dPX_BCLZmuMxMr4"/>
+<div class="absolute bottom-0 w-full bg-black/50 text-white text-[10px] p-1 text-center">SUBMITTED PHOTO</div>
+</div>
+<div class="rounded-lg border-2 border-dashed border-primary-container flex flex-col items-center justify-center bg-primary-container/5 hover:bg-primary-container/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-primary text-3xl">add_a_photo</span>
+<p class="text-xs font-bold text-primary mt-xs">CAPTURE NOW</p>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="block">
+<span class="text-label-bold text-on-surface-variant">Serial / IMEI Validation</span>
+<div class="mt-xs relative">
+<input class="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container transition-all" type="text" value="C02FG5V6Q05N"/>
+<span class="absolute right-3 top-3 text-secondary material-symbols-outlined">check_circle</span>
+</div>
+</label>
+<div class="space-y-xs">
+<span class="text-label-bold text-on-surface-variant">Physical Condition</span>
+<div class="flex gap-sm">
+<button class="flex-1 py-sm border border-secondary text-secondary rounded-lg font-label-bold hover:bg-secondary/5 transition-all">EXCELLENT</button>
+<button class="flex-1 py-sm border border-outline-variant text-on-surface-variant rounded-lg font-label-bold hover:bg-surface-container transition-all">GOOD</button>
+<button class="flex-1 py-sm border border-outline-variant text-on-surface-variant rounded-lg font-label-bold hover:bg-surface-container transition-all">FAIR</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Inventory & Value Analysis -->
+<div class="bg-surface border border-outline-variant rounded-xl p-md space-y-md">
+<h3 class="font-bold text-body-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary">analytics</span>
+                                Valuation &amp; Inventory
+                            </h3>
+<div class="bg-surface-container-low p-md rounded-xl space-y-sm">
+<div class="flex justify-between items-center">
+<span class="text-body-sm text-on-surface-variant">Market Value</span>
+<span class="font-bold text-body-md">GH₵ 12,500.00</span>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between items-center">
+<span class="text-body-sm text-on-surface-variant">LTV Ratio (60%)</span>
+<span class="font-extrabold text-headline-lg text-primary">GH₵ 7,500.00</span>
+</div>
+<input class="w-full h-2 bg-primary-fixed rounded-lg appearance-none cursor-pointer accent-primary" max="65" min="40" type="range" value="60"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-bold">
+<span>40% (MIN)</span>
+<span>65% (MAX)</span>
+</div>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="block">
+<span class="text-label-bold text-on-surface-variant">Locker ID / Storage Location</span>
+<select class="mt-xs w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container transition-all">
+<option>LEGON-MAIN-A-12</option>
+<option>LEGON-MAIN-A-13</option>
+<option>KNUST-HUB-B-04</option>
+</select>
+</label>
+<label class="block">
+<span class="text-label-bold text-on-surface-variant">Assign Inventory Barcode</span>
+<div class="mt-xs flex gap-xs">
+<input class="flex-1 bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Scan or type barcode..." type="text"/>
+<button class="bg-surface-container-high p-sm rounded-lg hover:bg-surface-container-highest">
+<span class="material-symbols-outlined">barcode_scanner</span>
+</button>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- History / Logs Bento Piece -->
+<div class="bg-surface border border-outline-variant rounded-xl p-md">
+<h3 class="font-bold text-body-md mb-sm">Verification Log</h3>
+<div class="space-y-sm">
+<div class="flex items-center gap-md text-body-sm pb-sm border-b border-outline-variant">
+<span class="text-on-surface-variant w-32">Today, 10:45 AM</span>
+<span class="font-bold text-secondary">Asset Received</span>
+<span class="text-on-surface-variant">Drop-off confirmed at Legon Campus Hub by Agent S. Osei</span>
+</div>
+<div class="flex items-center gap-md text-body-sm">
+<span class="text-on-surface-variant w-32">Today, 09:12 AM</span>
+<span class="font-bold text-primary">Application Filed</span>
+<span class="text-on-surface-variant">Initial digital photos submitted via Mobile App</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- FAB for quick barcode scan (Global Ops) -->
+<button class="fixed bottom-lg right-lg w-16 h-16 bg-secondary text-on-secondary rounded-full shadow-[0_0_30px_rgba(0,227,253,0.3)] flex items-center justify-center hover:scale-110 active:scale-90 transition-all z-50">
+<span class="material-symbols-outlined text-3xl">qr_code_scanner</span>
+</button>
+</body></html>

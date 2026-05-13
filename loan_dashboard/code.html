@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flism - Loan Starter Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid #E2E8F0; }
+        .electric-glow { box-shadow: 0 0 30px rgba(0, 227, 253, 0.25); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "tertiary": "#484f56",
+                        "inverse-primary": "#b7c4ff",
+                        "secondary-container": "#00e3fd",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "primary": "#003ec7",
+                        "on-primary-fixed": "#001452",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "outline": "#737688",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-bright": "#fcf8f8",
+                        "on-surface-variant": "#434656",
+                        "secondary-fixed": "#9cf0ff",
+                        "background": "#fcf8f8",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary-fixed": "#001f24",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#60676e",
+                        "primary-fixed": "#dde1ff",
+                        "surface-variant": "#e5e2e1",
+                        "surface-tint": "#004ced",
+                        "primary-container": "#0052ff",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-primary-container": "#dfe3ff",
+                        "surface-container": "#f0edec",
+                        "on-tertiary-container": "#dfe6ee",
+                        "surface": "#fcf8f8",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary": "#006875",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c3c5d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-container": "#00616d",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "inverse-surface": "#313030",
+                        "secondary-fixed-dim": "#00daf3",
+                        "tertiary-fixed": "#dce3eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "md": "24px",
+                        "margin-desktop": "120px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "lg": "48px",
+                        "margin-mobile": "20px",
+                        "xs": "4px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline w-full top-0 sticky z-50">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A clean, minimalist 3D avatar of a university student with a friendly expression, styled in a high-tech fintech aesthetic with soft lighting and a crisp white background to represent a secure digital banking profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCndSGB2a8qyxHPyP_MmbAhWCopJgNdzxHFg87uxp9XOXnNlWrgzoeO-z-Q1neON0WDRgBVZWqg8m2sTY_HofzKF4L5SrCzFwZeP5qxjVQDrhVK0JL5ceagmiycnPTdypkxpTDau9NpY4KbAg5c-9F8NYW7KfPkvfpUZjtKls994fA7clsVA9wSldZzYqhAKdv3DtC2s1rPCKNOLEDtxGvqXEZe-DfdtWgxr1EDpdcsEsOmXAHSa0bFvWoinlnUTlPzSMo1s4AAOc"/>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</h1>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors p-2 rounded-full">notifications</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md md:py-lg">
+<!-- Welcome Section -->
+<section class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Small Loan Launch Strategy</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Build your trust score by starting small and unlocking your financial potential.</p>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md items-start">
+<!-- Starter Loan Limit Card (Left Column) -->
+<div class="md:col-span-5 flex flex-col gap-md">
+<div class="bg-gradient-to-br from-primary to-secondary p-md rounded-xl text-on-primary electric-glow shadow-2xl relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+<div class="flex justify-between items-start mb-lg">
+<div>
+<span class="font-label-bold text-label-bold uppercase tracking-widest opacity-80">Starter Loan Limit</span>
+<div class="font-headline-xl text-headline-xl mt-xs">GH₵ 300</div>
+</div>
+<span class="material-symbols-outlined text-4xl opacity-50">bolt</span>
+</div>
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between text-sm opacity-90">
+<span>Minimum GH₵ 50</span>
+<span>Level 1 Borrower</span>
+</div>
+<div class="h-2 bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-1/3"></div>
+</div>
+</div>
+<button class="w-full py-4 bg-white text-primary font-action-lg text-action-lg rounded-lg hover:scale-[1.02] transition-transform active:scale-95">Launch Small Loan</button>
+</div>
+<!-- Active Collateral Status -->
+<div class="glass-card p-md rounded-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary font-bold">inventory_2</span>
+<h3 class="font-label-bold text-label-bold uppercase text-on-surface-variant">Collateral Status</h3>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container rounded-lg border border-outline-variant">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-outline-variant overflow-hidden">
+<img alt="iPad Pro" class="w-10 h-10 object-contain" data-alt="A professional studio photograph of a sleek, silver tablet device on a clean white background. The lighting is crisp and even, highlighting the premium metallic texture and minimalist design of the hardware, conveying a sense of high-value physical collateral." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgFXeajTkKgwc7quC0-2R6D7HADHN5Z6APLxFupSnkS1wwStPS4B3_nxczi-aHofGzdcw7Ca2yE829a2ROZvB7GahP1SVL5_qSjRdZgjc7bei7jT0jK43nfkTrJ5RjQX0cXpuOKQs6UW6q90MDCW-DoeXCHpeYu6qEstQ31tymWyF0QAL-vCV7zSnmvVIcjzhQu1c0gyRSAhaSLgJ1utGoScDIJV3Asxr27VnhJcOnDGIxoTmY3ypIDaW31V4fSy8lE1aNOIExkPI"/>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">iPad Pro 11"</p>
+<p class="text-xs text-secondary font-bold">In Storage - Verified</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+</div>
+</div>
+<!-- Trust Score Path (Right Column) -->
+<div class="md:col-span-7 space-y-md">
+<div class="glass-card p-md rounded-xl border border-outline-variant">
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-md">Trust Score Path</h3>
+<div class="relative space-y-lg">
+<!-- Path Line -->
+<div class="absolute left-6 top-8 bottom-8 w-0.5 bg-outline-variant border-dashed"></div>
+<!-- Step 1: Active -->
+<div class="relative flex gap-md">
+<div class="z-10 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white electric-glow">
+<span class="material-symbols-outlined">start</span>
+</div>
+<div class="flex-1 pb-2">
+<h4 class="font-action-lg text-action-lg text-primary">Repay First Loan</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Successfully repay GH₵ 50 - 300 to unlock your first trust badge.</p>
+<div class="mt-sm inline-flex items-center gap-xs px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded text-xs font-bold">
+<span class="material-symbols-outlined text-xs">trending_down</span> -2% Interest
+                                </div>
+</div>
+</div>
+<!-- Step 2: Future -->
+<div class="relative flex gap-md opacity-50">
+<div class="z-10 w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant border-2 border-outline-variant">
+<span class="material-symbols-outlined">add_home</span>
+</div>
+<div class="flex-1 pb-2">
+<h4 class="font-action-lg text-action-lg">Deposit Collateral</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Secure larger loans (up to GH₵ 1,500) by depositing physical assets.</p>
+</div>
+</div>
+<!-- Step 3: Future -->
+<div class="relative flex gap-md opacity-50">
+<div class="z-10 w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant border-2 border-outline-variant">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div class="flex-1">
+<h4 class="font-action-lg text-action-lg">Unrestricted Access</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Unlock GH₵ 5,000+ limits with prime interest rates after 3 months.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 gap-sm">
+<button class="flex flex-col items-center justify-center p-md bg-white border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">add_box</span>
+<span class="font-label-bold text-label-bold">Submit New Collateral</span>
+</button>
+<button class="flex flex-col items-center justify-center p-md bg-white border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">calendar_month</span>
+<span class="font-label-bold text-label-bold">View Repayment Schedule</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)]">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 opacity-70">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 opacity-70">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 opacity-70">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</div>
+</nav>
+<!-- Desktop Sidebar Overlay (Simulation via NavDrawer logic) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant py-lg z-40">
+<div class="px-md mb-lg">
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary mb-md">Flism</h1>
+<div class="flex items-center gap-sm p-sm bg-white rounded-xl shadow-sm border border-outline-variant">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSTjJeUDMOoCkUvjejVc6j7g-Md6rhiTfUFy1915XSK_5ywwUYL0xi01aGy7Afu_BTa9_pbpFUaYSPPs2wDqGH5xpjeyoKT24GZZkXaofv06KqhqU_c_awVgFZMX3Yj_0LwiJlEYe99F1Wx4pNxC4K3TV-g1SiLosLFwZnsiz9w63hLb_kBE_O5L6cU50_zcW0ADfGIX23bb2GT_ySu8p_vhUMZLKj53r0DiNSOZg7rnAN3msxI41dQxR1w8jPqUvLP5xTHpMcOWc"/>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Kofi Mensah</p>
+<p class="text-[10px] text-on-surface-variant">L1 Borrower</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-xs">
+<div class="bg-primary-container text-on-primary-container font-bold rounded-r-full mr-4 p-md flex items-center gap-md">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Dashboard</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 p-md flex items-center gap-md cursor-pointer transition-colors">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span>Loans</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 p-md flex items-center gap-md cursor-pointer transition-colors">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Vault</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 p-md flex items-center gap-md cursor-pointer transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</div>
+</nav>
+<div class="px-md text-xs text-outline">v1.0.4</div>
+</aside>
+<!-- Adjust main content for desktop sidebar -->
+<style>
+        @media (min-width: 768px) {
+            header { left: 16rem; width: calc(100% - 16rem); }
+            main { margin-left: 16rem; }
+        }
+    </style>
+</body></html>

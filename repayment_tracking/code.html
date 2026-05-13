@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flism - Active Loan Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "outline": "#737688",
+                        "on-secondary-container": "#00616d",
+                        "background": "#fcf8f8",
+                        "tertiary": "#484f56",
+                        "secondary": "#006875",
+                        "on-primary-fixed": "#001452",
+                        "surface-tint": "#004ced",
+                        "surface": "#fcf8f8",
+                        "on-background": "#1c1b1b",
+                        "primary-fixed": "#dde1ff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container": "#f0edec",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "outline-variant": "#c3c5d9",
+                        "on-tertiary-fixed": "#151c22",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#fcf8f8",
+                        "inverse-surface": "#313030",
+                        "secondary-container": "#00e3fd",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-variant": "#e5e2e1",
+                        "secondary-fixed": "#9cf0ff",
+                        "on-surface": "#1c1b1b",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-surface-variant": "#434656",
+                        "inverse-primary": "#b7c4ff",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "tertiary-fixed": "#dce3eb",
+                        "error": "#ba1a1a",
+                        "primary-container": "#0052ff",
+                        "on-primary-container": "#dfe3ff",
+                        "tertiary-container": "#60676e",
+                        "on-secondary-fixed": "#001f24",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed-dim": "#00daf3",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "primary": "#003ec7",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dcd9d9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "margin-desktop": "120px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "margin-mobile": "20px",
+                        "md": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<nav class="flex justify-between items-center px-margin-mobile h-16 w-full top-0 sticky bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Student Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqACldUqZqTwZ1YUZDdhEyJKYStw8SojjzreyHOXqN_pHE0kbJRzRtunscOv3BC4_PoOM3jDNJSszev_qJKBsFm5Z3ZIt48zTfaACqJd8cLVmANlbEUi3tPY2qf2jJnwIuSzY2cEZvPH9OfxdWvc5OLfiGOi7CCx0EQjwXNupZj-Kfk_xN24ZrrovtWdbksXWuozCcp5IyOGsKLO2vWow5y766QzwlrII0kLHlnjB8D--k9P2iwlnQfn_jKBaQX3EVVpAggMBYrqI"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-100">
+            notifications
+        </button>
+</nav>
+<main class="px-margin-mobile mt-sm space-y-md">
+<!-- Total Amount Due Card -->
+<section class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-container p-md text-on-primary shadow-[0_20px_40px_rgba(0,62,199,0.2)]">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<p class="font-label-bold text-label-bold uppercase opacity-80 tracking-widest">Total Amount Due</p>
+<h1 class="font-headline-xl text-headline-xl mt-xs">$1,240.00</h1>
+</div>
+<div class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30">
+<p class="font-label-bold text-label-bold">Active</p>
+</div>
+</div>
+<div class="mt-lg space-y-xs">
+<div class="flex justify-between font-label-bold text-label-bold">
+<span>Paid: $760.00</span>
+<span>Remaining: 38%</span>
+</div>
+<div class="w-full h-3 bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container shadow-[0_0_15px_rgba(0,227,253,0.6)] w-[62%]"></div>
+</div>
+</div>
+<!-- Decorative Glow -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary-container/20 rounded-full blur-3xl"></div>
+</section>
+<!-- Trust Score Insight -->
+<div class="flex items-center gap-sm p-sm bg-surface-container-low rounded-xl border border-outline-variant">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-primary">Trust Score Impact</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your next payment will boost your credit limit by <span class="font-bold text-on-surface">+$50</span>.</p>
+</div>
+</div>
+<!-- Next Payment Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Next Payment</h3>
+<span class="font-label-bold text-label-bold bg-error-container text-on-error-container px-2 py-1 rounded">In 4 Days</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Due Date</p>
+<p class="font-body-md text-body-md font-bold">October 15, 2023</p>
+</div>
+<div class="text-right">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Amount</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">$155.00</p>
+</div>
+</div>
+<button class="w-full mt-md py-4 bg-primary text-on-primary rounded-xl font-action-lg text-action-lg flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,62,199,0.3)] transition-all active:scale-95">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                Make Payment via MoMo
+            </button>
+</section>
+<!-- Upcoming Installments -->
+<section>
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-label-bold text-label-bold uppercase text-on-surface-variant tracking-wider">Upcoming Installments</h3>
+<button class="text-primary font-label-bold text-label-bold">View Schedule</button>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-sm bg-white border border-outline-variant rounded-xl">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">calendar_month</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Nov Installment</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Nov 15, 2023</p>
+</div>
+</div>
+<p class="font-body-md text-body-md font-bold">$155.00</p>
+</div>
+<div class="flex items-center justify-between p-sm bg-white border border-outline-variant rounded-xl">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">calendar_month</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Dec Installment</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dec 15, 2023</p>
+</div>
+</div>
+<p class="font-body-md text-body-md font-bold">$155.00</p>
+</div>
+</div>
+</section>
+<!-- Repayment History -->
+<section class="pb-8">
+<h3 class="font-label-bold text-label-bold uppercase text-on-surface-variant tracking-wider mb-sm">Repayment History</h3>
+<div class="bg-white border border-outline-variant rounded-xl divide-y divide-outline-variant">
+<div class="p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-body-md text-body-md">September Payment</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sep 14 • MoMo</p>
+</div>
+</div>
+<p class="font-body-md text-body-md font-bold text-secondary">$155.00</p>
+</div>
+<div class="p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-body-md text-body-md">August Payment</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Aug 15 • MoMo</p>
+</div>
+</div>
+<p class="font-body-md text-body-md font-bold text-secondary">$155.00</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</div>
+</nav>
+</body></html>

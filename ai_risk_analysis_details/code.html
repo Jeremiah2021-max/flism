@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "outline": "#737688",
+                      "on-secondary-container": "#00616d",
+                      "background": "#fcf8f8",
+                      "tertiary": "#484f56",
+                      "secondary": "#006875",
+                      "on-primary-fixed": "#001452",
+                      "surface-tint": "#004ced",
+                      "surface": "#fcf8f8",
+                      "on-background": "#1c1b1b",
+                      "primary-fixed": "#dde1ff",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "inverse-on-surface": "#f3f0ef",
+                      "surface-container": "#f0edec",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#dfe6ee",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e5e2e1",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "outline-variant": "#c3c5d9",
+                      "on-tertiary-fixed": "#151c22",
+                      "error-container": "#ffdad6",
+                      "on-error": "#ffffff",
+                      "surface-bright": "#fcf8f8",
+                      "inverse-surface": "#313030",
+                      "secondary-container": "#00e3fd",
+                      "surface-container-high": "#ebe7e7",
+                      "surface-variant": "#e5e2e1",
+                      "secondary-fixed": "#9cf0ff",
+                      "on-surface": "#1c1b1b",
+                      "tertiary-fixed-dim": "#c0c7cf",
+                      "on-surface-variant": "#434656",
+                      "inverse-primary": "#b7c4ff",
+                      "on-tertiary-fixed-variant": "#40484e",
+                      "tertiary-fixed": "#dce3eb",
+                      "error": "#ba1a1a",
+                      "primary-container": "#0052ff",
+                      "on-primary-container": "#dfe3ff",
+                      "tertiary-container": "#60676e",
+                      "on-secondary-fixed": "#001f24",
+                      "surface-container-low": "#f6f3f2",
+                      "secondary-fixed-dim": "#00daf3",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "primary": "#003ec7",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dcd9d9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "xs": "4px",
+                      "sm": "12px",
+                      "margin-desktop": "120px",
+                      "xl": "80px",
+                      "lg": "48px",
+                      "margin-mobile": "20px",
+                      "md": "24px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "action-lg": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .risk-gauge {
+            background: conic-gradient(from 180deg, #00e3fd 0%, #003ec7 72%, #f0edec 72%);
+            mask-image: radial-gradient(circle at center, transparent 65%, black 66%);
+            -webkit-mask-image: radial-gradient(circle at center, transparent 65%, black 66%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Sidebar Navigation Shell -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant py-lg z-50">
+<div class="px-md mb-xl flex flex-col items-start">
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary">Flism</h1>
+<p class="text-on-surface-variant font-label-bold mt-1">v1.0.4</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center px-md py-3 bg-primary-container text-on-primary-container font-bold rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined mr-sm" data-icon="list_alt">list_alt</span>
+<span class="font-body-md text-body-md">Applications</span>
+</div>
+<div class="flex items-center px-md py-3 text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined mr-sm" data-icon="verified_user">verified_user</span>
+<span class="font-body-md text-body-md">Verification</span>
+</div>
+<div class="flex items-center px-md py-3 text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined mr-sm" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</div>
+<div class="flex items-center px-md py-3 text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined mr-sm" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+</nav>
+<div class="mt-auto px-md pt-lg flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold">AU</div>
+<div class="flex flex-col">
+<span class="font-label-bold text-on-surface">Admin User</span>
+<span class="text-xs text-on-surface-variant">Flism Operations</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 min-h-screen">
+<!-- TopAppBar Header -->
+<header class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full top-0 sticky bg-surface border-b border-outline-variant z-40">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="arrow_back">arrow_back</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">AI Risk Analysis</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex bg-surface-container border border-outline-variant px-sm py-1 rounded-lg items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm mr-xs" data-icon="search">search</span>
+<span class="text-xs">Search for Application ID...</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</div>
+</header>
+<div class="px-margin-mobile md:px-margin-desktop py-lg max-w-[1400px] mx-auto">
+<!-- Quick Action Bar -->
+<div class="flex flex-wrap items-center justify-between mb-lg p-sm bg-surface-container-lowest border border-outline-variant rounded-xl gap-sm">
+<div class="flex items-center gap-md">
+<img alt="Student Profile" class="w-12 h-12 rounded-full object-cover ring-2 ring-primary-fixed" data-alt="A high-resolution, professional headshot of a diverse female university student with a confident and intelligent expression. She is wearing a modern academic blazer, and the background is a softly blurred modern campus setting with clean architecture. The lighting is bright and high-key, aligning with the light-mode fintech aesthetic of the Flism portal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsG7ZkxipH5KPglLc9ouDTY9l2CSZpMhBZBFQRXU4UzzMgZYYtMXSFkNJc9iPJa54Ds5U02_L56vdiNyH6qGuFRnLCY_3EcF6Bs56b6st1LVTtEoERzrDmIbN3bYPuXupKvmYlpJLtc6Qhu_s3vgYLQ_LHDIPc8DiwovlMhjcUqeI1fRWo9OqQXn__DyfD9rw3cAK6zmGPQ02FYEPm4FQc4HcdDv-dP9yMHIL6hk6x7CjaPhf0oCmTIl-50DTKozlrDe5yDApv-m8"/>
+<div>
+<p class="font-headline-lg text-lg text-on-surface leading-tight">Elena Rodriguez</p>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="school">school</span>
+                            Stanford University · Computer Science
+                        </p>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex items-center px-lg py-3 rounded-xl border-1.5 border-outline text-on-surface-variant font-action-lg hover:bg-surface-container-high active:scale-95 transition-all">
+<span class="material-symbols-outlined mr-xs" data-icon="flag">flag</span>
+                        Flag for Review
+                    </button>
+<button class="flex items-center px-lg py-3 rounded-xl border-1.5 border-error text-error font-action-lg hover:bg-error-container active:scale-95 transition-all">
+                        Decline
+                    </button>
+<button class="flex items-center px-xl py-3 rounded-xl bg-primary text-on-primary font-action-lg hover:shadow-[0_0_20px_rgba(0,62,199,0.3)] active:scale-95 transition-all">
+<span class="material-symbols-outlined mr-xs" data-icon="check_circle">check_circle</span>
+                        Approve Application
+                    </button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Score Card (Bento Style) -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-2xl p-lg flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute top-4 left-4 flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-xs font-label-bold">REAL-TIME AI SCORE</span>
+</div>
+<div class="relative w-48 h-48 flex items-center justify-center">
+<div class="risk-gauge absolute inset-0 rounded-full rotate-[36deg]"></div>
+<div class="text-center z-10">
+<p class="text-headline-xl font-headline-xl text-primary">72</p>
+<p class="font-label-bold text-on-surface-variant">MODERATE RISK</p>
+</div>
+</div>
+<div class="mt-lg w-full">
+<div class="flex justify-between text-xs font-label-bold mb-xs">
+<span class="text-on-surface-variant">TRUST THRESHOLD</span>
+<span class="text-primary">65/100 REQUIRED</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full">
+<div class="h-full bg-primary rounded-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+<!-- Risk Breakdown -->
+<div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Factor 1 -->
+<div class="bg-surface-container-low p-md rounded-2xl border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-label-bold text-on-surface-variant mb-1">IDENTITY VERIFICATION</h4>
+<p class="text-headline-lg text-on-surface">98<span class="text-sm font-normal text-on-surface-variant">/100</span></p>
+</div>
+<span class="material-symbols-outlined text-secondary-container" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-md">Biometric match 99.8%. Government ID validated against global databases. No suspicious network patterns detected.</p>
+</div>
+<!-- Factor 2 -->
+<div class="bg-surface-container-low p-md rounded-2xl border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-label-bold text-on-surface-variant mb-1">ACADEMIC STANDING</h4>
+<p class="text-headline-lg text-on-surface">85<span class="text-sm font-normal text-on-surface-variant">/100</span></p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="auto_stories">auto_stories</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-md">GPA 3.9/4.0. Currently enrolled in 4th year CS. Projected earnings significantly exceed loan obligations.</p>
+</div>
+<!-- Factor 3 -->
+<div class="bg-surface-container-low p-md rounded-2xl border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-label-bold text-on-surface-variant mb-1">SOCIAL ACCOUNTABILITY</h4>
+<p class="text-headline-lg text-on-surface">42<span class="text-sm font-normal text-on-surface-variant">/100</span></p>
+</div>
+<span class="material-symbols-outlined text-error" data-icon="group">group</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-md">Guarantor network is underdeveloped. Primary guarantor has limited credit history in the Flism ecosystem.</p>
+</div>
+<!-- Factor 4 -->
+<div class="bg-surface-container-low p-md rounded-2xl border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-label-bold text-on-surface-variant mb-1">ASSET VALUATION</h4>
+<p class="text-headline-lg text-on-surface">60<span class="text-sm font-normal text-on-surface-variant">/100</span></p>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="account_balance">account_balance</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-md">Vault holding verified. Collateral ratio within acceptable margin but prone to market volatility.</p>
+</div>
+</div>
+<!-- Recommendation Summary Section -->
+<div class="lg:col-span-12 bg-primary-container/5 border border-primary/20 rounded-2xl p-lg mt-md flex flex-col md:flex-row gap-lg">
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-md">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-1 rounded-full text-xs font-label-bold uppercase tracking-wider">AI RECOMMENDATION: APPROVE</span>
+</div>
+<p class="text-headline-lg text-on-surface mb-sm">Low-to-Moderate Risk profile with high potential.</p>
+<div class="space-y-sm">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary-container" data-icon="info">info</span>
+<p class="text-sm text-on-surface-variant"><strong class="text-on-surface">Reasoning Summary:</strong> Despite a lower social accountability score, Elena's high academic standing and strong identity verification provide sufficient confidence. Her career path in CS presents a 94% probability of repayment within the first 12 months post-graduation.</p>
+</div>
+</div>
+</div>
+<div class="md:w-80 flex flex-col justify-center gap-sm">
+<div class="p-md bg-surface-container-lowest border border-outline-variant rounded-xl">
+<p class="text-xs font-label-bold text-on-surface-variant mb-1 uppercase">Recommended Limit</p>
+<p class="text-headline-lg text-primary">$12,500.00</p>
+<p class="text-[10px] text-on-surface-variant">Based on Stanford median CS graduate salary index.</p>
+</div>
+</div>
+</div>
+<!-- Applicant Details Tab Section -->
+<div class="lg:col-span-12 mt-lg">
+<div class="flex border-b border-outline-variant mb-md">
+<button class="px-md py-3 text-primary font-label-bold border-b-2 border-primary transition-colors">Financial History</button>
+<button class="px-md py-3 text-on-surface-variant font-label-bold hover:text-on-surface transition-colors">University Documents</button>
+<button class="px-md py-3 text-on-surface-variant font-label-bold hover:text-on-surface transition-colors">Guarantor Details</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded-xl">
+<p class="text-xs font-label-bold text-on-surface-variant mb-xs">CREDIT UTILIZATION</p>
+<p class="text-body-md text-on-surface font-semibold">12%</p>
+</div>
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded-xl">
+<p class="text-xs font-label-bold text-on-surface-variant mb-xs">ON-TIME PAYMENTS</p>
+<p class="text-body-md text-on-surface font-semibold">100%</p>
+</div>
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded-xl">
+<p class="text-xs font-label-bold text-on-surface-variant mb-xs">TOTAL DEBT</p>
+<p class="text-body-md text-on-surface font-semibold">$2,400.00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav for Mobile Only (Suppressed on Desktop View as per shell rules) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)]">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<title>Asset Loan Application | Flism</title>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcf8f8;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #E2E8F0;
+        }
+        .electric-glow:hover {
+            box-shadow: 0 0 30px rgba(0, 76, 237, 0.15);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(0, 227, 253, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#00616d",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#fcf8f8",
+                        "surface": "#fcf8f8",
+                        "secondary-fixed-dim": "#00daf3",
+                        "primary-container": "#0052ff",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-container": "#00e3fd",
+                        "on-surface": "#1c1b1b",
+                        "on-primary-container": "#dfe3ff",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "surface-variant": "#e5e2e1",
+                        "outline": "#737688",
+                        "tertiary": "#484f56",
+                        "on-surface-variant": "#434656",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "primary": "#003ec7",
+                        "on-secondary-fixed": "#001f24",
+                        "inverse-surface": "#313030",
+                        "surface-tint": "#004ced",
+                        "secondary": "#006875",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c3c5d9",
+                        "primary-fixed": "#dde1ff",
+                        "surface-container-high": "#ebe7e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#9cf0ff",
+                        "on-primary-fixed": "#001452",
+                        "inverse-primary": "#b7c4ff",
+                        "tertiary-fixed": "#dce3eb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "tertiary-container": "#60676e",
+                        "background": "#fcf8f8",
+                        "on-background": "#1c1b1b",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f0edec"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "120px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "sm": "12px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant z-40">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                    S
+                </div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary">Flism</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full">notifications</button>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile pt-lg pb-xl">
+<!-- Breadcrumb / Back Action -->
+<div class="flex items-center gap-xs mb-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="font-label-bold text-label-bold uppercase">Back to Loans</span>
+</div>
+<!-- Header Section -->
+<div class="mb-lg">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-xs">Asset Loan</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Convert your high-value tech into immediate capital for your education.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Left Column: Form -->
+<div class="md:col-span-8 space-y-lg">
+<!-- Section: Asset Details -->
+<section class="glass-card rounded-xl p-md">
+<h2 class="font-headline-lg text-[24px] mb-md text-on-surface">Asset Details</h2>
+<div class="grid grid-cols-1 gap-md">
+<div class="space-y-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant">SELECT ASSET TYPE</label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-sm">
+<button class="flex flex-col items-center gap-xs p-md border-2 border-primary bg-primary-container/10 rounded-xl transition-all">
+<span class="material-symbols-outlined text-primary">smartphone</span>
+<span class="font-label-bold text-label-bold text-primary">Phone</span>
+</button>
+<button class="flex flex-col items-center gap-xs p-md border border-outline-variant hover:border-primary transition-all rounded-xl group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">laptop_mac</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-hover:text-primary">Laptop</span>
+</button>
+<button class="flex flex-col items-center gap-xs p-md border border-outline-variant hover:border-primary transition-all rounded-xl group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">sports_esports</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-hover:text-primary">Console</span>
+</button>
+<button class="flex flex-col items-center gap-xs p-md border border-outline-variant hover:border-primary transition-all rounded-xl group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">more_horiz</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant group-hover:text-primary">Other</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant">BRAND &amp; MODEL</label>
+<input class="w-full h-12 px-md bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary-container focus:border-primary transition-all outline-none font-body-md text-body-md" placeholder="e.g. iPhone 15 Pro Max" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant">SERIAL NUMBER</label>
+<input class="w-full h-12 px-md bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary-container focus:border-primary transition-all outline-none font-body-md text-body-md" placeholder="Unique ID on device" type="text"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant">ESTIMATED VALUE (USD)</label>
+<div class="relative">
+<span class="absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant font-body-md">$</span>
+<input class="w-full h-12 pl-lg pr-md bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary-container focus:border-primary transition-all outline-none font-body-md text-body-md" placeholder="0.00" type="number"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Media Upload -->
+<section class="glass-card rounded-xl p-md">
+<h2 class="font-headline-lg text-[24px] mb-sm text-on-surface">Asset Visuals</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Upload 3-4 clear photos showing the screen, back, and any serial numbers.</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-sm">
+<!-- Uploaded Placeholder -->
+<div class="aspect-square rounded-lg border border-outline-variant overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="A high-resolution close-up photo of a modern metallic blue smartphone resting on a white minimalist surface. The lighting is bright and professional, highlighting the device's sleek glass finish and camera lenses. The aesthetic is clean and high-tech, fitting for a premium fintech application. The mood is clinical and trustworthy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnl-r0fHSQ0lRgreuDiVsGqIkMSO22vbrsEse5z4mrKILjY28vUOIiXW9t1Yg9uPN23wkCUA-AuleHhbOyyzeOycvFLh6X4yMUWnWVNJD5hYt9SbAbR9vMHZ_w41xU7N56OJsaPVCi_9rYuwcGrpRlcD8g7jPHWk8yl4eCBaAMamNpcCxN50Of_RzeMt4hZTItZQqElnUgIMZ-sXCmYWG5UsdCgabUNTLN-ixDLVTGojFm_uwHNEwIwAUMeVK3D5rjXEXKdpLecc8"/>
+<button class="absolute top-1 right-1 bg-error text-white rounded-full p-1 material-symbols-outlined text-[14px]">close</button>
+</div>
+<!-- Add Slot -->
+<button class="aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-xs hover:border-primary hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-primary">add_a_photo</span>
+<span class="font-label-bold text-[10px] text-on-surface-variant">ADD PHOTO</span>
+</button>
+<button class="aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-xs hover:border-primary transition-all">
+<span class="material-symbols-outlined text-outline">add_a_photo</span>
+</button>
+<button class="aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-xs hover:border-primary transition-all">
+<span class="material-symbols-outlined text-outline">add_a_photo</span>
+</button>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant">
+<h3 class="font-label-bold text-label-bold text-on-surface-variant mb-sm uppercase">Proof of Ownership</h3>
+<div class="w-full p-lg border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center gap-sm bg-surface-container-low hover:bg-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-primary text-[32px]">upload_file</span>
+<div class="text-center">
+<p class="font-body-md text-body-md text-on-surface font-semibold">Drop receipt or invoice here</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">PDF, JPG or PNG (Max 5MB)</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Summary & Guidance -->
+<div class="md:col-span-4 space-y-md">
+<div class="glass-card rounded-xl p-md bg-primary-container/5 border-primary/20 sticky top-24">
+<h3 class="font-headline-lg text-[20px] mb-md text-primary">Application Summary</h3>
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Asset</span>
+<span class="font-body-md text-body-md text-on-surface font-bold">iPhone 15 Pro Max</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Estimated Value</span>
+<span class="font-body-md text-body-md text-on-surface font-bold">$1,200.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Potential Loan</span>
+<span class="font-body-md text-body-md text-secondary font-bold">$840.00</span>
+</div>
+<div class="pt-sm border-t border-outline-variant">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Interest Rate</span>
+<span class="font-label-bold text-label-bold text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-1 rounded">2.4% APY</span>
+</div>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex items-start gap-sm p-sm bg-white/50 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Your asset is insured by Flism during the collateral period.</p>
+</div>
+<div class="flex items-start gap-sm p-sm bg-white/50 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">speed</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Verification usually takes less than 2 hours.</p>
+</div>
+</div>
+<button class="w-full mt-lg bg-primary text-white font-action-lg text-action-lg py-md rounded-xl transition-all hover:bg-surface-tint active:scale-95 duration-100 electric-glow">
+                        Submit Application
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 active-glow" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+</body></html>

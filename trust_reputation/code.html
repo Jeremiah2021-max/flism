@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcf8f8;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #E2E8F0;
+        }
+        .trust-gradient {
+            background: linear-gradient(135deg, #003ec7 0%, #00e3fd 100%);
+        }
+        .electric-glow {
+            box-shadow: 0 0 40px rgba(0, 227, 253, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#00616d",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#fcf8f8",
+                        "surface": "#fcf8f8",
+                        "secondary-fixed-dim": "#00daf3",
+                        "primary-container": "#0052ff",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-container": "#00e3fd",
+                        "on-surface": "#1c1b1b",
+                        "on-primary-container": "#dfe3ff",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "surface-variant": "#e5e2e1",
+                        "outline": "#737688",
+                        "tertiary": "#484f56",
+                        "on-surface-variant": "#434656",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "primary": "#003ec7",
+                        "on-secondary-fixed": "#001f24",
+                        "inverse-surface": "#313030",
+                        "surface-tint": "#004ced",
+                        "secondary": "#006875",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c3c5d9",
+                        "primary-fixed": "#dde1ff",
+                        "surface-container-high": "#ebe7e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#9cf0ff",
+                        "on-primary-fixed": "#001452",
+                        "inverse-primary": "#b7c4ff",
+                        "tertiary-fixed": "#dce3eb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "tertiary-container": "#60676e",
+                        "background": "#fcf8f8",
+                        "on-background": "#1c1b1b",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f0edec"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "120px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "sm": "12px",
+                        "xl": "80px"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface w-full top-0 sticky border-b border-outline-variant z-50 flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a university student with a friendly expression. The lighting is bright and natural, reflecting a modern academic environment. The background is a soft-focus campus setting with clean architectural lines, maintaining a high-key light mode aesthetic with white and light blue tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArC1y-5f-PBMOBBr_dpMBdVEedf6FL5ILtrPMbv2nZKg6UyCgoT8i-e6L7NBi8wIC0p_OrqP1Yz9Xx-konqMA5GcqAaVhYTVYdFZlXdMItuj8dTq4dOLFDRtNpMTLmFA41dI_3e4c70wOis0zWi7RkrPMojQgb1-9V4IUQ8Hk20pq375YLlq5QRll-m6m67YpUPLdobpgYjWUm2bf5rbw6W-tPI6NTujpdf7SnHmYsB2FozxIvMi54XYl0l6WEDR86MubAo2WWyIE"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary">Flism</span>
+</div>
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-100">notifications</button>
+</header>
+<main class="px-margin-mobile md:px-margin-desktop pt-md space-y-lg">
+<!-- Trust Score Section (Hero) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-md items-center">
+<div class="lg:col-span-5 flex flex-col items-center justify-center p-lg bg-surface-container-lowest rounded-xl border border-outline-variant electric-glow">
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Circular Gauge -->
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="150" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-widest">Trust Score</span>
+<span class="text-headline-xl font-headline-xl text-primary">782</span>
+<span class="text-body-sm font-body-sm text-secondary font-bold">EXCELLENT</span>
+</div>
+</div>
+<p class="mt-md text-body-md font-body-md text-on-surface-variant text-center">You're in the top 5% of Flism users. Higher scores unlock lower interest rates.</p>
+</div>
+<div class="lg:col-span-7 space-y-md">
+<h1 class="text-headline-lg font-headline-lg text-on-surface">Reputation &amp; Social Accountability</h1>
+<p class="text-body-md font-body-md text-on-surface-variant">Your social network is your collateral. By maintaining high accountability with your peers and Flism, you build financial autonomy that traditional banks can't offer.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+<div class="p-sm glass-card rounded-xl flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary text-[32px]">verified</span>
+<div>
+<p class="font-bold text-on-surface">Repayment Streak</p>
+<p class="text-body-sm text-on-surface-variant">12 Months on time</p>
+</div>
+</div>
+<div class="p-sm glass-card rounded-xl flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary text-[32px]">group_add</span>
+<div>
+<p class="font-bold text-on-surface">Referral Bonus</p>
+<p class="text-body-sm text-on-surface-variant">$240 Earned</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Guarantors & Strategy -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Guarantors Section -->
+<div class="md:col-span-2 space-y-md">
+<div class="flex justify-between items-center">
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Guarantors</h2>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-action-lg text-action-lg hover:electric-glow transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">add</span> Add New
+                    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<!-- Guarantor Card 1 -->
+<div class="p-md bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xl">JD</div>
+<div>
+<h3 class="font-bold text-on-surface">John Doe</h3>
+<p class="text-body-sm text-on-surface-variant">Verified Academic Mentor</p>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-xs text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">mail</span>
+<span>j.doe@university.edu</span>
+</div>
+<div class="flex items-center gap-xs text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">call</span>
+<span>+1 (555) 0123</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-auto">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-bold font-label-bold text-secondary uppercase">Guaranty Confirmed</span>
+</div>
+</div>
+<!-- Guarantor Card 2 -->
+<div class="p-md bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed font-bold text-xl">SM</div>
+<div>
+<h3 class="font-bold text-on-surface">Sarah Miller</h3>
+<p class="text-body-sm text-on-surface-variant">Senior Peer Student</p>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-xs text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">mail</span>
+<span>s.miller@student.org</span>
+</div>
+<div class="flex items-center gap-xs text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">call</span>
+<span>+1 (555) 8899</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-auto">
+<span class="material-symbols-outlined text-outline text-[18px]">pending</span>
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase">Awaiting Response</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Accountability Strategy Card -->
+<div class="p-md trust-gradient text-on-primary rounded-xl flex flex-col justify-between shadow-xl">
+<div>
+<span class="material-symbols-outlined text-[48px] mb-md" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h3 class="text-headline-lg font-headline-lg mb-sm leading-tight">Social Strategy</h3>
+<p class="text-body-md opacity-90">By linking your account to 3 trusted guarantors, you reduce your interest rate by 1.5% and double your emergency credit limit.</p>
+</div>
+<div class="mt-lg">
+<button class="w-full bg-white text-primary font-action-lg text-action-lg py-3 rounded-xl hover:bg-opacity-90 transition-all active:scale-95">Learn Strategy</button>
+</div>
+</div>
+</section>
+<!-- Reputation Badges -->
+<section class="space-y-md">
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Earned Badges</h2>
+<div class="flex flex-wrap gap-md">
+<div class="flex flex-col items-center gap-xs w-24">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center border-2 border-primary">
+<span class="material-symbols-outlined text-primary text-[32px]" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="text-label-bold font-label-bold text-center">Fast Starter</span>
+</div>
+<div class="flex flex-col items-center gap-xs w-24">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center border-2 border-secondary">
+<span class="material-symbols-outlined text-secondary text-[32px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<span class="text-label-bold font-label-bold text-center">Reliable Partner</span>
+</div>
+<div class="flex flex-col items-center gap-xs w-24 opacity-40">
+<div class="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center border-2 border-dashed border-outline">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">lock</span>
+</div>
+<span class="text-label-bold font-label-bold text-center">Iron Payer</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold mt-1">Loans</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold mt-1">Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

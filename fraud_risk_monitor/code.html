@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flism | Admin Fraud &amp; Risk Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { backdrop-filter: blur(20px); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#00616d",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#fcf8f8",
+                        "surface": "#fcf8f8",
+                        "secondary-fixed-dim": "#00daf3",
+                        "primary-container": "#0052ff",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-container": "#00e3fd",
+                        "on-surface": "#1c1b1b",
+                        "on-primary-container": "#dfe3ff",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "surface-variant": "#e5e2e1",
+                        "outline": "#737688",
+                        "tertiary": "#484f56",
+                        "on-surface-variant": "#434656",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "primary": "#003ec7",
+                        "on-secondary-fixed": "#001f24",
+                        "inverse-surface": "#313030",
+                        "surface-tint": "#004ced",
+                        "secondary": "#006875",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c3c5d9",
+                        "primary-fixed": "#dde1ff",
+                        "surface-container-high": "#ebe7e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#9cf0ff",
+                        "on-primary-fixed": "#001452",
+                        "inverse-primary": "#b7c4ff",
+                        "tertiary-fixed": "#dce3eb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "tertiary-container": "#60676e",
+                        "background": "#fcf8f8",
+                        "on-background": "#1c1b1b",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f0edec"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "120px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "sm": "12px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Navigation Drawer (Shell Implementation) -->
+<aside class="hidden md:flex flex-col h-full py-lg bg-surface-container-low border-r border-outline-variant w-64 fixed left-0 top-0">
+<div class="px-md mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-primary font-extrabold">Flism</h1>
+<p class="text-on-surface-variant font-body-sm">Admin Portal</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">list_alt</span>
+<span class="font-body-md">Applications</span>
+</a>
+<a class="flex items-center px-md py-3 bg-primary-container text-on-primary-container font-bold rounded-r-full mr-4 shadow-sm" href="#">
+<span class="material-symbols-outlined mr-3">verified_user</span>
+<span class="font-body-md">Verification</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="font-body-md">Analytics</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="px-md mt-auto pt-lg border-t border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold">AU</div>
+<div>
+<p class="font-label-bold text-on-surface">Admin User</p>
+<p class="text-[10px] text-on-surface-variant">v1.0.4</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pb-margin-mobile md:pb-0">
+<!-- TopAppBar (Shell Implementation) -->
+<header class="flex justify-between items-center px-margin-mobile md:px-lg h-16 w-full bg-surface sticky top-0 z-40 border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<div class="md:hidden font-headline-lg text-headline-lg font-extrabold text-primary">Flism</div>
+<div class="hidden md:block">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Fraud &amp; Risk Control</h2>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Admin" data-alt="A professional headshot avatar of a corporate administrator, featuring a clean minimalist style with soft studio lighting. The character has a confident expression, wearing modern business attire against a solid neutral background, maintaining a high-contrast fintech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu1mXxtpzPvI9iuR8UzMB28mN25S5xNZho7Db4a6d-1X0EP5Q_0FvsXJ0s55taxatmzNlI2ypHY7DjP2yLxhxJENVcRtpJGYDb4bX3oTiyxGpbZPOMFkRQFPiT7agcMQ6Esp9SWel7B4zrkyuS3xlLJLl6LwW-KNaDkf5efzUfqQi6z-KJMzPZSagRWGOPuzRP92NAp40d3gXrPhhyH0I_1PfxMMnqcYG9ri2_bq7klimlZ5TIOkHKNzLxDPFBsJAgYADLjWTdpHg"/>
+</div>
+</div>
+</header>
+<div class="p-margin-mobile md:p-lg space-y-md">
+<!-- High-Level Bento Grid Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="md:col-span-1 bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm">
+<p class="text-on-surface-variant font-label-bold uppercase tracking-wider mb-sm">Flagged Applications</p>
+<div class="flex items-end justify-between">
+<h3 class="text-headline-lg font-headline-lg text-error">1,248</h3>
+<span class="text-error font-label-bold flex items-center gap-1 bg-error-container px-2 py-1 rounded-full text-[10px]">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12%
+                        </span>
+</div>
+</div>
+<div class="md:col-span-1 bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm">
+<p class="text-on-surface-variant font-label-bold uppercase tracking-wider mb-sm">Avg. Trust Score</p>
+<div class="flex items-end justify-between">
+<h3 class="text-headline-lg font-headline-lg text-secondary">84.2</h3>
+<span class="text-secondary font-label-bold flex items-center gap-1 bg-secondary-fixed px-2 py-1 rounded-full text-[10px]">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Stable
+                        </span>
+</div>
+</div>
+<div class="md:col-span-2 bg-primary-container text-white p-md rounded-xl relative overflow-hidden shadow-lg">
+<div class="relative z-10">
+<p class="text-on-primary-container font-label-bold uppercase tracking-wider mb-sm">Asset Valuation Accuracy</p>
+<div class="flex items-end justify-between">
+<h3 class="text-headline-lg font-headline-lg">99.4%</h3>
+<div class="flex items-center gap-2">
+<div class="w-32 h-2 bg-primary/30 rounded-full overflow-hidden">
+<div class="w-[99%] h-full bg-secondary-container"></div>
+</div>
+<span class="font-label-bold text-xs">High Precision</span>
+</div>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined !text-[120px]">security</span>
+</div>
+</div>
+</div>
+<!-- Risk Map & Alerts Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Ghana GPS Map View -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<div>
+<h4 class="font-headline-lg text-body-md font-bold">Regional Signup Anomalies</h4>
+<p class="text-body-sm text-on-surface-variant">Real-time GPS clusters in Ghana</p>
+</div>
+<button class="text-primary font-label-bold flex items-center gap-1">
+<span class="material-symbols-outlined">filter_list</span> Filter
+                        </button>
+</div>
+<div class="flex-1 min-h-[400px] relative bg-surface-dim">
+<img class="w-full h-full object-cover grayscale contrast-125 opacity-80" data-alt="A detailed digital map of Accra, Ghana, showing intricate street layouts and geographic features in a minimalist dark-mode cartography style. Overlaid are vibrant Electric Blue data points and pulsing rings indicating high-density user signups, creating a high-tech surveillance and data visualization aesthetic with sharp contrast." data-location="Accra, Ghana" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCwjh0ZLU1magwPRgDMKIxUZGMU-xd6hoKVB2m00WAQhPVK_-GKDuwIeJECSnGyeg15Jy0UGIsuew8bCmYkSZqtTgdogluVwkXBrIPmGJarBiy2BsJtmv1W1XOE8LEVpIgHqwBys38JUzRoUptBcTGsPO5zemXz50O1KGx6zi56ReHPGhLEFiwWBUmsMjRJqwM6kNQI8Q1l5ebByx-L1crqSoJ6WNptIkXv48IiHH0Jds3OAQXSKTI6ZDHCcjx8vTWzWTG0YOwLgQ"/>
+<!-- Simulated Hotspots -->
+<div class="absolute top-1/4 left-1/3 w-8 h-8 bg-error/30 rounded-full border border-error animate-pulse flex items-center justify-center">
+<div class="w-2 h-2 bg-error rounded-full"></div>
+</div>
+<div class="absolute top-1/2 left-1/2 w-12 h-12 bg-primary/30 rounded-full border border-primary animate-pulse flex items-center justify-center">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<div class="absolute bottom-1/4 right-1/4 w-6 h-6 bg-error/30 rounded-full border border-error animate-pulse flex items-center justify-center">
+<div class="w-2 h-2 bg-error rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Real-time Alerts Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col shadow-sm">
+<div class="p-md border-b border-outline-variant bg-surface-container-low">
+<h4 class="font-headline-lg text-body-md font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-error">campaign</span> Real-time Alerts
+                        </h4>
+</div>
+<div class="flex-1 overflow-y-auto max-h-[460px] p-sm space-y-sm">
+<div class="p-sm bg-error-container/20 border-l-4 border-error rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<p class="font-label-bold text-error">CRITICAL</p>
+<p class="text-[10px] text-on-surface-variant">2m ago</p>
+</div>
+<p class="font-body-sm text-on-surface font-semibold">Bulk Signup Attempt</p>
+<p class="text-[12px] text-on-surface-variant">42 devices detected on single IP: 154.160.2.x</p>
+</div>
+<div class="p-sm bg-surface-container-high border-l-4 border-outline rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<p class="font-label-bold text-on-surface-variant">WARNING</p>
+<p class="text-[10px] text-on-surface-variant">15m ago</p>
+</div>
+<p class="font-body-sm text-on-surface font-semibold">Vault Unlock Attempt</p>
+<p class="text-[12px] text-on-surface-variant">Account #8821 failed MFA 3 times from VPN.</p>
+</div>
+<div class="p-sm bg-surface-container-high border-l-4 border-outline rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<p class="font-label-bold text-on-surface-variant">INFO</p>
+<p class="text-[10px] text-on-surface-variant">45m ago</p>
+</div>
+<p class="font-body-sm text-on-surface font-semibold">High Value Transfer</p>
+<p class="text-[12px] text-on-surface-variant">Transaction above $10k flagged for manual review.</p>
+</div>
+<div class="p-sm bg-error-container/20 border-l-4 border-error rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<p class="font-label-bold text-error">CRITICAL</p>
+<p class="text-[10px] text-on-surface-variant">1h ago</p>
+</div>
+<p class="font-body-sm text-on-surface font-semibold">Credential Stuffing</p>
+<p class="text-[12px] text-on-surface-variant">System-wide spike in login failures (Region: GH).</p>
+</div>
+</div>
+<div class="p-md mt-auto border-t border-outline-variant">
+<button class="w-full py-2 bg-surface hover:bg-surface-container-high border border-outline-variant text-primary font-label-bold rounded-lg transition-colors">
+                            View All Alerts
+                        </button>
+</div>
+</div>
+</div>
+<!-- Suspicious Activities List -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-md border-b border-outline-variant flex items-center justify-between">
+<h4 class="font-headline-lg text-body-md font-bold">Suspicious Activities Queue</h4>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-container-high rounded-full text-[12px] text-on-surface-variant font-medium">12 Pending Review</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="p-md font-label-bold text-on-surface-variant">Entity / User</th>
+<th class="p-md font-label-bold text-on-surface-variant">Violation Type</th>
+<th class="p-md font-label-bold text-on-surface-variant">Risk Factor</th>
+<th class="p-md font-label-bold text-on-surface-variant">Timestamp</th>
+<th class="p-md font-label-bold text-on-surface-variant text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-fixed-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">smartphone</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-semibold">DeviceID: 0x982A...7E</p>
+<p class="text-[12px] text-on-surface-variant">4 Linked Accounts</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-[12px] font-bold">Duplicate Devices</span>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden w-24">
+<div class="h-full bg-error w-[92%]"></div>
+</div>
+<span class="font-label-bold text-error">92%</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant text-body-sm">Oct 24, 14:32:01</td>
+<td class="p-md text-right">
+<button class="text-primary hover:underline font-label-bold">Review</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]">public</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-semibold">User: kwame_adams</p>
+<p class="text-[12px] text-on-surface-variant">IP: 197.251.32.11</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-[12px] font-bold">IP Mismatch</span>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden w-24">
+<div class="h-full bg-tertiary-container w-[65%]"></div>
+</div>
+<span class="font-label-bold text-on-surface-variant">65%</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant text-body-sm">Oct 24, 14:15:24</td>
+<td class="p-md text-right">
+<button class="text-primary hover:underline font-label-bold">Review</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-fixed-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-semibold">User: amara_equity</p>
+<p class="text-[12px] text-on-surface-variant">Bank Verification Error</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-[12px] font-bold">Verification Gap</span>
+</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden w-24">
+<div class="h-full bg-tertiary-container w-[42%]"></div>
+</div>
+<span class="font-label-bold text-on-surface-variant">42%</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant text-body-sm">Oct 24, 13:58:10</td>
+<td class="p-md text-right">
+<button class="text-primary hover:underline font-label-bold">Review</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md bg-surface-container-low border-t border-outline-variant flex justify-between items-center">
+<p class="text-body-sm text-on-surface-variant">Showing 1-3 of 12 suspicious activities</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-md text-on-surface-variant hover:bg-surface-container-high"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="px-3 py-1 border border-outline-variant rounded-md text-on-surface-variant hover:bg-surface-container-high"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Shell Implementation - Mobile Only) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-[10px] mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)]" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-bold text-[10px] mt-1">Risk</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-[10px] mt-1">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+</footer>
+</body></html>

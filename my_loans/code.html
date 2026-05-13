@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#b7c4ff",
+                        "outline": "#737688",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-secondary-container": "#00616d",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "outline-variant": "#c3c5d9",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "inverse-surface": "#313030",
+                        "secondary-container": "#00e3fd",
+                        "tertiary-fixed": "#dce3eb",
+                        "surface-bright": "#fcf8f8",
+                        "secondary-fixed": "#9cf0ff",
+                        "secondary": "#006875",
+                        "background": "#fcf8f8",
+                        "surface-variant": "#e5e2e1",
+                        "tertiary-container": "#60676e",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-background": "#1c1b1b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dde1ff",
+                        "tertiary": "#484f56",
+                        "primary-container": "#0052ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#ebe7e7",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#dfe3ff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#004ced",
+                        "primary": "#003ec7",
+                        "on-tertiary-fixed": "#151c22",
+                        "surface-container": "#f0edec",
+                        "on-surface-variant": "#434656",
+                        "surface-dim": "#dcd9d9",
+                        "on-surface": "#1c1b1b",
+                        "inverse-on-surface": "#f3f0ef",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#001f24",
+                        "on-primary-fixed": "#001452",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#00daf3",
+                        "surface-container-low": "#f6f3f2",
+                        "surface": "#fcf8f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "margin-desktop": "120px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline w-full top-0 sticky z-50 flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional studio portrait of a young African university student smiling confidently, wearing a modern clean outfit. The background is a soft, out-of-focus academic setting with warm sunlight and blue tones, matching a clean fintech app aesthetic. The lighting is bright and high-key, emphasizing trust and clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKjQE0r7VSPJhH67OP9A1ivjv0Ahi3zpVxil-jvFQsUWplTFqvSqcHa-kPDaAkXL1JsaH-C55qnT18OjSRFWn3McwzszSjZvZ36dvOw5dou5WUPHXcWKgcQsKS6SvVbRIXv6CaaYG1mn0ZCgletyAofpSrhBqPjHi3VrkPQ0ARxXByuoum_BVATmqojShqGe3PzwFLw0tduq-Oamew3kYC07kyc1SFZqAAOxTvN8V-vqjVIHUfkxjTzKiJ_XVsoZ9t60HJQA3OGks"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-100">
+            notifications
+        </button>
+</header>
+<main class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-base md:py-lg mb-32">
+<!-- Tab Interface -->
+<div class="flex items-center gap-gutter mb-lg">
+<button class="px-md py-sm rounded-full bg-primary text-on-primary font-label-bold text-label-bold shadow-[0_0_20px_rgba(0,62,199,0.2)]">Active</button>
+<button class="px-md py-sm rounded-full text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-container-high transition-colors">Past</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: Active Loan Card -->
+<div class="lg:col-span-7 space-y-md">
+<div class="bg-gradient-to-br from-primary to-secondary p-md md:p-lg rounded-xl text-on-primary relative overflow-hidden shadow-[0_20px_40px_rgba(0,62,199,0.15)]">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-lg">
+<div>
+<p class="font-label-bold text-label-bold opacity-80 mb-xs">TOTAL ACTIVE LOAN</p>
+<h1 class="font-headline-xl text-headline-xl">GH₵ 1,500</h1>
+</div>
+<div class="bg-white/20 backdrop-blur-md px-sm py-xs rounded-lg">
+<span class="font-label-bold text-label-bold">10% APR</span>
+</div>
+</div>
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between text-body-sm font-label-bold">
+<span>Repayment Progress</span>
+<span>65% Paid</span>
+</div>
+<div class="w-full h-3 bg-white/20 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[65%] shadow-[0_0_15px_#00e3fd]"></div>
+</div>
+<div class="flex justify-between text-body-sm opacity-90">
+<span>Paid: GH₵ 975</span>
+<span>Remaining: GH₵ 525</span>
+</div>
+</div>
+<button class="w-full bg-white text-primary py-md rounded-xl font-action-lg text-action-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] active:scale-[0.98] transition-all">
+                            Repay Now
+                        </button>
+</div>
+<!-- Decorative element -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+</div>
+<!-- Bento Grid Details -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<span class="material-symbols-outlined text-secondary mb-base">event_repeat</span>
+<p class="text-on-surface-variant text-body-sm">Next Payment</p>
+<p class="font-label-bold text-headline-lg-mobile text-on-surface">Oct 24</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<span class="material-symbols-outlined text-secondary mb-base">payments</span>
+<p class="text-on-surface-variant text-body-sm">Amount Due</p>
+<p class="font-label-bold text-headline-lg-mobile text-on-surface">GH₵ 175</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Schedule & Breakdown -->
+<div class="lg:col-span-5">
+<div class="bg-surface-container-low p-md md:p-lg rounded-xl border border-outline-variant h-full">
+<h3 class="font-headline-lg text-headline-lg-mobile mb-md text-on-surface">Repayment Schedule</h3>
+<div class="space-y-gutter">
+<!-- Upcoming Item -->
+<div class="flex items-center gap-gutter p-sm bg-white rounded-lg border-l-4 border-primary">
+<div class="w-12 h-12 bg-primary-fixed text-primary rounded-lg flex flex-col items-center justify-center">
+<span class="text-xs font-bold uppercase">Oct</span>
+<span class="text-lg font-extrabold leading-none">24</span>
+</div>
+<div class="flex-1">
+<p class="font-label-bold text-on-surface">Monthly Installment</p>
+<p class="text-body-sm text-on-surface-variant">Scheduled Autopay</p>
+</div>
+<div class="text-right">
+<p class="font-label-bold text-primary">GH₵ 175</p>
+<span class="text-[10px] px-2 py-0.5 bg-primary-container text-on-primary-container rounded-full">UPCOMING</span>
+</div>
+</div>
+<!-- Completed Item -->
+<div class="flex items-center gap-gutter p-sm opacity-60">
+<div class="w-12 h-12 bg-surface-container-highest text-outline rounded-lg flex flex-col items-center justify-center">
+<span class="text-xs font-bold uppercase">Sep</span>
+<span class="text-lg font-extrabold leading-none">24</span>
+</div>
+<div class="flex-1">
+<p class="font-label-bold text-on-surface">Monthly Installment</p>
+<p class="text-body-sm text-on-surface-variant">Paid via Wallet</p>
+</div>
+<div class="text-right">
+<p class="font-label-bold text-on-surface">GH₵ 175</p>
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+</div>
+</div>
+<!-- Completed Item -->
+<div class="flex items-center gap-gutter p-sm opacity-60">
+<div class="w-12 h-12 bg-surface-container-highest text-outline rounded-lg flex flex-col items-center justify-center">
+<span class="text-xs font-bold uppercase">Aug</span>
+<span class="text-lg font-extrabold leading-none">24</span>
+</div>
+<div class="flex-1">
+<p class="font-label-bold text-on-surface">Monthly Installment</p>
+<p class="text-body-sm text-on-surface-variant">Paid via Wallet</p>
+</div>
+<div class="text-right">
+<p class="font-label-bold text-on-surface">GH₵ 175</p>
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+</div>
+</div>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant">
+<div class="flex justify-between items-center text-body-md">
+<span class="text-on-surface-variant">Loan Reference</span>
+<span class="font-label-bold text-on-surface">#FLM-8829-01</span>
+</div>
+<div class="flex justify-between items-center text-body-md mt-sm">
+<span class="text-on-surface-variant">Date Disbursed</span>
+<span class="font-label-bold text-on-surface">Aug 01, 2023</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold mt-1">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold mt-1">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</a>
+</nav>
+<!-- Desktop Sidebar/Nav (Optional enhancement based on JSON shell logic) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-highest border-r border-outline-variant dark:border-outline pt-lg">
+<div class="px-md mb-xl">
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<div class="flex-1 space-y-xs">
+<div class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-sm px-md py-sm bg-primary-container text-on-primary-container font-bold rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-body-md text-body-md">Loans</span>
+</div>
+<div class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Vault</span>
+</div>
+<div class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-r-full mr-4 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-md text-body-md">Profile</span>
+</div>
+</div>
+<div class="p-md mt-auto border-t border-outline-variant">
+<div class="flex items-center gap-sm">
+<img class="w-10 h-10 rounded-full" data-alt="Close up avatar of a smiling young college student with trendy glasses. High quality professional digital photography, bright minimalist office background with soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxaxLFc6IB7-ZH9trl-3j7riDDrIWl28QJ7o4Onot9u-UoaMBAHoGv_yVUyPvGuNBsx8uqK-YWFf55T0vEXntJcORPx7fv8x39vIrpGAe5Mtl7p2PqAyUk4fk29KaPoR4AB6PxCIRddaD_dP_z4kSk21zlgPLtDETzEs0z1hYhZmTrFNG8K9mByrK144U3t0gCM-nQWQetUbpcmyB2zNApu2WvowjRBu09GSk0tS1dnR9rbox3pjyHOU7AIyd0rjFJcdbRy-_LhpI"/>
+<div>
+<p class="font-label-bold text-on-surface">Alex Boateng</p>
+<p class="text-[10px] text-on-surface-variant">STUDENT ACCOUNT</p>
+</div>
+</div>
+</div>
+</aside>
+</body></html>

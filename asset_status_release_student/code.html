@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Collateral Status &amp; Release | Flism</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#737688",
+                      "surface": "#fcf8f8",
+                      "outline-variant": "#c3c5d9",
+                      "secondary-fixed-dim": "#00daf3",
+                      "on-surface": "#1c1b1b",
+                      "surface-bright": "#fcf8f8",
+                      "on-secondary-container": "#00616d",
+                      "primary": "#003ec7",
+                      "secondary": "#006875",
+                      "on-tertiary-fixed": "#151c22",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "on-secondary-fixed": "#001f24",
+                      "on-primary-container": "#dfe3ff",
+                      "tertiary-container": "#60676e",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "surface-container-high": "#ebe7e7",
+                      "primary-fixed": "#dde1ff",
+                      "primary-container": "#0052ff",
+                      "on-primary-fixed": "#001452",
+                      "tertiary": "#484f56",
+                      "on-tertiary-fixed-variant": "#40484e",
+                      "on-background": "#1c1b1b",
+                      "surface-container-highest": "#e5e2e1",
+                      "secondary-container": "#00e3fd",
+                      "inverse-surface": "#313030",
+                      "surface-variant": "#e5e2e1",
+                      "inverse-primary": "#b7c4ff",
+                      "background": "#fcf8f8",
+                      "surface-dim": "#dcd9d9",
+                      "secondary-fixed": "#9cf0ff",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#dfe6ee",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#c0c7cf",
+                      "inverse-on-surface": "#f3f0ef",
+                      "on-tertiary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#dce3eb",
+                      "surface-tint": "#004ced",
+                      "on-surface-variant": "#434656",
+                      "surface-container-low": "#f6f3f2",
+                      "surface-container": "#f0edec",
+                      "on-secondary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "80px",
+                      "lg": "48px",
+                      "sm": "12px",
+                      "margin-mobile": "20px",
+                      "md": "24px",
+                      "base": "8px",
+                      "margin-desktop": "120px",
+                      "gutter": "16px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "action-lg": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcf8f8;
+        }
+        .electric-glow {
+            box-shadow: 0 0 20px rgba(0, 227, 253, 0.2);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #E2E8F0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile h-16 w-full z-40">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed">person</span>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary">Flism</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</header>
+<main class="px-margin-mobile pt-md space-y-lg">
+<!-- Page Headline -->
+<section>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Vault Asset</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Track your collateral status and release</p>
+</section>
+<!-- Collateral Status Card: REPAID STATE (Release Available) -->
+<div class="glass-card rounded-xl p-md space-y-md relative overflow-hidden">
+<div class="absolute top-0 right-0 p-xs px-sm bg-secondary-container text-on-secondary-container font-label-bold text-label-bold rounded-bl-lg">
+                READY FOR COLLECTION
+            </div>
+<div class="flex gap-md">
+<div class="w-24 h-24 rounded-lg bg-surface-container overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A high-end modern laptop resting on a clean white surface with soft dramatic studio lighting. The image emphasizes the sleek metallic finish and premium build quality of the device, mirroring a minimalist fintech aesthetic. The background is a soft blue-gray gradient that feels professional, secure, and technologically advanced, fitting a high-contrast digital library or bank vault atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB74ugMsY2M2SYT6iCnVLsEzvHvM3-D1Mojp2AQSj5EmEp6GAcoYUhzbOsNZ4d53uSno8eC9XJvjvV8FkAjQHNw2uRjYX_TzmqVkDq9dwWAZ1qEe9da1axDGBg4w2NHRxmyficwNQ-7LEX910KMPdDte1kspHwoW_8uwmS83kDdc6CGOO5DkP2b825KfdNiJ__HN1z4JitZQB1c106UEFLVwqnhvPy_AELeMSD8kMWAJA1SHMsGfzcpq9yUkGBA7P_ciqsbH3_HqYg"/>
+</div>
+<div class="flex-1 space-y-xs">
+<h3 class="font-action-lg text-action-lg text-on-surface">MacBook Pro 14"</h3>
+<p class="font-label-bold text-label-bold text-outline uppercase tracking-wider">SN: FLM-9928-XQ</p>
+<div class="inline-flex items-center gap-xs px-sm py-1 bg-surface-container-high rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-bold text-label-bold text-secondary">LOAN REPAID</span>
+</div>
+</div>
+</div>
+<div class="p-sm bg-surface-container-low rounded-lg space-y-xs border border-outline-variant">
+<p class="font-label-bold text-label-bold text-on-surface-variant">COLLECTION HUB</p>
+<p class="font-body-md text-body-md text-on-surface">Campus Hub North, Gate 2</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">Open 09:00 - 17:00, Mon-Fri</p>
+</div>
+<button class="w-full py-md bg-primary text-white font-action-lg text-action-lg rounded-xl electric-glow hover:bg-primary-container transition-all active:scale-95 duration-200">
+                Generate Release Code
+            </button>
+</div>
+<!-- Seizure Notice: OVERDUE STATE -->
+<div class="border-2 border-error-container bg-surface-container-lowest rounded-xl p-md space-y-md">
+<div class="flex items-start gap-sm">
+<div class="p-base bg-error-container rounded-full">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="space-y-xs">
+<h4 class="font-action-lg text-action-lg text-error">Seizure Notice</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your loan is 12 days overdue. Asset seizure process has initiated at Campus Hub South.</p>
+</div>
+</div>
+<div class="flex flex-col gap-base p-sm bg-error-container/20 rounded-lg">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Outstanding Balance</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">GH₵ 1,240.00</span>
+</div>
+<p class="font-label-bold text-label-bold text-error">Pay now to halt seizure of HP Spectre x360</p>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<button class="py-sm border-1.5 border-primary text-primary font-action-lg text-action-lg rounded-xl hover:bg-primary-fixed-dim transition-colors active:scale-95 duration-200">
+                    Contact Support
+                </button>
+<button class="py-sm bg-primary text-white font-action-lg text-action-lg rounded-xl electric-glow hover:bg-primary-container transition-all active:scale-95 duration-200">
+                    Pay Now
+                </button>
+</div>
+</div>
+<!-- Asset Details List -->
+<section class="space-y-sm">
+<h3 class="font-action-lg text-action-lg text-on-surface px-xs">Inventory Details</h3>
+<div class="bg-surface-container rounded-xl overflow-hidden divide-y divide-outline-variant/30">
+<div class="flex justify-between items-center p-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Vault ID</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface font-semibold">VLT-77210</span>
+</div>
+<div class="flex justify-between items-center p-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<span class="font-body-md text-body-md text-on-surface-variant">In-Vault Since</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Oct 12, 2023</span>
+</div>
+<div class="flex justify-between items-center p-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">security</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Insurance Status</span>
+</div>
+<span class="font-label-bold text-label-bold text-secondary uppercase">Active</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</button>
+</nav>
+</body></html>

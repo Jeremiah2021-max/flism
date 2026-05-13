@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001452",
+                        "outline-variant": "#c3c5d9",
+                        "on-tertiary-container": "#dfe6ee",
+                        "secondary-container": "#00e3fd",
+                        "primary-container": "#0052ff",
+                        "outline": "#737688",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#9cf0ff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-surface": "#1c1b1b",
+                        "surface-tint": "#004ced",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "secondary-fixed-dim": "#00daf3",
+                        "inverse-surface": "#313030",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "primary-fixed": "#dde1ff",
+                        "surface-dim": "#dcd9d9",
+                        "on-primary-container": "#dfe3ff",
+                        "on-background": "#1c1b1b",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-fixed": "#001f24",
+                        "surface-variant": "#e5e2e1",
+                        "secondary": "#006875",
+                        "on-error": "#ffffff",
+                        "tertiary": "#484f56",
+                        "tertiary-fixed": "#dce3eb",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#00616d",
+                        "on-error-container": "#93000a",
+                        "background": "#fcf8f8",
+                        "primary": "#003ec7",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#60676e",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-container": "#f0edec",
+                        "on-surface-variant": "#434656",
+                        "surface-bright": "#fcf8f8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface": "#fcf8f8",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#b7c4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "lg": "48px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "margin-mobile": "20px",
+                        "xl": "80px",
+                        "sm": "12px",
+                        "margin-desktop": "120px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "action-lg": ["18px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky border-b border-outline-variant dark:border-outline z-50">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a young Ghanaian university student with a warm, confident expression. The lighting is soft and natural, emphasizing a bright and scholarly atmosphere. The background is a clean, minimalist university setting with soft-focus architectural details in white and electric blue tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbyv6TuV3SueP_e4eMOF5lALo8WydthdtPu8zPC7MKGKn1CuhX0V9k6mRpWLu0MPtezpLBazcc3SMcp8hVsCEhvJShObNuDqxwlI7ou4_ZpEhthqO9kbyl54kvYNfNRe1_rUytQ6ZOaHszq0I5WWQZgCDBaLRcSkOU93gEhLMcm-31tClj3LxUweHt2PSCOpECI_KutDyBHXw9CFXbNzptp7LxDerJqiiUWZuDeHP-irEUAJvcRYoIuvkro2IH4kzVLfuS0eioo-U"/>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</h1>
+</div>
+<div class="flex items-center gap-base">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim p-2 rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-100">notifications</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center py-lg px-margin-mobile">
+<div class="max-w-2xl w-full">
+<!-- Stepper Progress -->
+<div class="flex items-center justify-between mb-xl">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</div>
+<span class="font-label-bold text-label-bold text-primary">Identity</span>
+</div>
+<div class="flex-grow h-[2px] bg-secondary-container mx-base mb-4"></div>
+<div class="flex flex-col items-center gap-xs">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant text-outline flex items-center justify-center font-bold">2</div>
+<span class="font-label-bold text-label-bold text-outline">Residence</span>
+</div>
+<div class="flex-grow h-[2px] bg-surface-container-highest mx-base mb-4"></div>
+<div class="flex flex-col items-center gap-xs">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant text-outline flex items-center justify-center font-bold">3</div>
+<span class="font-label-bold text-label-bold text-outline">Guarantee</span>
+</div>
+</div>
+<!-- Form Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0_0_40px_rgba(0,82,255,0.05)]">
+<!-- Section Header -->
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Personal Details</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Complete your profile to unlock 'Loan Against Assets' features.</p>
+</div>
+<form class="space-y-md">
+<!-- Group: Academic Identity -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">STUDENT ID NUMBER</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all placeholder:text-outline-variant" placeholder="e.g. 10987654" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">NEXT OF KIN NAME</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all placeholder:text-outline-variant" placeholder="Full Name" type="text"/>
+</div>
+</div>
+<!-- Group: Digital Residence -->
+<div class="pt-base border-t border-surface-container-high">
+<h3 class="font-action-lg text-action-lg text-primary mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined">location_on</span> Residential Verification
+                        </h3>
+<div class="space-y-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">GHANA POST GPS (DIGITAL ADDRESS)</label>
+<div class="relative">
+<input class="w-full bg-surface border border-outline-variant rounded-lg p-sm pr-12 focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all placeholder:text-outline-variant" placeholder="GA-123-4567" type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-primary">qr_code_scanner</span>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">UNIVERSITY HALL / HOSTEL NAME</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all placeholder:text-outline-variant" placeholder="e.g. Limann Hall or Pent Hostel" type="text"/>
+</div>
+</div>
+</div>
+<!-- Group: Loan Guarantor (Loan Against Assets) -->
+<div class="pt-base border-t border-surface-container-high">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-action-lg text-action-lg text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined">verified_user</span> Guarantor Details
+                            </h3>
+<span class="bg-secondary-container text-on-secondary-container font-label-bold text-[10px] px-2 py-1 rounded-full uppercase tracking-widest">Required for Assets</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">GUARANTOR FULL NAME</label>
+<input class="bg-surface border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all placeholder:text-outline-variant" placeholder="Enter full legal name" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">PHONE NUMBER</label>
+<div class="flex">
+<span class="bg-surface-container-high border border-r-0 border-outline-variant rounded-l-lg p-sm flex items-center text-body-sm">+233</span>
+<input class="w-full bg-surface border border-outline-variant rounded-r-lg p-sm focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all placeholder:text-outline-variant" placeholder="24 000 0000" type="tel"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold text-on-surface-variant px-xs">RELATIONSHIP</label>
+<select class="bg-surface border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-secondary-container focus:border-primary-container outline-none transition-all appearance-none">
+<option>Select Relationship</option>
+<option>Parent</option>
+<option>Guardian</option>
+<option>Employer</option>
+<option>Lecturer</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-lg flex items-center gap-md">
+<button class="flex-1 py-4 px-md border-2 border-primary text-primary font-action-lg text-action-lg rounded-xl hover:bg-surface-container-low transition-all active:scale-95" type="button">Save Draft</button>
+<button class="flex-1 py-4 px-md bg-primary text-white font-action-lg text-action-lg rounded-xl hover:shadow-[0_0_20px_rgba(0,62,199,0.3)] transition-all active:scale-95 flex items-center justify-center gap-xs" type="submit">
+                            Continue <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Bento Card: Why Verifying Matters -->
+<div class="mt-lg grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-2 bg-gradient-to-br from-primary to-primary-container p-md rounded-xl text-white shadow-xl relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-headline-lg text-headline-lg-mobile mb-xs text-white">Unlock Asset Loans</h4>
+<p class="font-body-sm text-body-sm opacity-90 max-w-xs">By providing a guarantor and your digital address, you can leverage your high-value assets for immediate capital at 0% interest for the first month.</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] opacity-10 rotate-12">account_balance_wallet</span>
+</div>
+<div class="bg-secondary-container p-md rounded-xl flex flex-col justify-between border border-outline-variant shadow-lg">
+<span class="material-symbols-outlined text-on-secondary-container text-4xl">speed</span>
+<div>
+<h5 class="font-label-bold text-label-bold text-on-secondary-container">INSTANT APPROVAL</h5>
+<p class="font-body-sm text-body-sm text-on-secondary-container opacity-80">Verified addresses get 2x faster loan approvals.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold mt-xs">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold mt-xs">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold mt-xs">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold mt-xs">Profile</span>
+</a>
+</nav>
+<!-- Spacer for fixed bottom nav -->
+<div class="h-24"></div>
+</body></html>

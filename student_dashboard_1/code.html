@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#dfe6ee",
+                      "on-tertiary-fixed": "#151c22",
+                      "error-container": "#ffdad6",
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "outline-variant": "#c3c5d9",
+                      "on-primary-fixed": "#001452",
+                      "on-secondary": "#ffffff",
+                      "outline": "#737688",
+                      "on-secondary-container": "#00616d",
+                      "background": "#fcf8f8",
+                      "tertiary": "#484f56",
+                      "secondary": "#006875",
+                      "surface-container": "#f0edec",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#004ced",
+                      "surface": "#fcf8f8",
+                      "on-background": "#1c1b1b",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "primary-fixed": "#dde1ff",
+                      "inverse-on-surface": "#f3f0ef",
+                      "primary-container": "#0052ff",
+                      "on-primary-container": "#dfe3ff",
+                      "tertiary-fixed": "#dce3eb",
+                      "error": "#ba1a1a",
+                      "primary": "#003ec7",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dcd9d9",
+                      "tertiary-container": "#60676e",
+                      "on-secondary-fixed": "#001f24",
+                      "surface-container-low": "#f6f3f2",
+                      "secondary-fixed-dim": "#00daf3",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "surface-variant": "#e5e2e1",
+                      "surface-bright": "#fcf8f8",
+                      "inverse-surface": "#313030",
+                      "secondary-container": "#00e3fd",
+                      "surface-container-high": "#ebe7e7",
+                      "tertiary-fixed-dim": "#c0c7cf",
+                      "inverse-primary": "#b7c4ff",
+                      "on-surface-variant": "#434656",
+                      "on-tertiary-fixed-variant": "#40484e",
+                      "on-surface": "#1c1b1b",
+                      "secondary-fixed": "#9cf0ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "md": "24px",
+                      "gutter": "16px",
+                      "base": "8px",
+                      "margin-desktop": "120px",
+                      "lg": "48px",
+                      "xl": "80px",
+                      "xs": "4px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "action-lg": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a stylish university student with a warm smile, set against a blurred academic building background. The lighting is bright and natural, reflecting a clean light-mode aesthetic. The composition is tight on the subject, highlighting a friendly and ambitious personality consistent with a modern fintech dashboard user." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcapQZHQRwx_PwMm4_HNyGFKsH-68NP5WidLKuybvEUJYk9vVU324b5VUezSKxATG8H9K_t0Q-xveA_3zljqslxdtFGAa0phSD1F1L69BDrXeaXT8Ot_pQaqJrYcx0Jj-Nupfrq4lJ7oecs8nfrBJWOexS-L7OwFQmmYIVUWI6rTl-_Aio-rIS5d4BbhsUed0llWLhk-Abo5V7aB00fs4xw6cpq2kgdGd1cgpYlE9gGM6bCpFDEzQRw5fTIMbn2sLUXHgbHTE6B7I"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<div class="flex items-center">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim p-2 hover:bg-surface-container-low transition-colors rounded-full active:scale-95 duration-100" data-icon="notifications">notifications</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile mt-base">
+<!-- Welcome Section -->
+<section class="py-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-background">Hello, Alex</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Ready to grow your capital today?</p>
+</section>
+<!-- Balance Card -->
+<section class="py-sm">
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-secondary-container p-lg text-white shadow-[0_20px_40px_rgba(0,227,253,0.2)]">
+<div class="absolute top-0 right-0 p-lg opacity-20">
+<span class="material-symbols-outlined text-[120px]" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<p class="font-label-bold text-label-bold uppercase tracking-widest text-on-primary-container mb-xs">Available Balance</p>
+<h2 class="font-headline-xl text-headline-xl mb-md">$4,250.00</h2>
+<div class="flex gap-md">
+<div class="flex flex-col">
+<span class="font-label-bold text-body-sm opacity-80">Vault</span>
+<span class="font-headline-lg text-body-md font-bold">$12,800</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-bold text-body-sm opacity-80">Loans</span>
+<span class="font-headline-lg text-body-md font-bold">$1,200</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions Bento -->
+<section class="py-lg grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<button class="col-span-2 flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl p-lg hover:shadow-[0_0_20px_rgba(0,82,255,0.3)] transition-all active:scale-95">
+<span class="material-symbols-outlined mb-sm text-[32px]" data-icon="add_card">add_card</span>
+<span class="font-action-lg text-action-lg">Apply for Loan</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container-lowest border border-outline-variant rounded-xl p-md text-primary hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined mb-xs" data-icon="payments">payments</span>
+<span class="font-label-bold text-label-bold">Transfer</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container-lowest border border-outline-variant rounded-xl p-md text-primary hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined mb-xs" data-icon="savings">savings</span>
+<span class="font-label-bold text-label-bold">Save</span>
+</button>
+</section>
+<!-- Recent Activity -->
+<section class="py-sm pb-xl">
+<div class="flex justify-between items-end mb-md">
+<h3 class="font-headline-lg text-headline-lg">Recent Activity</h3>
+<button class="font-label-bold text-label-bold text-primary hover:underline">View All</button>
+</div>
+<div class="space-y-sm">
+<!-- Activity Item 1 -->
+<div class="flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant hover:border-secondary-fixed-dim transition-all">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<div>
+<p class="font-label-bold text-body-md font-bold">University Bookstore</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Today, 2:45 PM</p>
+</div>
+</div>
+<p class="font-label-bold text-body-md text-error">-$124.50</p>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant hover:border-secondary-fixed-dim transition-all">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<p class="font-label-bold text-body-md font-bold">Loan Disbursement</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Yesterday, 10:20 AM</p>
+</div>
+</div>
+<p class="font-label-bold text-body-md text-secondary">+$1,200.00</p>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant hover:border-secondary-fixed-dim transition-all">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="font-label-bold text-body-md font-bold">The Green Cafe</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Oct 24, 1:15 PM</p>
+</div>
+</div>
+<p class="font-label-bold text-body-md text-error">-$18.20</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<!-- Loans -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</a>
+<!-- Vault -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+</body></html>

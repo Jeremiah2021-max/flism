@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#dfe6ee",
+                      "on-tertiary-fixed": "#151c22",
+                      "error-container": "#ffdad6",
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#b7c4ff",
+                      "outline-variant": "#c3c5d9",
+                      "on-primary-fixed": "#001452",
+                      "on-secondary": "#ffffff",
+                      "outline": "#737688",
+                      "on-secondary-container": "#00616d",
+                      "background": "#fcf8f8",
+                      "tertiary": "#484f56",
+                      "secondary": "#006875",
+                      "surface-container": "#f0edec",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#004ced",
+                      "surface": "#fcf8f8",
+                      "on-background": "#1c1b1b",
+                      "on-primary-fixed-variant": "#0038b6",
+                      "primary-fixed": "#dde1ff",
+                      "inverse-on-surface": "#f3f0ef",
+                      "primary-container": "#0052ff",
+                      "on-primary-container": "#dfe3ff",
+                      "tertiary-fixed": "#dce3eb",
+                      "error": "#ba1a1a",
+                      "primary": "#003ec7",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dcd9d9",
+                      "tertiary-container": "#60676e",
+                      "on-secondary-fixed": "#001f24",
+                      "surface-container-low": "#f6f3f2",
+                      "secondary-fixed-dim": "#00daf3",
+                      "on-secondary-fixed-variant": "#004f58",
+                      "surface-variant": "#e5e2e1",
+                      "surface-bright": "#fcf8f8",
+                      "inverse-surface": "#313030",
+                      "secondary-container": "#00e3fd",
+                      "surface-container-high": "#ebe7e7",
+                      "tertiary-fixed-dim": "#c0c7cf",
+                      "inverse-primary": "#b7c4ff",
+                      "on-surface-variant": "#434656",
+                      "on-tertiary-fixed-variant": "#40484e",
+                      "on-surface": "#1c1b1b",
+                      "secondary-fixed": "#9cf0ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "md": "24px",
+                      "gutter": "16px",
+                      "base": "8px",
+                      "margin-desktop": "120px",
+                      "lg": "48px",
+                      "xl": "80px",
+                      "xs": "4px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "label-bold": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-sm": ["Plus Jakarta Sans"],
+                      "action-lg": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile h-16 z-40">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary">Flism</span>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">close</span>
+</button>
+</header>
+<main class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-lg">
+<div class="mb-xl max-w-2xl mx-auto">
+<div class="flex justify-between items-end mb-sm">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Identity Verification</h1>
+<p class="text-on-surface-variant mt-xs">Verify your identity to unlock student financial tools in Ghana.</p>
+</div>
+<span class="font-label-bold text-label-bold text-primary">STEP 2 OF 3</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-2/3 bg-secondary-container shadow-[0_0_15px_rgba(0,227,253,0.3)]"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter max-w-6xl mx-auto">
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm h-full">
+<h3 class="font-label-bold text-label-bold text-primary mb-md uppercase tracking-widest">Requirements</h3>
+<ul class="space-y-md">
+<li class="flex gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<div>
+<p class="font-label-bold text-on-surface">Ensure good lighting</p>
+<p class="text-body-sm text-on-surface-variant">Avoid harsh shadows or direct backlighting on your face or Ghana Card.</p>
+</div>
+</li>
+<li class="flex gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">frame_inspect</span>
+<div>
+<p class="font-label-bold text-on-surface">No glares on ID</p>
+<p class="text-body-sm text-on-surface-variant">Position your Ghana Card to avoid light reflections on the text.</p>
+</div>
+</li>
+<li class="flex gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">face</span>
+<div>
+<p class="font-label-bold text-on-surface">Face the camera</p>
+<p class="text-body-sm text-on-surface-variant">Keep a neutral expression and remove glasses or hats.</p>
+</div>
+</li>
+</ul>
+<div class="mt-xl p-md bg-surface-container-lowest rounded-lg border border-primary/10">
+<div class="flex items-center gap-xs text-primary mb-xs">
+<span class="material-symbols-outlined text-[20px]">info</span>
+<span class="font-label-bold text-label-bold">PRIVACY NOTE</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Your biometric data is encrypted and used solely for legal identity verification required by Bank of Ghana regulations.</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Section 1: National ID Upload -->
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">badge</span>
+                        Ghana Card Upload
+                    </h2>
+<span class="bg-primary-container text-on-primary-container px-base py-1 rounded-full text-label-bold">PENDING</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Front Upload -->
+<div class="relative group cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low hover:border-primary transition-all duration-300 min-h-[180px] flex flex-col items-center justify-center text-center p-md">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-5 group-hover:scale-105 transition-transform duration-500" data-alt="A clean top-down view of a high-tech studio setting with a blank identification card mock-up resting on a white minimalist surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUYuMK4YUNJOCG4VIf6ew2NgW8ZEYe9FFWwVGrrawJHRe5MwzLcbfrh7rVpQPFrC6zbfiB0r9NXDZPuV_fE6Hzuu4NoIosSWuZsiPmFN9Ybs4iMTFH6OUNwD0EWngYTggJuCyx6ZRqr-oGq2xGxfPbHydPQlRl83QW9QCBMP-pr3_kuDirHtbSBUDcm221tb25Rcx2JMBskfsH-i3cnuTa2t9dQlroY4M8P6XbCE1plX4OLbgCh6zmjHaj1kSHsx8i1YKrK1WJ1Xs"/>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md mb-sm mx-auto group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl">add_a_photo</span>
+</div>
+<p class="font-label-bold text-on-surface">Upload Front</p>
+<p class="text-body-sm text-on-surface-variant mt-xs">Front of Ghana Card</p>
+</div>
+</div>
+<!-- Back Upload -->
+<div class="relative group cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low hover:border-primary transition-all duration-300 min-h-[180px] flex flex-col items-center justify-center text-center p-md">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-5 group-hover:scale-105 transition-transform duration-500" data-alt="A clean top-down view of a high-tech studio setting with a blank identification card mock-up resting on a white minimalist surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUYuMK4YUNJOCG4VIf6ew2NgW8ZEYe9FFWwVGrrawJHRe5MwzLcbfrh7rVpQPFrC6zbfiB0r9NXDZPuV_fE6Hzuu4NoIosSWuZsiPmFN9Ybs4iMTFH6OUNwD0EWngYTggJuCyx6ZRqr-oGq2xGxfPbHydPQlRl83QW9QCBMP-pr3_kuDirHtbSBUDcm221tb25Rcx2JMBskfsH-i3cnuTa2t9dQlroY4M8P6XbCE1plX4OLbgCh6zmjHaj1kSHsx8i1YKrK1WJ1Xs"/>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md mb-sm mx-auto group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl">add_a_photo</span>
+</div>
+<p class="font-label-bold text-on-surface">Upload Back</p>
+<p class="text-body-sm text-on-surface-variant mt-xs">Back of Ghana Card</p>
+</div>
+</div>
+</div>
+<div class="mt-md flex justify-end">
+<button class="bg-secondary-container text-on-secondary-container font-action-lg text-action-lg px-md py-base rounded-lg hover:bg-secondary-fixed transition-all active:scale-95 shadow-[0_0_20px_rgba(0,227,253,0.15)] flex items-center gap-base">
+                        Next Step
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Section 2: Face Scan Biometric -->
+<div class="bg-white p-md rounded-xl border border-outline-variant shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">face_unlock</span>
+                        Face Scan
+                    </h2>
+</div>
+<div class="flex flex-col md:flex-row items-center gap-lg">
+<div class="relative w-64 h-64 md:w-80 md:h-80 flex-shrink-0">
+<div class="absolute inset-0 rounded-full border-4 border-secondary-container animate-pulse opacity-50"></div>
+<div class="absolute inset-2 rounded-full border-2 border-outline-variant border-dashed"></div>
+<div class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-xl relative bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A focused portrait of a young adult student looking directly into the camera with a neutral expression in a well-lit environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4W6n6Kaqvk_Ad9Z87R-9aWsRLOZFlXlbR7kV7ORyvhDZ4Ahj4lgdcVIdWDo89C8MZnA98xdc7sFxsJpzayPwKrzfFn5gld_N_BboMRNw-TIglruOzmFf66ovsbiVGYQhgFZ6PpZY3vG8gU0u87RzL3r66TrAOFv3n-N7zsAKbUNZhHHH-g_L3vBG2AT6_9fbcArQoCnUygY_IKbJVP5Xbkmcf8rXihCiC1AqCcitS9WxDiz8k_r61Uczc_0le5Dk-AbAt8vlxZmk"/>
+<div class="absolute top-0 left-0 w-full h-[2px] bg-secondary-container shadow-[0_0_10px_#00e3fd] transform translate-y-1/2 opacity-80"></div>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-on-surface text-white px-md py-xs rounded-full flex items-center gap-xs shadow-lg">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim animate-ping"></span>
+<span class="font-label-bold text-label-bold">READY TO SCAN</span>
+</div>
+</div>
+<div class="flex-1 space-y-md">
+<p class="text-body-md text-on-surface">Please position your face within the frame and look directly at the camera. Once centered, the scan will start automatically.</p>
+<div class="space-y-sm">
+<div class="flex items-center gap-sm p-sm rounded-lg bg-surface-container-low border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-sm font-label-bold">Lighting: Optimized</span>
+</div>
+<div class="flex items-center gap-sm p-sm rounded-lg bg-surface-container-low border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline">pending</span>
+<span class="text-body-sm text-on-surface-variant">Positioning: Please center face</span>
+</div>
+</div>
+<button class="w-full py-md rounded-xl bg-primary text-white font-action-lg text-action-lg hover:shadow-[0_0_30px_rgba(0,62,199,0.3)] transition-all active:scale-[0.98]">
+                            Start Biometric Scan
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-xl pb-lg border-t border-outline-variant/30 pt-md text-center max-w-6xl mx-auto px-margin-mobile">
+<p class="text-body-sm text-on-surface-variant">© 2024 Flism Financial Ghana. All rights reserved. Transactions are secured in GH₵.</p>
+<div class="flex justify-center gap-md mt-sm">
+<a class="text-label-bold text-primary hover:underline" href="#">Support</a>
+<a class="text-label-bold text-primary hover:underline" href="#">Privacy Policy</a>
+<a class="text-label-bold text-primary hover:underline" href="#">Terms of Service</a>
+</div>
+</footer>
+</body></html>

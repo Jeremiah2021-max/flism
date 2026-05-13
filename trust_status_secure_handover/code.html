@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trust Status &amp; Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#b7c4ff",
+                    "on-tertiary-fixed-variant": "#40484e",
+                    "on-secondary-container": "#00616d",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "primary": "#003ec7",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#0052ff",
+                    "on-error": "#ffffff",
+                    "surface": "#fcf8f8",
+                    "on-secondary-fixed-variant": "#004f58",
+                    "outline": "#737688",
+                    "surface-dim": "#dcd9d9",
+                    "secondary-fixed": "#9cf0ff",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fcf8f8",
+                    "on-surface-variant": "#434656",
+                    "tertiary": "#484f56",
+                    "inverse-surface": "#313030",
+                    "on-primary-fixed": "#001452",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1c1b1b",
+                    "background": "#fcf8f8",
+                    "surface-container-high": "#ebe7e7",
+                    "on-tertiary-container": "#dfe6ee",
+                    "on-primary-fixed-variant": "#0038b6",
+                    "surface-variant": "#e5e2e1",
+                    "tertiary-container": "#60676e",
+                    "on-tertiary-fixed": "#151c22",
+                    "primary-fixed": "#dde1ff",
+                    "on-secondary-fixed": "#001f24",
+                    "surface-container-low": "#f6f3f2",
+                    "surface-container-highest": "#e5e2e1",
+                    "secondary-fixed-dim": "#00daf3",
+                    "tertiary-fixed-dim": "#c0c7cf",
+                    "tertiary-fixed": "#dce3eb",
+                    "surface-container": "#f0edec",
+                    "secondary-container": "#00e3fd",
+                    "inverse-on-surface": "#f3f0ef",
+                    "on-primary-container": "#dfe3ff",
+                    "surface-tint": "#004ced",
+                    "outline-variant": "#c3c5d9",
+                    "on-surface": "#1c1b1b",
+                    "secondary": "#006875"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "48px",
+                    "base": "8px",
+                    "md": "24px",
+                    "margin-desktop": "120px",
+                    "margin-mobile": "20px",
+                    "sm": "12px",
+                    "xs": "4px",
+                    "xl": "80px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "action-lg": ["Plus Jakarta Sans"],
+                    "label-bold": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-base">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a young African university student smiling confidently, set against a blurred modern campus background. The lighting is bright and natural, reflecting a clean light-mode aesthetic. The color palette is composed of soft whites and vibrant electric blue accents, conveying a sense of academic success and financial reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwtZPfq3LRFEPf1YRz8NgW0rPO7jNlNHzNgIXDqHWY6tWwis1b7M6pVbegxrGK7TVhanXTpUpAXJ4HROlW3tFw1vxX29DnUeCVpd2SSVs-2U7RmN3Eioco3oBJvC1ua1DlyGSWufCHPjVgttI-CRADPlFLWNPP0jj2InV7mxkfGIp6AnyHa1Mq1N-S5zV-sK6ejT5kb2nxmBOY758ffkNiLmZYOj8qpdcRWD9F2Q1kLlLSOy22pcR7nXSJuIn8S0XKZuJR6Nql_4o"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-100">
+            notifications
+        </button>
+</header>
+<main class="flex-grow px-margin-mobile py-md space-y-md pb-32">
+<!-- Trust Progress Visualization -->
+<section class="space-y-sm">
+<div class="flex justify-between items-end">
+<h2 class="font-headline-lg text-headline-lg text-primary">Trust Status</h2>
+<span class="font-label-bold text-label-bold text-secondary bg-secondary-container px-3 py-1 rounded-full shadow-[0_0_10px_rgba(0,227,253,0.15)]">Level 2: Reliable</span>
+</div>
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant relative overflow-hidden">
+<div class="flex justify-between mb-sm relative z-10">
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mb-xs">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">New</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-secondary-container border-2 border-primary flex items-center justify-center text-primary mb-xs">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<span class="font-label-bold text-label-bold text-primary">Reliable</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant mb-xs">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant opacity-50">Trusted</span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden mb-sm">
+<div class="h-full bg-primary-container w-[66%] shadow-[0_0_15px_rgba(0,82,255,0.4)]"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Physical Collateral</span>
+<span class="text-primary font-bold">Hybrid</span>
+<span class="opacity-50">Digital Access</span>
+</div>
+</div>
+</section>
+<!-- Secure Asset Handover -->
+<section class="space-y-sm">
+<div class="bg-white rounded-xl border border-outline-variant p-md shadow-sm">
+<div class="flex items-center gap-base mb-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+<h3 class="font-action-lg text-action-lg text-on-surface">Secure Asset Handover</h3>
+</div>
+<div class="bg-surface-container-lowest border-2 border-dashed border-secondary-container rounded-lg py-md px-sm text-center mb-md">
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-xs">VERIFICATION CODE</p>
+<div class="font-headline-xl text-headline-xl text-primary tracking-[0.2em] py-xs">
+                        482-901
+                    </div>
+</div>
+<div class="flex gap-sm items-start">
+<span class="material-symbols-outlined text-secondary text-[20px]">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Share this code with the <span class="text-on-surface font-bold">Flism Collector</span> at the pickup point to verify your identity and ensure a safe handover.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Trust Benefits -->
+<section class="space-y-sm">
+<h3 class="font-action-lg text-action-lg text-on-surface px-xs">Trust Benefits</h3>
+<div class="grid grid-cols-1 gap-base">
+<div class="flex items-center justify-between p-sm bg-surface-container-low rounded-lg border border-outline-variant group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-sm">
+<div class="p-2 rounded-lg bg-secondary-container text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Higher Loan Limits</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container-low rounded-lg border border-outline-variant group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-sm">
+<div class="p-2 rounded-lg bg-secondary-container text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">percent</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Reduced Interest</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container-low rounded-lg border border-outline-variant group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-sm">
+<div class="p-2 rounded-lg bg-secondary-container text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Digital-only Collateral Access</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</a>
+<!-- Active Tab: Profile (Closest match to verification/status) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #E2E8F0;
+        }
+        .electric-glow {
+            box-shadow: 0 0 20px rgba(0, 82, 255, 0.15);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-primary-container": "#dfe3ff",
+                        "surface-container": "#f0edec",
+                        "on-tertiary-container": "#dfe6ee",
+                        "surface": "#fcf8f8",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary": "#006875",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#60676e",
+                        "primary-fixed": "#dde1ff",
+                        "surface-variant": "#e5e2e1",
+                        "surface-tint": "#004ced",
+                        "primary-container": "#0052ff",
+                        "error": "#ba1a1a",
+                        "on-background": "#1c1b1b",
+                        "inverse-surface": "#313030",
+                        "secondary-fixed-dim": "#00daf3",
+                        "tertiary-fixed": "#dce3eb",
+                        "outline-variant": "#c3c5d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-container": "#00616d",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "on-primary": "#ffffff",
+                        "outline": "#737688",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-bright": "#fcf8f8",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "tertiary": "#484f56",
+                        "inverse-primary": "#b7c4ff",
+                        "secondary-container": "#00e3fd",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "primary": "#003ec7",
+                        "on-primary-fixed": "#001452",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "on-secondary-fixed": "#001f24",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#434656",
+                        "secondary-fixed": "#9cf0ff",
+                        "background": "#fcf8f8",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "80px",
+                        "margin-mobile": "20px",
+                        "md": "24px",
+                        "margin-desktop": "120px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "gutter": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col pb-24">
+<!-- Top AppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline w-full top-0 sticky z-50 flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Kofi Mensah" class="w-full h-full object-cover" data-alt="A professional headshot of a young African male university student with a friendly, confident expression. He is set against a clean, softly lit modern architectural background that reflects a high-tech university campus aesthetic. The lighting is bright and airy, consistent with a premium fintech app interface, featuring high-contrast tones and a clinical white balance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaUCXS_kRlVzNFhO69f0TnCDmhFRfXuY6x7dz760bJvpbWQ0QldTRF9Xg2SHc1EBD9F0N6XPaud2gqIGAVYPuS2p_l-8ja_Dmv8GXCbJ5X07iwEbKQvq6oKDo1IsavOpi_T-8cNkuJ3m_v9bm1ZB8wWpEunBVPvkE4aYV1mTdBIv0Q5k9BR6FZAq1Vw_WgkoG65ayPAMLdUuIF0upkeHgOG27vixyEbBCKDmaZ3pXh43mn_yIiA1gEElz3LvWxHFDEOV8NJGxOq40"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<button class="text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="flex-grow px-margin-mobile pt-md space-y-md">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center text-center space-y-sm">
+<div class="relative">
+<div class="w-24 h-24 rounded-full border-4 border-primary-container p-1 bg-surface shadow-xl">
+<img alt="Student Profile" class="w-full h-full rounded-full object-cover" data-alt="A close-up portrait of a young man with dark skin and a short haircut, wearing a minimalist neutral-colored shirt. The image is bright and professional, styled for a high-end financial application. The background is a soft, blurred office or campus environment with cool blue and white tones, emphasizing clarity, trust, and digital-first banking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrzo1VRoPNyYfbDqw5czzzgsaQsVH_HV7VKErYMPkCvFW81Du_mvcWPbH_mHhPCdOSBFs58do-7O_R4mMKkgwIisNB8DiqyM62HBwLyYvUKW4td9vO7P9ibp41TT45WfreIbQgm6-h2TLTvpa-Ng3n-v9nCI6a0KbKpmNVFDBmR3Q05js2aFQyBLSHR39Kt9STK3YHzCyYm5eXsWAV-By8f9kZ1cXA0MKjA8YEDlwbwQj7zn9GhnxYk9qyHlNh3xRNKjUfFBHTjZM"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary-container text-on-secondary-container text-label-bold font-label-bold px-3 py-1 rounded-full border border-on-secondary-container/10 shadow-sm whitespace-nowrap">
+                    LEVEL 2
+                </div>
+</div>
+<div class="pt-2">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Kofi Mensah</h1>
+<div class="flex items-center justify-center gap-xs mt-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-body-sm text-body-sm text-secondary font-semibold">Trust Level 2: Reliable</span>
+</div>
+</div>
+</section>
+<!-- Trust Score Card -->
+<section class="bg-primary-container rounded-xl p-md text-on-primary-container relative overflow-hidden electric-glow">
+<!-- Background Gradient Accent -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="font-label-bold text-label-bold opacity-80 uppercase tracking-wider">Current Trust Score</p>
+<h2 class="font-headline-xl text-headline-xl mt-xs">450</h2>
+</div>
+<span class="material-symbols-outlined text-4xl opacity-50" data-icon="speed">speed</span>
+</div>
+<div class="mt-md relative z-10">
+<div class="flex justify-between mb-2">
+<span class="font-body-sm text-body-sm">Level 2</span>
+<span class="font-body-sm text-body-sm font-bold">Level 3 (500)</span>
+</div>
+<div class="h-2 w-full bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[90%] rounded-full shadow-[0_0_10px_rgba(0,227,253,0.5)]"></div>
+</div>
+<p class="font-body-sm text-body-sm mt-xs opacity-90 italic text-center">50 more points to unlock higher loan limits</p>
+</div>
+</section>
+<!-- Verification Status -->
+<section class="space-y-sm">
+<h3 class="font-label-bold text-label-bold text-on-surface-variant px-1 uppercase tracking-widest">Verification Status</h3>
+<div class="grid grid-cols-3 gap-sm">
+<div class="glass-card rounded-xl p-sm flex flex-col items-center gap-xs border-primary-container/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant text-center">Identity</span>
+</div>
+<div class="glass-card rounded-xl p-sm flex flex-col items-center gap-xs border-primary-container/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant text-center">Phone</span>
+</div>
+<div class="glass-card rounded-xl p-sm flex flex-col items-center gap-xs border-outline-variant">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant text-center">Collateral</span>
+</div>
+</div>
+</section>
+<!-- Menu List -->
+<nav class="space-y-xs pb-4">
+<a class="flex items-center justify-between p-md bg-white border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-100" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Active Loans</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-md bg-white border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-100" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Asset Vault</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-md bg-white border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-100" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Transaction History</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-md bg-white border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-100" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="card_giftcard">card_giftcard</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Referral Rewards</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-md bg-white border border-outline-variant/30 rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-100" href="#">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Security Settings</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</a>
+</nav>
+<!-- Logout Button -->
+<div class="pt-2">
+<button class="w-full py-md px-lg bg-surface border border-error text-error font-action-lg text-action-lg rounded-xl flex items-center justify-center gap-sm hover:bg-error/5 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline z-50 h-20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-bold text-label-bold mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold mt-1">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-bold text-label-bold mt-1">Vault</span>
+</a>
+<!-- Active State for Profile -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

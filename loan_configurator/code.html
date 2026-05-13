@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom slider styling for the Electric Blue vibe */
+        input[type='range'] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        input[type='range']::-webkit-slider-runnable-track {
+            background: #dde1ff;
+            height: 8px;
+            border-radius: 999px;
+        }
+        input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: -6px;
+            background-color: #003ec7;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 15px rgba(0, 62, 199, 0.4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#dfe6ee",
+                        "on-tertiary-fixed": "#151c22",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "outline-variant": "#c3c5d9",
+                        "on-primary-fixed": "#001452",
+                        "on-secondary": "#ffffff",
+                        "outline": "#737688",
+                        "on-secondary-container": "#00616d",
+                        "background": "#fcf8f8",
+                        "tertiary": "#484f56",
+                        "secondary": "#006875",
+                        "surface-container": "#f0edec",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#004ced",
+                        "surface": "#fcf8f8",
+                        "on-background": "#1c1b1b",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "primary-container": "#0052ff",
+                        "on-primary-container": "#dfe3ff",
+                        "tertiary-fixed": "#dce3eb",
+                        "error": "#ba1a1a",
+                        "primary": "#003ec7",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-container": "#60676e",
+                        "on-secondary-fixed": "#001f24",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed-dim": "#00daf3",
+                        "on-secondary-fixed-variant": "#004f58",
+                        "surface-variant": "#e5e2e1",
+                        "surface-bright": "#fcf8f8",
+                        "inverse-surface": "#313030",
+                        "secondary-container": "#00e3fd",
+                        "surface-container-high": "#ebe7e7",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "inverse-primary": "#b7c4ff",
+                        "on-surface-variant": "#434656",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "on-surface": "#1c1b1b",
+                        "secondary-fixed": "#9cf0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "md": "24px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "margin-desktop": "120px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "xs": "4px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "action-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "action-lg": ["18px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar from JSON -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline top-0 sticky z-50">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img alt="Student Profile" class="w-full h-full object-cover" data-alt="A professional studio portrait of a young, diverse university student smiling warmly. The background is a clean, minimalist off-white, reflecting a modern light-mode interface. The lighting is soft and even, highlighting the subject's friendly and approachable demeanor. The overall aesthetic is high-quality, tech-focused, and academic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzJyQNORghqNuGxAlzgVuGxl3-S1nde155vyfOsM4YZEC0RoVxdIqEeOrBLH-xfPLRB0fAsXEdp0odjt06GKcbwbSmgeMNuQgRMVlPBEBkrHItiEnFBPSFVdkfnhIu8i__RKfqNgF--ccoYEjpmqaNLS-i-fmdgz5MOry-sa1wLbhiLiOrp3zP1mUCRQGKPDTJ1E_ZcgT_nGALUeIkVUPZsl2m18p0XcMNIdsTUkNVU-fZfjd0hORyEv3g8eY9CRo6E50imoM7vdg"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-extrabold text-primary dark:text-primary-fixed-dim">Flism</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-100" data-icon="notifications">notifications</button>
+</header>
+<main class="flex-grow flex flex-col items-center px-margin-mobile md:px-margin-desktop py-lg">
+<div class="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-lg">
+<!-- Configurator Panel -->
+<div class="lg:col-span-7 flex flex-col gap-lg">
+<div class="flex flex-col gap-xs">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Configure your loan</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Adjust your amount and duration to see instant repayment terms.</p>
+</div>
+<!-- Bento Card: Loan Amount -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant hover:border-primary-container transition-colors group">
+<div class="flex justify-between items-end mb-sm">
+<label class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Loan Amount</label>
+<span class="font-headline-lg text-headline-lg text-primary font-bold group-hover:scale-110 transition-transform origin-right">$2,500</span>
+</div>
+<input class="w-full h-2 rounded-full cursor-pointer" max="10000" min="500" step="100" type="range" value="2500"/>
+<div class="flex justify-between mt-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">$500</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">$10,000</span>
+</div>
+</div>
+<!-- Bento Card: Duration -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant hover:border-primary-container transition-colors group">
+<div class="flex justify-between items-end mb-sm">
+<label class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Repayment Duration</label>
+<span class="font-headline-lg text-headline-lg text-primary font-bold group-hover:scale-110 transition-transform origin-right">45 Days</span>
+</div>
+<input class="w-full h-2 rounded-full cursor-pointer" max="180" min="7" step="1" type="range" value="45"/>
+<div class="flex justify-between mt-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">7 days</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">180 days</span>
+</div>
+</div>
+<!-- Optional Asset Toggle -->
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="inventory_2">inventory_2</span>
+<div>
+<p class="font-label-bold text-body-md font-bold text-on-surface">Take loan against an asset</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Unlock lower rates with collateral (Optional)</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<!-- Summary Sidebar -->
+<div class="lg:col-span-5">
+<div class="bg-primary-container text-on-primary-container p-lg rounded-xl flex flex-col gap-md shadow-[0_20px_40px_rgba(0,62,199,0.15)] sticky top-24">
+<h2 class="font-headline-lg text-headline-lg font-bold">Loan Summary</h2>
+<div class="flex flex-col gap-sm border-b border-primary-fixed-dim pb-md">
+<div class="flex justify-between items-center">
+<span class="font-body-md opacity-80">Interest Rate</span>
+<span class="font-headline-lg text-2xl font-bold">4.5%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md opacity-80">Platform Fee</span>
+<span class="font-body-md font-bold">$12.50</span>
+</div>
+</div>
+<div class="flex flex-col gap-xs py-sm">
+<span class="font-label-bold uppercase tracking-widest opacity-80">Total Repayment</span>
+<span class="text-5xl font-extrabold tracking-tighter">$2,612.50</span>
+</div>
+<div class="bg-white/10 p-sm rounded-lg backdrop-blur-md flex items-center gap-sm border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="event">event</span>
+<div class="flex flex-col">
+<span class="font-body-sm opacity-80">Repayment Date</span>
+<span class="font-label-bold text-sm">October 24, 2023</span>
+</div>
+</div>
+<button class="mt-md bg-white text-primary font-action-lg py-md rounded-xl hover:bg-secondary-fixed transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] active:scale-95 duration-200">
+                        Continue
+                    </button>
+<p class="text-center font-body-sm opacity-70">Secured with 256-bit encryption</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar from JSON -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline md:hidden z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-2 shadow-[0_0_20px_rgba(0,227,253,0.2)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold">Loans</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-bold text-label-bold">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+<!-- For Desktop navigation, showing how TopAppBar could have nav too if required, but following JSON as Anchor -->
+</body></html>
