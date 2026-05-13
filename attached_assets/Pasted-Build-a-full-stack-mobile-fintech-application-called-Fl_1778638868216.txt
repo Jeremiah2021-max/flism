@@ -1,0 +1,203 @@
+Build a full-stack mobile fintech application called Flism, designed as a student-focused collateral-based loan platform for university students in Ghana.
+
+The core purpose of Flism is to provide small, secure, and controlled loans backed by physical or digital collateral, starting with a conservative model to minimize fraud and financial risk, then scaling into a hybrid lending system.
+
+1. CORE PRODUCT VISION
+
+Flism is a student loan + collateral management system that allows users to:
+
+request small loans,
+secure loans using physical assets,
+build trust over time,
+increase borrowing limits based on repayment behavior.
+
+The system must prioritize:
+
+fraud prevention,
+asset security,
+repayment reliability,
+student verification,
+financial safety.
+2. STRATEGIC LOAN MODEL (VERY IMPORTANT)
+Phase 1 — STARTING MODEL (MANDATORY)
+
+“Physical Collateral + Small Loans”
+
+This is the safest launch strategy.
+
+Why this model:
+low fraud risk,
+easy control,
+predictable cash flow,
+simple operations,
+better asset recovery.
+Rules:
+ALL new users MUST provide physical collateral.
+Loans are small and short-term.
+No unsecured loans at launch.
+Phase 2 — HYBRID MODEL (SCALING MODEL)
+
+After trust system is built:
+
+Low-risk users:
+digital collateral or identity-based lending allowed.
+High-risk users:
+physical collateral still required.
+Example:
+trusted returning borrower → phone verification only.
+new borrower → physical asset deposit mandatory.
+3. COLLATERAL-BASED LOAN SYSTEM
+Supported Assets:
+smartphones
+laptops
+tablets
+gaming consoles
+cameras
+motorbikes
+other high-value student electronics
+Asset Submission Requirements:
+asset images/videos
+serial number / IMEI
+purchase receipt or proof of ownership
+estimated market value
+condition report
+Loan-to-Value (LTV) Rules:
+loans must be 40%–65% of asset value only
+higher risk users get lower LTV
+
+Example:
+
+asset value: GHS 4,000
+loan limit: GHS 2,000
+4. COLLATERAL WORKFLOW
+
+The system must support:
+
+Asset submission
+Admin verification
+Physical inspection (campus agents if needed)
+Asset approval/rejection
+Secure storage or registration
+Loan disbursement
+Repayment tracking
+Asset release after repayment
+Asset seizure + liquidation after default
+5. SMALL LOAN STRUCTURE (STARTER SYSTEM)
+
+For new users:
+
+GHS 50–300 maximum loan
+short repayment cycles (7–30 days)
+strict collateral requirement
+manual or semi-automated approval
+
+Loan limits increase based on repayment history.
+
+6. TRUST & RISK SCORING SYSTEM
+
+Flism must generate a Student Trust Score based on:
+
+repayment history
+collateral value and reliability
+student verification strength
+device/account consistency
+guarantor reliability
+behavioral patterns
+
+Higher trust score results in:
+
+higher loan limits
+faster approvals
+reduced collateral requirements
+lower interest rates
+7. DEFAULT HANDLING SYSTEM
+
+If a borrower fails to repay:
+
+automated reminders (SMS/WhatsApp/app notifications)
+guarantor notifications
+grace period enforcement
+account restriction
+blacklist flagging
+collateral seizure process
+8. COLLATERAL LIQUIDATION SYSTEM
+
+If loan is not repaid:
+
+asset moves to liquidation inventory
+asset is auctioned or resold
+proceeds are used to recover loan value
+user account is permanently flagged or restricted
+9. SYSTEM REQUIREMENTS
+Frontend:
+Flutter or React Native mobile app
+Backend:
+Node.js + Express
+Database:
+PostgreSQL or MySQL
+Authentication:
+JWT or Firebase Auth
+Storage:
+Cloudinary / AWS S3 (for asset media)
+Payments:
+Mobile Money integration (MTN, Telecel, AirtelTigo)
+Notifications:
+Firebase Cloud Messaging + SMS/WhatsApp integration
+10. CORE MODULES
+
+The system must include:
+
+User Module
+registration
+student verification
+identity verification
+profile management
+Loan Module
+loan request
+loan approval
+repayment tracking
+interest calculation
+Asset Module
+asset submission
+verification
+storage tracking
+liquidation
+Admin Module
+dashboard
+user management
+loan management
+fraud monitoring
+asset control
+Risk Engine
+trust scoring
+fraud detection
+loan limit calculation
+11. SECURITY & FRAUD PREVENTION
+
+Must include:
+
+face verification
+device fingerprinting
+duplicate account detection
+GPS tracking at signup
+blacklist system
+suspicious activity alerts
+12. UX REQUIREMENTS
+
+The app must feel:
+
+modern
+trustworthy
+simple
+fast
+student-friendly
+fintech-grade
+
+Focus heavily on:
+
+clarity of repayment
+transparency of collateral
+trust-building interface
+13. FINAL GOAL
+
+Flism should become a scalable student fintech ecosystem that starts safely with collateral-backed microloans and evolves into a hybrid lending platform across universities in Ghana.
