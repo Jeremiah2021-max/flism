@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, Dimensions, Platform } from 'react-nativ
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@/components/Button';
 import { useColors } from '@/hooks/useColors';
 
@@ -41,13 +42,15 @@ export default function WelcomeScreen() {
       {/* Feature bullets */}
       <View style={styles.features}>
         {[
-          { icon: '🔒', text: 'Collateral-secured microloans' },
-          { icon: '⚡', text: 'Fast approval in 24 hours' },
-          { icon: '📈', text: 'Build your trust score over time' },
-          { icon: '🎓', text: 'Made for Ghanaian students' },
+          { icon: 'lock-closed-outline' as const, text: 'Collateral-secured microloans' },
+          { icon: 'flash-outline' as const, text: 'Fast approval in 24 hours' },
+          { icon: 'trending-up-outline' as const, text: 'Build your trust score over time' },
+          { icon: 'school-outline' as const, text: 'Made for Ghanaian students' },
         ].map((f, i) => (
           <View key={i} style={styles.featureRow}>
-            <Text style={styles.featureIcon}>{f.icon}</Text>
+            <View style={styles.featureIconWrap}>
+              <Ionicons name={f.icon} size={16} color="rgba(255,255,255,0.9)" />
+            </View>
             <Text style={styles.featureText}>{f.text}</Text>
           </View>
         ))}
@@ -105,7 +108,11 @@ const styles = StyleSheet.create({
   },
   features: { paddingHorizontal: 32, gap: 12, marginTop: 32 },
   featureRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  featureIcon: { fontSize: 20, width: 28 },
+  featureIconWrap: {
+    width: 28, height: 28, borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    alignItems: 'center', justifyContent: 'center',
+  },
   featureText: {
     fontSize: 15, color: 'rgba(255,255,255,0.88)',
     fontFamily: 'PlusJakartaSans_500Medium', flex: 1,

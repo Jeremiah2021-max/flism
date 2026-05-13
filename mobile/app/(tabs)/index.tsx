@@ -55,7 +55,7 @@ export default function HomeScreen() {
       <LinearGradient colors={['#001A7A', '#003EC7']} style={[styles.header, { paddingTop: topPad + 16 }]}>
         <View style={styles.headerRow}>
           <View>
-            <Text style={styles.greeting}>Hello, {firstName} 👋</Text>
+            <Text style={styles.greeting}>Hello, {firstName}</Text>
             <Text style={styles.subGreeting}>Manage your finances</Text>
           </View>
           <TouchableOpacity onPress={() => router.push('/notifications')} style={styles.notifBtn}>
