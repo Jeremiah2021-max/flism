@@ -9,9 +9,10 @@ import { Button } from '@/components/Button';
 
 interface LoanDetail {
   id: number; amount: string; status: string; purpose: string;
-  repayment_date: string; interest_rate: string; amount_repaid: string;
+  repayment_date: string; interest_rate: string; penalty_rate: string; amount_repaid: string;
   duration_days: number; created_at: string; asset_type: string;
   asset_description: string; asset_value: string; brand: string; model: string;
+  days_overdue: number; penalty_amount: number; interest_amount: number; total_due: number;
   repayments: { id: number; amount: string; status: string; due_date: string; paid_at: string }[];
 }
 
@@ -49,15 +50,20 @@ export default function LoanDetailScreen() {
   const amount = parseFloat(loan.amount);
   const repaid = parseFloat(loan.amount_repaid || '0');
   const rate = parseFloat(loan.interest_rate);
-  const total = amount * (1 + rate / 100);
-  const remaining = Math.max(total - repaid, 0);
-  const progress = total > 0 ? Math.min(repaid / total, 1) : 0;
+  const penaltyAmount = loan.penalty_amount ?? 0;
+  const interestAmount = loan.interest_amount ?? (amount * rate / 100);
+  const totalDue = loan.total_due ?? (amount + interestAmount);
+  const daysOverdue = loan.days_overdue ?? 0;
+  const isOverdue = daysOverdue > 0 && loan.status === 'active';
+  const remaining = Math.max(totalDue - repaid, 0);
+  const progress = totalDue > 0 ? Math.min(repaid / totalDue, 1) : 0;
 
   const statusColor = loan.status === 'active' ? '#006875' : loan.status === 'pending' ? '#B86A00' : loan.status === 'repaid' ? '#3B7D4A' : '#BA1A1A';
   const dueDate = loan.repayment_date ? new Date(loan.repayment_date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
   function handleRepay() {
-    Alert.alert('Make Payment', `Remaining balance: GHS ${remaining.toFixed(2)}`, [
+    const penaltyNote = penaltyAmount > 0 ? `\nIncludes GHS ${penaltyAmount.toFixed(2)} late penalty.` : '';
+    Alert.alert('Make Payment', `Remaining balance: GHS ${remaining.toFixed(2)}${penaltyNote}`, [
       { text: 'Pay GHS 50', onPress: () => repayMutation.mutate(50) },
       { text: `Pay full (GHS ${remaining.toFixed(2)})`, onPress: () => repayMutation.mutate(remaining) },
       { text: 'Cancel', style: 'cancel' },
@@ -85,7 +91,7 @@ export default function LoanDetailScreen() {
           <View style={styles.progressTrack}>
             <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
           </View>
-          <Text style={styles.progressLabel}>{Math.round(progress * 100)}% repaid · GHS {repaid.toFixed(2)} of GHS {total.toFixed(2)}</Text>
+          <Text style={styles.progressLabel}>{Math.round(progress * 100)}% repaid · GHS {repaid.toFixed(2)} of GHS {totalDue.toFixed(2)}</Text>
         </View>
 
         {/* Details */}
@@ -93,8 +99,18 @@ export default function LoanDetailScreen() {
           <Text style={[styles.cardTitle, { color: colors.foreground }]}>Loan Information</Text>
           <DetailRow label="Purpose" value={loan.purpose} colors={colors} />
           <DetailRow label="Duration" value={`${loan.duration_days} days`} colors={colors} />
-          <DetailRow label="Interest Rate" value={`${rate}% flat`} colors={colors} />
+          <DetailRow label="Principal" value={`GHS ${amount.toFixed(2)}`} colors={colors} />
+          <DetailRow label="Interest" value={`GHS ${interestAmount.toFixed(2)} (${rate}% flat)`} colors={colors} />
+          {penaltyAmount > 0 && (
+            <DetailRow
+              label={`Late Penalty (${daysOverdue}d)`}
+              value={`GHS ${penaltyAmount.toFixed(2)}`}
+              colors={colors}
+              error
+            />
+          )}
           <DetailRow label="Due Date" value={dueDate} colors={colors} />
+          <DetailRow label="Total Due" value={`GHS ${totalDue.toFixed(2)}`} colors={colors} highlight />
           <DetailRow label="Outstanding" value={`GHS ${remaining.toFixed(2)}`} colors={colors} highlight />
         </View>
 
@@ -149,11 +165,14 @@ export default function LoanDetailScreen() {
   );
 }
 
-function DetailRow({ label, value, colors, highlight }: any) {
+function DetailRow({ label, value, colors, highlight, error }: any) {
   return (
     <View style={styles.detailRow}>
-      <Text style={[styles.detailLabel, { color: colors.muted }]}>{label}</Text>
-      <Text style={[styles.detailValue, { color: highlight ? colors.primaryContainer : colors.foreground, fontWeight: highlight ? '700' : '500' }]}>{value}</Text>
+      <Text style={[styles.detailLabel, { color: error ? colors.error : colors.muted }]}>{label}</Text>
+      <Text style={[styles.detailValue, {
+        color: error ? colors.error : highlight ? colors.primaryContainer : colors.foreground,
+        fontWeight: (highlight || error) ? '700' : '500',
+      }]}>{value}</Text>
     </View>
   );
 }

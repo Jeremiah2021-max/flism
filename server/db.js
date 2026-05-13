@@ -45,6 +45,7 @@ async function initDb() {
       asset_id INTEGER REFERENCES assets(id),
       amount DECIMAL(10,2) NOT NULL,
       interest_rate DECIMAL(5,2) DEFAULT 5.00,
+      penalty_rate DECIMAL(5,2) DEFAULT 0.50,
       purpose TEXT,
       status VARCHAR(50) DEFAULT 'pending',
       repayment_date DATE,
@@ -72,6 +73,8 @@ async function initDb() {
       is_read BOOLEAN DEFAULT false,
       created_at TIMESTAMP DEFAULT NOW()
     );
+
+    ALTER TABLE loans ADD COLUMN IF NOT EXISTS penalty_rate DECIMAL(5,2) DEFAULT 0.50;
   `);
   console.log('Database schema initialized');
 }
