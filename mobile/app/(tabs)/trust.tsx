@@ -48,7 +48,7 @@ export default function TrustScreen() {
         <Text style={styles.heroLabel}>Trust Score</Text>
         <Text style={styles.heroScore}>{data?.score ?? '—'}</Text>
         <View style={styles.tierBadge}>
-          <Ionicons name="star" size={14} color={tierConfig?.color ?? '#fff'} />
+          <Ionicons name="ribbon" size={14} color={tierConfig?.color ?? '#fff'} />
           <Text style={styles.tierText}>{data?.tier ?? 'Bronze'} Tier</Text>
         </View>
 
@@ -64,7 +64,7 @@ export default function TrustScreen() {
         {/* Stats */}
         <View style={[styles.statsGrid]}>
           {[
-            { label: 'Total Loans', value: data?.stats.total_loans ?? 0, icon: 'cash-outline', color: colors.primaryContainer },
+            { label: 'Total Loans', value: data?.stats.total_loans ?? 0, icon: 'wallet-outline', color: colors.primaryContainer },
             { label: 'Repaid', value: data?.stats.repaid_loans ?? 0, icon: 'checkmark-circle-outline', color: '#006875' },
             { label: 'Defaults', value: data?.stats.defaulted_loans ?? 0, icon: 'close-circle-outline', color: colors.error },
             { label: 'Assets', value: data?.stats.approved_assets ?? 0, icon: 'shield-checkmark-outline', color: '#7B4F00' },

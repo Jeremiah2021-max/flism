@@ -107,10 +107,11 @@ const styles = StyleSheet.create({
     fontFamily: 'PlusJakartaSans_600SemiBold', marginTop: 8, lineHeight: 30,
   },
   features: { paddingHorizontal: 32, gap: 12, marginTop: 32 },
-  featureRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  featureRow: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   featureIconWrap: {
-    width: 28, height: 28, borderRadius: 8,
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    width: 34, height: 34, borderRadius: 17,
+    backgroundColor: 'rgba(255,255,255,0.13)',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)',
     alignItems: 'center', justifyContent: 'center',
   },
   featureText: {

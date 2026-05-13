@@ -1,9 +1,24 @@
 import { useEffect } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { Platform, View } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useColors } from '@/hooks/useColors';
 import { useAuth } from '@/contexts/AuthContext';
+
+function TabIcon({ name, focusedName, color, focused }: {
+  name: any; focusedName: any; color: string; focused: boolean;
+}) {
+  return (
+    <View style={{
+      alignItems: 'center', justifyContent: 'center',
+      paddingHorizontal: 14, paddingVertical: 5,
+      borderRadius: 14,
+      backgroundColor: focused ? color + '18' : 'transparent',
+    }}>
+      <Ionicons name={focused ? focusedName : name} size={22} color={color} />
+    </View>
+  );
+}
 
 export default function TabsLayout() {
   const colors = useColors();
@@ -18,7 +33,7 @@ export default function TabsLayout() {
 
   if (!user) return null;
 
-  const tabBarHeight = Platform.OS === 'web' ? 84 : 72;
+  const tabBarHeight = Platform.OS === 'web' ? 88 : 76;
 
   return (
     <Tabs
@@ -31,15 +46,18 @@ export default function TabsLayout() {
           borderTopColor: colors.tabBarBorder,
           borderTopWidth: 1,
           height: tabBarHeight,
-          paddingBottom: Platform.OS === 'web' ? 34 : 12,
-          paddingTop: 8,
+          paddingBottom: Platform.OS === 'web' ? 34 : 14,
+          paddingTop: 6,
           elevation: 0,
-          shadowOpacity: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
         },
         tabBarLabelStyle: {
           fontSize: 10,
           fontFamily: 'PlusJakartaSans_600SemiBold',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >
@@ -48,7 +66,7 @@ export default function TabsLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+            <TabIcon name="home-outline" focusedName="home" color={color} focused={focused} />
           ),
         }}
       />
@@ -57,7 +75,7 @@ export default function TabsLayout() {
         options={{
           title: 'Loans',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'cash' : 'cash-outline'} size={22} color={color} />
+            <TabIcon name="wallet-outline" focusedName="wallet" color={color} focused={focused} />
           ),
         }}
       />
@@ -66,7 +84,7 @@ export default function TabsLayout() {
         options={{
           title: 'Vault',
           tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name={focused ? 'shield-lock' : 'shield-lock-outline'} size={22} color={color} />
+            <TabIcon name="shield-checkmark-outline" focusedName="shield-checkmark" color={color} focused={focused} />
           ),
         }}
       />
@@ -75,7 +93,7 @@ export default function TabsLayout() {
         options={{
           title: 'Trust',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'star' : 'star-outline'} size={22} color={color} />
+            <TabIcon name="ribbon-outline" focusedName="ribbon" color={color} focused={focused} />
           ),
         }}
       />
@@ -84,7 +102,7 @@ export default function TabsLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} size={22} color={color} />
+            <TabIcon name="person-circle-outline" focusedName="person-circle" color={color} focused={focused} />
           ),
         }}
       />

@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
@@ -38,7 +38,7 @@ export default function HomeScreen() {
   const trustScore = user?.trust_score ?? 0;
 
   const quickActions = [
-    { icon: 'cash-outline' as const, label: 'Apply Loan', route: '/loan/request', color: '#0052FF', bg: '#EEF2FF' },
+    { icon: 'wallet-outline' as const, label: 'Apply Loan', route: '/loan/request', color: '#0052FF', bg: '#EEF2FF' },
     { icon: 'shield-checkmark-outline' as const, label: 'Add Asset', route: '/asset/submit', color: '#006875', bg: '#E0F5F7' },
     { icon: 'receipt-outline' as const, label: 'Repayments', route: '/repayments', color: '#7B4F00', bg: '#FFF3E0' },
     { icon: 'notifications-outline' as const, label: 'Alerts', route: '/notifications', color: '#5C1A8A', bg: '#F3E8FF' },
@@ -158,7 +158,7 @@ export default function HomeScreen() {
             </View>
           ) : activeLoans.length === 0 ? (
             <View style={[styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <MaterialCommunityIcons name="cash-remove" size={32} color={colors.muted} />
+              <Ionicons name="wallet-outline" size={32} color={colors.muted} />
               <Text style={[styles.emptyTitle, { color: colors.foreground }]}>No active loans</Text>
               <Text style={[styles.emptyText, { color: colors.muted }]}>Apply for your first loan to get started</Text>
             </View>

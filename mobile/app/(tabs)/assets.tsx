@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { useColors } from '@/hooks/useColors';
@@ -88,7 +88,7 @@ export default function AssetsScreen() {
         ListEmptyComponent={() =>
           isLoading ? null : (
             <View style={[styles.emptyState, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <MaterialCommunityIcons name="shield-lock-outline" size={52} color={colors.muted} />
+              <Ionicons name="shield-checkmark-outline" size={52} color={colors.muted} />
               <Text style={[styles.emptyTitle, { color: colors.foreground }]}>Vault is empty</Text>
               <Text style={[styles.emptyText, { color: colors.muted }]}>
                 Submit a physical asset as collateral to apply for loans.
