@@ -1,0 +1,79 @@
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+});
+
+async function initDb() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      full_name VARCHAR(255) NOT NULL,
+      phone VARCHAR(50),
+      student_id VARCHAR(100),
+      university VARCHAR(255) DEFAULT 'University of Ghana',
+      trust_score INTEGER DEFAULT 120,
+      loan_limit DECIMAL(10,2) DEFAULT 300.00,
+      is_verified BOOLEAN DEFAULT false,
+      is_kyc_complete BOOLEAN DEFAULT false,
+      profile_image VARCHAR(500),
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS assets (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      type VARCHAR(100) NOT NULL,
+      description TEXT,
+      serial_number VARCHAR(255),
+      estimated_value DECIMAL(10,2) NOT NULL,
+      loan_value DECIMAL(10,2),
+      status VARCHAR(50) DEFAULT 'pending',
+      images JSONB DEFAULT '[]',
+      condition VARCHAR(50) DEFAULT 'good',
+      brand VARCHAR(100),
+      model VARCHAR(100),
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS loans (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      asset_id INTEGER REFERENCES assets(id),
+      amount DECIMAL(10,2) NOT NULL,
+      interest_rate DECIMAL(5,2) DEFAULT 5.00,
+      purpose TEXT,
+      status VARCHAR(50) DEFAULT 'pending',
+      repayment_date DATE,
+      duration_days INTEGER DEFAULT 30,
+      amount_repaid DECIMAL(10,2) DEFAULT 0,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS repayments (
+      id SERIAL PRIMARY KEY,
+      loan_id INTEGER REFERENCES loans(id) ON DELETE CASCADE,
+      amount DECIMAL(10,2) NOT NULL,
+      status VARCHAR(50) DEFAULT 'pending',
+      due_date DATE,
+      paid_at TIMESTAMP,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS notifications (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      title VARCHAR(255) NOT NULL,
+      message TEXT NOT NULL,
+      type VARCHAR(50) DEFAULT 'info',
+      is_read BOOLEAN DEFAULT false,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+  `);
+  console.log('Database schema initialized');
+}
+
+module.exports = { pool, initDb };

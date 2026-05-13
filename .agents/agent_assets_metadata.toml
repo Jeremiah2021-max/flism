@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "38ZtnOyWD1q9I_4IFWMvn"
+uri = "file://mobile/assets/images/icon.png"
+type = "image"
+title = "flism app icon"
+
+[[generated]]
+id = "6FpySPej-PajT4NyMQ4ZA"
+uri = "file://mobile/assets/images/splash.png"
+type = "image"
+title = "flism splash screen"
