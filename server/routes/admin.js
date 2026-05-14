@@ -47,6 +47,38 @@ router.get('/users', authMiddleware, adminOnly, async (req, res) => {
   }
 });
 
+router.get('/assets', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT a.*, u.full_name, u.email, u.phone, u.university
+       FROM assets a
+       JOIN users u ON a.user_id = u.id
+       ORDER BY a.created_at DESC LIMIT 200`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.put('/users/:id/verify', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `UPDATE users SET is_verified=true, is_kyc_complete=true, trust_score=trust_score+50, kyc_step=4
+       WHERE id=$1 RETURNING id, email, full_name, is_verified, is_kyc_complete, trust_score`,
+      [req.params.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'User not found' });
+    await pool.query(
+      `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
+      [req.params.id, 'Account Verified', 'Your account has been manually verified by the Flism team. Trust score +50 pts.', 'success']
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 router.get('/loans', authMiddleware, adminOnly, async (req, res) => {
   try {
     const result = await pool.query(

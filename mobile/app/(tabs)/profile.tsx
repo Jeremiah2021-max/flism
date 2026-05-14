@@ -220,6 +220,29 @@ export default function ProfileScreen() {
           <View style={{ height: 10 }} />
         </SectionGroup>
 
+        {/* Admin Panel — only visible to admins */}
+        {user?.role === 'admin' && (
+          <TouchableOpacity
+            style={[styles.adminEntryCard, { backgroundColor: '#001A7A', borderColor: '#0052FF' }]}
+            onPress={() => router.push('/admin')}
+            activeOpacity={0.85}
+          >
+            <View style={styles.adminEntryLeft}>
+              <View style={styles.adminEntryIcon}>
+                <Ionicons name="shield-checkmark" size={20} color="#FFD700" />
+              </View>
+              <View>
+                <Text style={styles.adminEntryTitle}>Admin Dashboard</Text>
+                <Text style={styles.adminEntrySub}>Manage loans, assets & users</Text>
+              </View>
+            </View>
+            <View style={styles.adminEntryBadge}>
+              <Text style={styles.adminEntryBadgeText}>ADMIN</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.6)" />
+          </TouchableOpacity>
+        )}
+
         {/* Support */}
         <SectionGroup title="Support & Legal" colors={colors}>
           <MenuAction icon="help-circle-outline" label="Help Center" colors={colors} onPress={() => Alert.alert('Help', 'Contact support@flism.gh or call 0800-FLISM')} />
@@ -352,4 +375,11 @@ const styles = StyleSheet.create({
   signOut: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16, borderRadius: 14, borderWidth: 1.5 },
   signOutText: { fontSize: 15, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
   version: { textAlign: 'center', fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular' },
+  adminEntryCard: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderRadius: 16, borderWidth: 1.5 },
+  adminEntryLeft: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  adminEntryIcon: { width: 40, height: 40, borderRadius: 12, backgroundColor: 'rgba(255,215,0,0.15)', alignItems: 'center', justifyContent: 'center' },
+  adminEntryTitle: { fontSize: 15, fontWeight: '700', color: '#fff', fontFamily: 'PlusJakartaSans_700Bold' },
+  adminEntrySub: { fontSize: 12, color: 'rgba(255,255,255,0.6)', fontFamily: 'PlusJakartaSans_400Regular', marginTop: 2 },
+  adminEntryBadge: { backgroundColor: 'rgba(255,215,0,0.2)', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 },
+  adminEntryBadgeText: { color: '#FFD700', fontSize: 10, fontWeight: '800', fontFamily: 'PlusJakartaSans_800ExtraBold', letterSpacing: 0.8 },
 });
