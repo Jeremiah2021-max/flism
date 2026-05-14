@@ -10,10 +10,21 @@ export interface User {
   phone: string | null;
   student_id: string | null;
   university: string;
+  department: string | null;
+  faculty: string | null;
+  year_of_study: string | null;
+  date_of_birth: string | null;
+  address: string | null;
+  ghana_card_number: string | null;
+  momo_number: string | null;
+  momo_provider: string | null;
+  role: string;
+  kyc_step: number;
   trust_score: number;
   loan_limit: string;
   is_verified: boolean;
   is_kyc_complete: boolean;
+  is_student_verified: boolean;
   profile_image: string | null;
 }
 
@@ -34,6 +45,11 @@ interface RegisterData {
   phone?: string;
   university?: string;
   student_id?: string;
+  department?: string;
+  faculty?: string;
+  year_of_study?: string;
+  momo_number?: string;
+  momo_provider?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);

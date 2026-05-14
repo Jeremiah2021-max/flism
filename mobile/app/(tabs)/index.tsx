@@ -10,9 +10,17 @@ import { apiGet } from '@/lib/api';
 
 interface Loan {
   id: number; amount: string; status: string; purpose: string;
-  repayment_date: string; interest_rate: string; amount_repaid: string;
-  asset_type: string;
+  repayment_date: string; interest_rate: string; amount_repaid: string; asset_type: string;
 }
+
+interface Transaction {
+  id: number; type: string; amount: string; provider: string;
+  status: string; created_at: string; purpose: string;
+}
+
+const TIER_COLORS: Record<string, string> = {
+  Bronze: '#CD7F32', Silver: '#A8A8A8', Gold: '#FFD700', Platinum: '#00C6E0',
+};
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -23,25 +31,33 @@ export default function HomeScreen() {
 
   const loansQuery = useQuery({ queryKey: ['/api/loans'], queryFn: () => apiGet<Loan[]>('/api/loans') });
   const notifQuery = useQuery({ queryKey: ['/api/notifications'], queryFn: () => apiGet<any>('/api/notifications') });
+  const trustQuery = useQuery({ queryKey: ['/api/trust'], queryFn: () => apiGet<any>('/api/trust') });
+  const txnQuery = useQuery({ queryKey: ['/api/transactions'], queryFn: () => apiGet<Transaction[]>('/api/transactions') });
 
   function onRefresh() {
     loansQuery.refetch();
     notifQuery.refetch();
+    trustQuery.refetch();
+    txnQuery.refetch();
     refreshUser();
   }
 
-  const activeLoans = loansQuery.data?.filter(l => l.status === 'active' || l.status === 'pending') ?? [];
+  const allLoans = loansQuery.data ?? [];
+  const activeLoans = allLoans.filter(l => l.status === 'active' || l.status === 'pending');
   const totalBorrowed = activeLoans.reduce((s, l) => s + parseFloat(l.amount), 0);
   const unreadCount = notifQuery.data?.unread_count ?? 0;
   const firstName = user?.full_name?.split(' ')[0] ?? 'Student';
   const loanLimit = parseFloat(user?.loan_limit ?? '300');
   const trustScore = user?.trust_score ?? 0;
+  const tier = trustQuery.data?.tier ?? 'Bronze';
+  const tierColor = TIER_COLORS[tier];
+  const recentTxns = (txnQuery.data ?? []).slice(0, 3);
 
   const quickActions = [
     { icon: 'wallet-outline' as const, label: 'Apply Loan', route: '/loan/request', color: '#0052FF', bg: '#EEF2FF' },
     { icon: 'shield-checkmark-outline' as const, label: 'Add Asset', route: '/asset/submit', color: '#006875', bg: '#E0F5F7' },
     { icon: 'receipt-outline' as const, label: 'Repayments', route: '/repayments', color: '#7B4F00', bg: '#FFF3E0' },
-    { icon: 'notifications-outline' as const, label: 'Alerts', route: '/notifications', color: '#5C1A8A', bg: '#F3E8FF' },
+    { icon: 'people-outline' as const, label: 'Guarantors', route: '/guarantor/add', color: '#5C1A8A', bg: '#F3E8FF' },
   ];
 
   return (
@@ -51,7 +67,7 @@ export default function HomeScreen() {
       showsVerticalScrollIndicator={false}
       refreshControl={<RefreshControl refreshing={loansQuery.isFetching} onRefresh={onRefresh} tintColor={colors.primaryContainer} />}
     >
-      {/* Top header */}
+      {/* Header */}
       <LinearGradient colors={['#001A7A', '#003EC7']} style={[styles.header, { paddingTop: topPad + 16 }]}>
         <View style={styles.headerRow}>
           <View>
@@ -70,18 +86,15 @@ export default function HomeScreen() {
 
         {/* Balance card */}
         <View style={styles.balanceCard}>
-          <LinearGradient
-            colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']}
-            style={styles.balanceGrad}
-          >
+          <LinearGradient colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']} style={styles.balanceGrad}>
             <View style={styles.balanceRow}>
               <View>
                 <Text style={styles.balanceLabel}>Loan Limit Available</Text>
                 <Text style={styles.balanceAmount}>GHS {loanLimit.toFixed(2)}</Text>
               </View>
-              <View style={styles.scoreChip}>
-                <Ionicons name="star" size={12} color="#FFD700" />
-                <Text style={styles.scoreChipText}>{trustScore}</Text>
+              <View style={styles.tierChip}>
+                <Ionicons name="ribbon" size={11} color={tierColor} />
+                <Text style={[styles.tierChipText, { color: tierColor }]}>{tier}</Text>
               </View>
             </View>
             <View style={styles.balanceMeta}>
@@ -93,6 +106,11 @@ export default function HomeScreen() {
               <View>
                 <Text style={styles.metaLabel}>Borrowed</Text>
                 <Text style={styles.metaValue}>GHS {totalBorrowed.toFixed(0)}</Text>
+              </View>
+              <View style={styles.metaDivider} />
+              <View>
+                <Text style={styles.metaLabel}>Trust Score</Text>
+                <Text style={styles.metaValue}>{trustScore}</Text>
               </View>
               <View style={styles.metaDivider} />
               <View>
@@ -127,19 +145,71 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* KYC Banner */}
+        {/* KYC / completion banners */}
         {!user?.is_kyc_complete && (
           <TouchableOpacity
-            style={[styles.kycBanner, { backgroundColor: colors.warningContainer }]}
-            onPress={() => router.push('/profile')}
+            style={[styles.banner, { backgroundColor: colors.warningContainer }]}
+            onPress={() => router.push('/kyc')}
             activeOpacity={0.8}
           >
-            <Ionicons name="alert-circle-outline" size={20} color={colors.warning} />
+            <View style={[styles.bannerIcon, { backgroundColor: colors.warning + '20' }]}>
+              <Ionicons name="shield-outline" size={18} color={colors.warning} />
+            </View>
             <View style={{ flex: 1 }}>
-              <Text style={[styles.kycTitle, { color: colors.warning }]}>Complete your KYC</Text>
-              <Text style={[styles.kycSub, { color: colors.foregroundSecondary }]}>Verify your identity to unlock higher loan limits</Text>
+              <Text style={[styles.bannerTitle, { color: colors.warning }]}>Complete KYC Verification</Text>
+              <Text style={[styles.bannerSub, { color: colors.foregroundSecondary }]}>
+                {user?.kyc_step && user.kyc_step > 0
+                  ? `Step ${user.kyc_step} of 4 done — continue to verify`
+                  : 'Verify identity to unlock higher loan limits'}
+              </Text>
             </View>
             <Ionicons name="chevron-forward" size={16} color={colors.warning} />
+          </TouchableOpacity>
+        )}
+
+        {!user?.momo_number && user?.is_kyc_complete && (
+          <TouchableOpacity
+            style={[styles.banner, { backgroundColor: '#FFF3E0' }]}
+            onPress={() => router.push('/kyc')}
+            activeOpacity={0.8}
+          >
+            <View style={[styles.bannerIcon, { backgroundColor: '#FFE0B220' }]}>
+              <Ionicons name="phone-portrait-outline" size={18} color="#B86A00" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.bannerTitle, { color: '#B86A00' }]}>Link Mobile Money</Text>
+              <Text style={[styles.bannerSub, { color: colors.foregroundSecondary }]}>Add your MoMo number for loan disbursements</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color="#B86A00" />
+          </TouchableOpacity>
+        )}
+
+        {/* Trust Score bar */}
+        {trustQuery.data && (
+          <TouchableOpacity
+            style={[styles.trustCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            onPress={() => router.push('/(tabs)/trust')}
+            activeOpacity={0.85}
+          >
+            <View style={styles.trustCardTop}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Ionicons name="ribbon" size={18} color={tierColor} />
+                <Text style={[styles.trustTitle, { color: colors.foreground }]}>Trust Score</Text>
+              </View>
+              <Text style={[styles.trustScore, { color: colors.primaryContainer }]}>{trustScore} pts</Text>
+            </View>
+            <View style={[styles.trustTrack, { backgroundColor: colors.border }]}>
+              <View style={[styles.trustFill, {
+                width: `${Math.min((trustScore / (trustQuery.data.next_tier_score || 500)) * 100, 100)}%` as any,
+                backgroundColor: tierColor,
+              }]} />
+            </View>
+            <View style={styles.trustBottom}>
+              <Text style={[styles.trustTier, { color: colors.muted }]}>{tier} Tier</Text>
+              <Text style={[styles.trustNext, { color: colors.muted }]}>
+                {trustQuery.data.next_tier_score - trustScore} pts to next tier
+              </Text>
+            </View>
           </TouchableOpacity>
         )}
 
@@ -168,6 +238,39 @@ export default function HomeScreen() {
             ))
           )}
         </View>
+
+        {/* Recent Transactions */}
+        {recentTxns.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Recent Transactions</Text>
+            </View>
+            {recentTxns.map(txn => (
+              <View key={txn.id} style={[styles.txnRow, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <View style={[styles.txnIcon, {
+                  backgroundColor: txn.type === 'disbursement' ? '#EEF2FF' : '#E8F5E9',
+                }]}>
+                  <Ionicons
+                    name={txn.type === 'disbursement' ? 'arrow-down-outline' : 'arrow-up-outline'}
+                    size={18}
+                    color={txn.type === 'disbursement' ? '#0052FF' : '#3B7D4A'}
+                  />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.txnLabel, { color: colors.foreground }]}>
+                    {txn.type === 'disbursement' ? 'Loan Disbursed' : 'Repayment'}
+                  </Text>
+                  <Text style={[styles.txnSub, { color: colors.muted }]}>
+                    {txn.provider ?? 'Flism'} · {new Date(txn.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                  </Text>
+                </View>
+                <Text style={[styles.txnAmount, { color: txn.type === 'disbursement' ? '#0052FF' : '#3B7D4A' }]}>
+                  {txn.type === 'disbursement' ? '+' : '-'}GHS {parseFloat(txn.amount).toFixed(2)}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -217,25 +320,35 @@ const styles = StyleSheet.create({
   balanceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 },
   balanceLabel: { fontSize: 12, color: 'rgba(255,255,255,0.7)', fontFamily: 'PlusJakartaSans_500Medium', marginBottom: 4 },
   balanceAmount: { fontSize: 32, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold', letterSpacing: -1 },
-  scoreChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,255,255,0.18)', borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5 },
-  scoreChipText: { color: '#fff', fontSize: 13, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
-  balanceMeta: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  metaLabel: { fontSize: 11, color: 'rgba(255,255,255,0.6)', fontFamily: 'PlusJakartaSans_400Regular' },
-  metaValue: { fontSize: 14, color: '#fff', fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold', marginTop: 2 },
-  metaDivider: { width: 1, height: 28, backgroundColor: 'rgba(255,255,255,0.2)' },
-  body: { paddingHorizontal: 20, marginTop: 24 },
-  section: { marginBottom: 24 },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
+  tierChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,255,255,0.18)', borderRadius: 999, paddingHorizontal: 10, paddingVertical: 5 },
+  tierChipText: { fontSize: 11, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
+  balanceMeta: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  metaLabel: { fontSize: 10, color: 'rgba(255,255,255,0.6)', fontFamily: 'PlusJakartaSans_400Regular' },
+  metaValue: { fontSize: 13, color: '#fff', fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold', marginTop: 2 },
+  metaDivider: { width: 1, height: 24, backgroundColor: 'rgba(255,255,255,0.2)' },
+  body: { paddingHorizontal: 20, marginTop: 24, gap: 20 },
+  section: { gap: 12 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   sectionTitle: { fontSize: 17, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
   seeAll: { fontSize: 13, fontWeight: '600', fontFamily: 'PlusJakartaSans_600SemiBold' },
   quickGrid: { flexDirection: 'row', gap: 10 },
   quickItem: { flex: 1, borderRadius: 14, padding: 14, alignItems: 'center', gap: 8 },
   quickIconBg: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   quickLabel: { fontSize: 11, fontWeight: '600', fontFamily: 'PlusJakartaSans_600SemiBold', textAlign: 'center' },
-  kycBanner: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 14, borderRadius: 14, marginBottom: 20 },
-  kycTitle: { fontSize: 14, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
-  kycSub: { fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular', marginTop: 2 },
-  loanCard: { borderRadius: 16, padding: 16, marginBottom: 10, borderWidth: 1 },
+  banner: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 14, borderRadius: 14 },
+  bannerIcon: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  bannerTitle: { fontSize: 14, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
+  bannerSub: { fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular', marginTop: 2 },
+  trustCard: { borderRadius: 16, padding: 16, borderWidth: 1, gap: 10 },
+  trustCardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  trustTitle: { fontSize: 15, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
+  trustScore: { fontSize: 20, fontWeight: '800', fontFamily: 'PlusJakartaSans_800ExtraBold' },
+  trustTrack: { height: 8, borderRadius: 4, overflow: 'hidden' },
+  trustFill: { height: '100%', borderRadius: 4 },
+  trustBottom: { flexDirection: 'row', justifyContent: 'space-between' },
+  trustTier: { fontSize: 12, fontFamily: 'PlusJakartaSans_600SemiBold' },
+  trustNext: { fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular' },
+  loanCard: { borderRadius: 16, padding: 16, borderWidth: 1 },
   loanCardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
   loanAmount: { fontSize: 20, fontWeight: '800', fontFamily: 'PlusJakartaSans_800ExtraBold' },
   loanPurpose: { fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular', marginTop: 2 },
@@ -245,6 +358,11 @@ const styles = StyleSheet.create({
   progressFill: { height: '100%', borderRadius: 2 },
   loanMeta: { flexDirection: 'row', justifyContent: 'space-between' },
   loanMetaText: { fontSize: 11, fontFamily: 'PlusJakartaSans_400Regular' },
+  txnRow: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 14, borderWidth: 1 },
+  txnIcon: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  txnLabel: { fontSize: 14, fontWeight: '600', fontFamily: 'PlusJakartaSans_600SemiBold' },
+  txnSub: { fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular', marginTop: 2 },
+  txnAmount: { fontSize: 15, fontWeight: '800', fontFamily: 'PlusJakartaSans_800ExtraBold' },
   emptyCard: { borderRadius: 16, padding: 32, alignItems: 'center', gap: 8, borderWidth: 1 },
   emptyTitle: { fontSize: 15, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
   emptyText: { fontSize: 13, fontFamily: 'PlusJakartaSans_400Regular', textAlign: 'center' },

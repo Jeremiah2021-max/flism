@@ -9,6 +9,9 @@ const loanRoutes = require('./routes/loans');
 const assetRoutes = require('./routes/assets');
 const trustRoutes = require('./routes/trust');
 const notificationRoutes = require('./routes/notifications');
+const guarantorRoutes = require('./routes/guarantors');
+const transactionRoutes = require('./routes/transactions');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = 5000;
@@ -23,6 +26,9 @@ app.use('/api/loans', loanRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/trust', trustRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/guarantors', guarantorRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', app: 'Flism API' }));
 

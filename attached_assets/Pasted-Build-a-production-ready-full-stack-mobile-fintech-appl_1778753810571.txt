@@ -1,0 +1,307 @@
+Build a production-ready full-stack mobile fintech application called Flism for Ghana. Flism is a student-focused collateral-based loan platform that provides small, secure loans to university students using physical or digital assets as collateral.
+
+The application must be modern, scalable, secure, mobile-first, and built with clean architecture and professional UI/UX similar to modern fintech and banking apps.
+
+CORE BUSINESS MODEL
+
+Flism operates primarily as a collateral-backed student microloan platform.
+
+Initial launch strategy:
+
+“Physical Collateral + Small Loans”
+No unsecured loans for new users.
+New borrowers must deposit physical collateral before loan approval.
+Loan amounts should remain small initially to reduce fraud and financial risk.
+
+Long-term scaling model:
+
+Hybrid collateral system.
+Trusted users may access digital collateral or reduced verification.
+High-risk or new users must always provide physical collateral.
+
+Example:
+
+trusted returning borrower → phone verification only.
+new borrower → physical collateral mandatory.
+TARGET USERS
+University students in Ghana
+Young adults with smartphones and Mobile Money accounts
+Students needing short-term emergency loans
+REQUIRED TECH STACK
+
+Frontend:
+
+Flutter mobile app (Android-first)
+Responsive and modern fintech UI
+Dark/light mode support
+
+Backend:
+
+Node.js + Express.js
+REST API architecture
+Clean modular folder structure
+
+Database:
+
+PostgreSQL
+
+Authentication:
+
+JWT authentication
+OTP phone verification
+Email verification
+
+Cloud Storage:
+
+Cloudinary or AWS S3
+
+Notifications:
+
+Firebase Cloud Messaging
+SMS integration
+
+Payments:
+
+Mobile Money integration:
+MTN MoMo
+Telecel Cash
+AirtelTigo Money
+
+Hosting:
+
+Backend deploy-ready
+Docker-ready setup
+Environment variable support
+CORE FEATURES
+1. USER AUTHENTICATION
+
+Implement:
+
+signup/login
+JWT authentication
+OTP verification
+password reset
+email verification
+session management
+biometric-ready authentication structure
+2. KYC SYSTEM
+
+Implement full KYC flow:
+
+full legal name
+Ghana Card upload
+selfie verification
+liveness detection structure
+residential address
+GPS location capture
+date of birth
+phone number
+email verification
+
+Store all KYC securely.
+
+3. STUDENT VERIFICATION
+
+Implement:
+
+student ID upload
+university selection
+department/faculty
+level/year
+student email verification
+semester registration proof upload
+4. COLLATERAL MANAGEMENT SYSTEM
+
+Allow users to submit assets for loans.
+
+Supported assets:
+
+phones
+laptops
+tablets
+gaming consoles
+cameras
+motorbikes
+
+Each asset must include:
+
+images/videos
+IMEI/serial number
+proof of ownership
+estimated market value
+condition report
+
+Implement:
+
+asset approval/rejection
+collateral status tracking
+collateral release workflow
+liquidation workflow
+barcode/QR inventory-ready structure
+
+Asset statuses:
+
+pending
+verified
+rejected
+stored
+active loan
+released
+defaulted
+liquidated
+5. LOAN SYSTEM
+
+Implement:
+
+loan request flow
+loan approval system
+repayment schedules
+interest calculation
+overdue penalties
+grace periods
+loan history
+repayment reminders
+automatic due-date tracking
+
+Loan rules:
+
+only 40%–65% of verified asset value can be loaned.
+new users:
+GHS 50–300 max starter loans.
+loan limits increase based on repayment history and trust score.
+6. TRUST SCORE SYSTEM
+
+Create a dynamic “Flism Trust Score”.
+
+Factors:
+
+repayment history
+collateral quality
+student verification strength
+guarantor reliability
+account behavior
+device consistency
+
+Higher scores unlock:
+
+larger loans
+faster approvals
+lower interest rates
+reduced collateral requirements
+7. GUARANTOR SYSTEM
+
+Implement:
+
+guarantor registration
+parent/guardian contacts
+guarantor notifications
+social trust structure
+8. PAYMENT SYSTEM
+
+Implement:
+
+Mobile Money disbursement
+Mobile Money repayment
+transaction tracking
+repayment confirmation
+payment history
+9. NOTIFICATION SYSTEM
+
+Implement:
+
+push notifications
+SMS alerts
+repayment reminders
+overdue alerts
+login/security alerts
+10. FRAUD PREVENTION SYSTEM
+
+Implement:
+
+device fingerprinting structure
+duplicate account detection
+suspicious activity logging
+IP/GPS tracking
+blacklist system
+admin fraud alerts
+11. ADMIN DASHBOARD
+
+Create a professional admin dashboard with:
+
+user management
+KYC approval/review
+loan approvals
+collateral management
+fraud monitoring
+repayment analytics
+blacklist management
+liquidation management
+12. SECURITY REQUIREMENTS
+
+Implement:
+
+encrypted passwords
+role-based access control
+secure JWT handling
+API rate limiting
+audit logging
+HTTPS-ready configuration
+secure file upload validation
+DATABASE DESIGN
+
+Design scalable PostgreSQL schema for:
+
+users
+loans
+repayments
+collateral/assets
+guarantors
+transactions
+notifications
+trust scores
+fraud logs
+liquidation records
+KYC records
+UI/UX REQUIREMENTS
+
+The app should:
+
+feel modern and premium,
+use fintech-grade design,
+be smooth and responsive,
+be optimized for mobile devices,
+use elegant cards, charts, and dashboards,
+feel trustworthy and student-friendly.
+
+Use:
+
+clean typography,
+smooth animations,
+modern onboarding,
+intuitive navigation,
+professional color palette.
+CODE QUALITY REQUIREMENTS
+Use clean architecture
+Use reusable components
+Add comments for important sections
+Use scalable modular structure
+Implement proper error handling
+Create production-ready code
+Follow best security practices
+Add API documentation
+DELIVERABLES
+
+Generate:
+
+Full backend API
+PostgreSQL schema
+Flutter mobile app
+Admin dashboard
+Authentication system
+Loan system
+Collateral management system
+Payment integration structure
+KYC system
+Deployment-ready setup
+
+The application should be structured like a real-world fintech startup product and should be scalable for expansion across universities in Ghana.

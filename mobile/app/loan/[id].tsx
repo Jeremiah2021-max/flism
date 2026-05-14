@@ -146,9 +146,8 @@ export default function LoanDetailScreen() {
         {/* Repay button */}
         {(loan.status === 'active' || loan.status === 'pending') && remaining > 0 && (
           <Button
-            title={repayMutation.isPending ? 'Processing...' : `Make Payment`}
-            onPress={handleRepay}
-            loading={repayMutation.isPending}
+            title="Pay via Mobile Money"
+            onPress={() => router.push(`/payment/${loan.id}` as any)}
             size="lg"
             style={{ marginTop: 8 }}
           />

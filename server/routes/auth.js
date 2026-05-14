@@ -7,7 +7,7 @@ const { JWT_SECRET } = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-  const { email, password, full_name, phone, university, student_id } = req.body;
+  const { email, password, full_name, phone, university, student_id, department, faculty, year_of_study, momo_number, momo_provider } = req.body;
   if (!email || !password || !full_name) {
     return res.status(400).json({ error: 'Email, password and full name are required' });
   }
@@ -18,9 +18,11 @@ router.post('/register', async (req, res) => {
     }
     const hash = await bcrypt.hash(password, 10);
     const result = await pool.query(
-      `INSERT INTO users (email, password_hash, full_name, phone, university, student_id)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, email, full_name, trust_score, loan_limit, is_verified, is_kyc_complete, university, phone, student_id`,
-      [email, hash, full_name, phone || null, university || 'University of Ghana', student_id || null]
+      `INSERT INTO users (email, password_hash, full_name, phone, university, student_id, department, faculty, year_of_study, momo_number, momo_provider)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+       RETURNING id, email, full_name, trust_score, loan_limit, is_verified, is_kyc_complete, university, phone, student_id, department, momo_number, momo_provider, role`,
+      [email, hash, full_name, phone || null, university || 'University of Ghana', student_id || null,
+       department || null, faculty || null, year_of_study || null, momo_number || null, momo_provider || 'MTN MoMo']
     );
     const user = result.rows[0];
 
@@ -30,7 +32,7 @@ router.post('/register', async (req, res) => {
       [user.id, 'Welcome to Flism!', 'Your account has been created. Complete your KYC to start borrowing.', 'info']
     );
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign({ userId: user.id, role: user.role || 'student' }, JWT_SECRET, { expiresIn: '30d' });
     res.status(201).json({ user, token });
   } catch (err) {
     console.error(err);
@@ -58,7 +60,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
     const { password_hash, ...safeUser } = user;
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign({ userId: user.id, role: user.role || 'student' }, JWT_SECRET, { expiresIn: '30d' });
     res.json({ user: safeUser, token });
   } catch (err) {
     console.error(err);

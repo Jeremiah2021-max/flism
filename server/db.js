@@ -15,13 +15,36 @@ async function initDb() {
       phone VARCHAR(50),
       student_id VARCHAR(100),
       university VARCHAR(255) DEFAULT 'University of Ghana',
+      department VARCHAR(100),
+      faculty VARCHAR(100),
+      year_of_study VARCHAR(20),
+      date_of_birth DATE,
+      address TEXT,
+      ghana_card_number VARCHAR(100),
+      momo_number VARCHAR(50),
+      momo_provider VARCHAR(50) DEFAULT 'MTN MoMo',
+      role VARCHAR(20) DEFAULT 'student',
+      kyc_step INTEGER DEFAULT 0,
       trust_score INTEGER DEFAULT 120,
       loan_limit DECIMAL(10,2) DEFAULT 300.00,
       is_verified BOOLEAN DEFAULT false,
       is_kyc_complete BOOLEAN DEFAULT false,
+      is_student_verified BOOLEAN DEFAULT false,
       profile_image VARCHAR(500),
       created_at TIMESTAMP DEFAULT NOW()
     );
+
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS department VARCHAR(100);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS faculty VARCHAR(100);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS year_of_study VARCHAR(20);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS date_of_birth DATE;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS ghana_card_number VARCHAR(100);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS momo_number VARCHAR(50);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS momo_provider VARCHAR(50) DEFAULT 'MTN MoMo';
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'student';
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS kyc_step INTEGER DEFAULT 0;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS is_student_verified BOOLEAN DEFAULT false;
 
     CREATE TABLE IF NOT EXISTS assets (
       id SERIAL PRIMARY KEY,
@@ -54,6 +77,8 @@ async function initDb() {
       created_at TIMESTAMP DEFAULT NOW()
     );
 
+    ALTER TABLE loans ADD COLUMN IF NOT EXISTS penalty_rate DECIMAL(5,2) DEFAULT 0.50;
+
     CREATE TABLE IF NOT EXISTS repayments (
       id SERIAL PRIMARY KEY,
       loan_id INTEGER REFERENCES loans(id) ON DELETE CASCADE,
@@ -74,7 +99,30 @@ async function initDb() {
       created_at TIMESTAMP DEFAULT NOW()
     );
 
-    ALTER TABLE loans ADD COLUMN IF NOT EXISTS penalty_rate DECIMAL(5,2) DEFAULT 0.50;
+    CREATE TABLE IF NOT EXISTS guarantors (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      name VARCHAR(255) NOT NULL,
+      phone VARCHAR(50) NOT NULL,
+      email VARCHAR(255),
+      relationship VARCHAR(100) DEFAULT 'Parent/Guardian',
+      is_verified BOOLEAN DEFAULT false,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS transactions (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      loan_id INTEGER REFERENCES loans(id),
+      type VARCHAR(50) NOT NULL,
+      amount DECIMAL(10,2) NOT NULL,
+      provider VARCHAR(50),
+      momo_number VARCHAR(50),
+      reference VARCHAR(100),
+      status VARCHAR(50) DEFAULT 'pending',
+      notes TEXT,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
   `);
   console.log('Database schema initialized');
 }
