@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "babel-plugin-module-resolver": "^5.0.3",
     "@expo-google-fonts/plus-jakarta-sans": "^0.3.0",
     "@expo/metro-runtime": "~4.0.1",
     "@expo/vector-icons": "^14.0.2",
@@ -38,6 +39,7 @@
     "react-native-web": "~0.19.13"
   },
   "devDependencies": {
+    "babel-plugin-module-resolver": "^5.0.3",
     "@babel/core": "^7.24.0",
     "@types/react": "~18.3.12",
     "typescript": "^5.3.3"
