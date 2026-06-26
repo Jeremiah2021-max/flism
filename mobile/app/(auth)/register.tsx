@@ -36,6 +36,7 @@ export default function RegisterScreen() {
   const [phone, setPhone] = useState('');
 
   const [university, setUniversity] = useState('University of Ghana');
+  const [otherUniversity, setOtherUniversity] = useState('');
   const [studentId, setStudentId] = useState('');
   const [department, setDepartment] = useState('');
   const [faculty, setFaculty] = useState('');
@@ -88,7 +89,7 @@ export default function RegisterScreen() {
         password,
         full_name: fullName.trim(),
         phone,
-        university,
+        university: university === 'Other' ? otherUniversity.trim() || 'Other' : university,
         student_id: studentId,
         department: department.trim(),
         faculty: faculty.trim(),
@@ -163,6 +164,19 @@ export default function RegisterScreen() {
                   </TouchableOpacity>
                 ))}
               </ScrollView>
+              {university === 'Other' && (
+                <View style={[styles.otherInput, { borderColor: colors.primaryContainer, backgroundColor: colors.surfaceVariant }]}>
+                  <Ionicons name="school-outline" size={16} color={colors.muted} style={{ marginRight: 8 }} />
+                  <TextInput
+                    placeholder="Enter your university name"
+                    placeholderTextColor={colors.muted}
+                    value={otherUniversity}
+                    onChangeText={setOtherUniversity}
+                    style={{ flex: 1, color: colors.foreground, fontFamily: 'PlusJakartaSans_400Regular', fontSize: 14 }}
+                    autoFocus
+                  />
+                </View>
+              )}
             </View>
 
             <Button title="Continue" onPress={nextStep} size="lg" style={{ marginTop: 4 }} />
@@ -347,6 +361,11 @@ const styles = StyleSheet.create({
   },
   chipText: { fontSize: 12, fontWeight: '600', fontFamily: 'PlusJakartaSans_600SemiBold' },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 6 },
+    otherInput: {
+    flexDirection: 'row', alignItems: 'center',
+    marginTop: 10, borderWidth: 1.5, borderRadius: 12,
+    paddingHorizontal: 14, paddingVertical: 12,
+  },
   strengthBar: { height: 4, borderRadius: 2, overflow: 'hidden', marginTop: 6 },
   strengthFill: { height: '100%', borderRadius: 2 },
   divider: { borderTopWidth: 1 },
