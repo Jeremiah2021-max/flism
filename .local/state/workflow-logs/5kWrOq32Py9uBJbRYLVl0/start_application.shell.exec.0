@@ -1,0 +1,29 @@
+=== Installing server dependencies ===
+=== Installing mobile dependencies ===
+=== Starting Expo web on port 3000 ===
+Expo started with PID 2247
+=== Waiting for Expo to boot ===
+[1G[0K⠙[1G[0K[90mStarting project at /home/runner/workspace/mobile[39m
+› Port [1m3000[22m is being used by another process
+[?25l[2K[1G[36m?[39m [1mUse port 3001 instead?[22m [90m›[39m [90m(Y/n)[39m[1G[0K⠙[1G[0K=== Starting Flism backend on port 5000 ===
+Database schema initialized
+node:events:502
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:5000
+[90m    at Server.setupListenHandle [as _listen2] (node:net:1908:16)[39m
+[90m    at listenInCluster (node:net:1965:12)[39m
+[90m    at doListen (node:net:2139:7)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:83:21)[39m
+Emitted 'error' event on Server instance at:
+[90m    at emitErrorNT (node:net:1944:8)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)[39m {
+  code: [32m'EADDRINUSE'[39m,
+  errno: [33m-98[39m,
+  syscall: [32m'listen'[39m,
+  address: [32m'0.0.0.0'[39m,
+  port: [33m5000[39m
+}
+
+Node.js v20.20.0
