@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'flism_secret_key_2024';
+const JWT_SECRET = process.env.JWT_SECRET || (
+  process.env.NODE_ENV === 'production'
+    ? (() => { throw new Error('JWT_SECRET env var must be set in production'); })()
+    : 'flism_dev_secret_not_for_production'
+);
 
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
