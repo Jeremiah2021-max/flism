@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: flism-app
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: |
+      cd mobile && npm install && npx expo export --platform web
+      cd ../server && npm install
+    startCommand: NODE_ENV=production node server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
