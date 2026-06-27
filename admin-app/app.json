@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Flism Admin",
+    "slug": "flism-admin",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "flismadmin",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#001A7A"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.flism.admin"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#001A7A"
+      },
+      "package": "com.flism.admin"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "02e1f7cc-4995-4218-ac02-ed928b3f4963"
+      }
+    }
+  }
+}
