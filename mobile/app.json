@@ -22,7 +22,10 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#0052FF"
       },
-      "package": "com.flism.app"
+      "package": "com.flism.app",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -44,7 +47,13 @@
       "typedRoutes": true
     },
     "extra": {
-      "apiUrl": ""
+      "apiUrl": "",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d0d62692-4146-4747-9857-91b418f2b865"
+      }
     }
   }
 }
