@@ -1,7 +1,7 @@
 const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
-
+const { notifyAdmins } = require('../lib/notifyAdmins');
 const router = express.Router();
 
 router.get('/', authMiddleware, async (req, res) => {
@@ -54,6 +54,13 @@ router.post('/', authMiddleware, async (req, res) => {
     await pool.query(
       `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
       [req.userId, 'Asset Submitted', `Your ${type} has been submitted for verification. Estimated loan value: GHS ${loanValue}.`, 'info']
+    );
+    const ownerRow = await pool.query('SELECT full_name, university FROM users WHERE id = $1', [req.userId]);
+    const o = ownerRow.rows[0];
+    await notifyAdmins(
+      'New Asset Submitted',
+      `${o.full_name} (${o.university}) submitted a ${brand ? brand + ' ' : ''}${type}${model ? ' ' + model : ''} for verification. Est. value: GHS ${parseFloat(estimated_value).toFixed(2)}.`,
+      'info'
     );
 
     res.status(201).json(asset);

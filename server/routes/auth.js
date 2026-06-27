@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { pool } = require('../db');
 const { JWT_SECRET } = require('../middleware/auth');
+const { notifyAdmins } = require('../lib/notifyAdmins');
 
 const router = express.Router();
 
@@ -30,6 +31,11 @@ router.post('/register', async (req, res) => {
     await pool.query(
       `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
       [user.id, 'Welcome to Flism!', 'Your account has been created. Complete your KYC to start borrowing.', 'info']
+    );
+    await notifyAdmins(
+      '🎓 New Student Registered',
+      `${full_name} from ${university || 'University of Ghana'} just created an account (${email}).`,
+      'info'
     );
 
     const token = jwt.sign({ userId: user.id, role: user.role || 'student' }, JWT_SECRET, { expiresIn: '30d' });

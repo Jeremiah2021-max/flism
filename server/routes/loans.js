@@ -1,7 +1,7 @@
 const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
-
+const { notifyAdmins } = require('../lib/notifyAdmins');
 const router = express.Router();
 
 function calcPenalty(loan) {
@@ -115,6 +115,13 @@ router.post('/', authMiddleware, async (req, res) => {
       `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
       [req.userId, 'Loan Application Received', `Your loan request for GHS ${amount} is under review. We'll notify you shortly.`, 'info']
     );
+    const studentRow = await pool.query('SELECT full_name, university FROM users WHERE id = $1', [req.userId]);
+    const s = studentRow.rows[0];
+    await notifyAdmins(
+      'New Loan Request',
+      `${s.full_name} (${s.university}) requested GHS ${parseFloat(amount).toFixed(2)} for "${purpose}". Loan #${loan.id}.`,
+      'warning'
+    );
 
     res.status(201).json(enrichLoan(loan));
   } catch (err) {
@@ -164,6 +171,12 @@ router.post('/:id/repay', authMiddleware, async (req, res) => {
       await pool.query(
         `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
         [req.userId, 'Loan Repaid', `Your loan has been fully repaid.${penaltyNote} Trust score +${trustBoost}.`, 'success']
+      );
+      const repayRow = await pool.query('SELECT full_name FROM users WHERE id = $1', [req.userId]);
+      await notifyAdmins(
+        '✅ Loan Fully Repaid',
+        `${repayRow.rows[0].full_name} repaid Loan #${req.params.id} — GHS ${newRepaid.toFixed(2)} collected.${wasPenalised ? ` Penalty: GHS ${penalty.toFixed(2)}.` : ''}`,
+        'success'
       );
     }
 
