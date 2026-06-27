@@ -176,4 +176,86 @@ router.put('/assets/:id/reject', authMiddleware, adminOnly, async (req, res) => 
   }
 });
 
+router.post('/notify/broadcast', authMiddleware, adminOnly, async (req, res) => {
+  const { title, message, type, university } = req.body;
+  if (!title || !message) return res.status(400).json({ error: 'Title and message required' });
+  try {
+    let query = 'SELECT id FROM users WHERE role != $1';
+    const params = ['admin'];
+    if (university && university !== 'all') { query += ' AND university = $2'; params.push(university); }
+    const users = await pool.query(query, params);
+    if (!users.rows.length) return res.status(404).json({ error: 'No users found' });
+    const values = users.rows.map((_, i) => `($${i * 4 + 1},$${i * 4 + 2},$${i * 4 + 3},$${i * 4 + 4})`).join(',');
+    const flat = users.rows.flatMap(u => [u.id, title, message, type || 'info']);
+    await pool.query(`INSERT INTO notifications (user_id, title, message, type) VALUES ${values}`, flat);
+    res.json({ sent: users.rows.length });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+router.post('/notify/user/:id', authMiddleware, adminOnly, async (req, res) => {
+  const { title, message, type } = req.body;
+  if (!title || !message) return res.status(400).json({ error: 'Title and message required' });
+  try {
+    await pool.query(
+      `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
+      [req.params.id, title, message, type || 'info']
+    );
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+router.get('/export/users', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, full_name, email, phone, student_id, university, department, faculty,
+       year_of_study, ghana_card_number, momo_number, momo_provider, trust_score,
+       loan_limit, kyc_step, is_verified, is_kyc_complete, created_at
+       FROM users WHERE role != 'admin' ORDER BY created_at DESC`
+    );
+    const cols = ['id','full_name','email','phone','student_id','university','department','faculty','year_of_study','ghana_card_number','momo_number','momo_provider','trust_score','loan_limit','kyc_step','is_verified','is_kyc_complete','created_at'];
+    const csv = [cols.join(','), ...result.rows.map(r => cols.map(c => JSON.stringify(r[c] ?? '')).join(','))].join('\n');
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="flism-users.csv"');
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+router.get('/export/loans', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT l.id, u.full_name, u.email, u.university, l.amount, l.interest_rate,
+       l.purpose, l.status, l.repayment_date, l.amount_repaid, l.created_at
+       FROM loans l JOIN users u ON l.user_id = u.id ORDER BY l.created_at DESC`
+    );
+    const cols = ['id','full_name','email','university','amount','interest_rate','purpose','status','repayment_date','amount_repaid','created_at'];
+    const csv = [cols.join(','), ...result.rows.map(r => cols.map(c => JSON.stringify(r[c] ?? '')).join(','))].join('\n');
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="flism-loans.csv"');
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+router.post('/admins', authMiddleware, adminOnly, async (req, res) => {
+  const bcrypt = require('bcryptjs');
+  const { email, password, full_name } = req.body;
+  if (!email || !password || !full_name) return res.status(400).json({ error: 'Email, password and name required' });
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    const result = await pool.query(
+      `INSERT INTO users (email, password_hash, full_name, role, trust_score, loan_limit, is_verified, is_kyc_complete, kyc_step)
+       VALUES ($1,$2,$3,'admin',500,10000,true,true,4)
+       ON CONFLICT (email) DO UPDATE SET role='admin', full_name=$3 RETURNING id, email, full_name, role`,
+      [email, hash, full_name]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;

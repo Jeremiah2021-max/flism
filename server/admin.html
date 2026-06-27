@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flism Admin</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #0052FF; --blue-dark: #003EC7; --bg: #F5F7FF; --card: #fff;
+    --border: #E4E9F2; --text: #1A1F36; --muted: #6B7280;
+    --green: #10B981; --red: #EF4444; --yellow: #F59E0B; --purple: #8B5CF6;
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  #login-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#003EC7,#0052FF,#1D6EFF); }
+  .login-card { background:#fff; border-radius:20px; padding:48px 40px; width:380px; box-shadow:0 20px 60px rgba(0,0,0,.2); }
+  .login-logo { font-size:28px; font-weight:800; color:var(--blue); margin-bottom:8px; }
+  .login-sub { color:var(--muted); font-size:14px; margin-bottom:32px; }
+
+  .field { margin-bottom:16px; }
+  .field label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+  .field input, .field textarea, .field select { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:14px; outline:none; transition:border-color .2s; font-family:inherit; }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color:var(--blue); }
+
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:10px 18px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; border:none; transition:opacity .15s, transform .1s; white-space:nowrap; }
+  .btn:active { transform:scale(.97); }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  .btn-primary { background:var(--blue); color:#fff; }
+  .btn-primary:hover:not(:disabled) { background:var(--blue-dark); }
+  .btn-success { background:var(--green); color:#fff; }
+  .btn-danger { background:var(--red); color:#fff; }
+  .btn-warning { background:var(--yellow); color:#fff; }
+  .btn-purple { background:var(--purple); color:#fff; }
+  .btn-ghost { background:var(--bg); color:var(--text); border:1.5px solid var(--border); }
+  .btn-sm { padding:6px 12px; font-size:12px; border-radius:8px; }
+  .btn-full { width:100%; justify-content:center; padding:14px; font-size:15px; }
+  .err { color:var(--red); font-size:13px; margin-top:12px; text-align:center; }
+
+  #app { display:none; flex-direction:column; min-height:100vh; }
+  .topbar { background:#fff; border-bottom:1px solid var(--border); padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+  .topbar-logo { font-size:20px; font-weight:800; color:var(--blue); }
+  .topbar-right { display:flex; align-items:center; gap:12px; }
+  .avatar { width:36px; height:36px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; }
+
+  .main { display:flex; flex:1; }
+  .sidebar { width:220px; background:#fff; border-right:1px solid var(--border); padding:20px 12px; flex-shrink:0; position:sticky; top:60px; height:calc(100vh - 60px); overflow-y:auto; }
+  .nav-section { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; padding:12px 12px 6px; }
+  .nav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; font-size:14px; font-weight:500; color:var(--muted); transition:all .15s; margin-bottom:2px; }
+  .nav-item:hover { background:var(--bg); color:var(--text); }
+  .nav-item.active { background:#EEF3FF; color:var(--blue); font-weight:600; }
+  .nav-item .icon { font-size:17px; width:22px; text-align:center; }
+  .nav-badge { margin-left:auto; background:var(--red); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px; }
+
+  .content { flex:1; padding:28px; overflow-y:auto; max-width:1400px; }
+
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:28px; }
+  .stat-card { background:#fff; border-radius:14px; padding:20px; border:1px solid var(--border); }
+  .stat-icon { font-size:22px; margin-bottom:8px; }
+  .stat-label { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .stat-value { font-size:26px; font-weight:800; color:var(--text); margin-top:2px; }
+  .stat-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+  .section-title { font-size:18px; font-weight:700; }
+  .card { background:#fff; border-radius:14px; border:1px solid var(--border); overflow:hidden; }
+  .card-body { padding:20px 24px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  thead th { background:var(--bg); padding:11px 14px; text-align:left; font-weight:600; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  tbody tr { border-bottom:1px solid var(--border); transition:background .1s; }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:hover { background:#FAFBFF; }
+  tbody td { padding:11px 14px; vertical-align:middle; }
+
+  .badge { display:inline-flex; align-items:center; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; white-space:nowrap; }
+  .badge-green { background:#D1FAE5; color:#065F46; }
+  .badge-red { background:#FEE2E2; color:#991B1B; }
+  .badge-yellow { background:#FEF3C7; color:#92400E; }
+  .badge-blue { background:#DBEAFE; color:#1E40AF; }
+  .badge-gray { background:#F3F4F6; color:#374151; }
+  .badge-purple { background:#EDE9FE; color:#5B21B6; }
+
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:#fff; border-radius:20px; width:100%; max-width:640px; max-height:90vh; overflow-y:auto; transform:translateY(20px); transition:transform .2s; box-shadow:0 25px 80px rgba(0,0,0,.2); }
+  .modal-overlay.open .modal { transform:translateY(0); }
+  .modal-header { padding:22px 26px 14px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#fff; z-index:1; }
+  .modal-title { font-size:17px; font-weight:700; }
+  .modal-body { padding:22px 26px; }
+  .modal-footer { padding:14px 26px; border-top:1px solid var(--border); display:flex; gap:10px; justify-content:flex-end; }
+  .close-btn { background:none; border:none; cursor:pointer; font-size:22px; color:var(--muted); line-height:1; }
+
+  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .info-item { display:flex; flex-direction:column; gap:3px; }
+  .info-label { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+  .info-value { font-size:14px; font-weight:500; color:var(--text); word-break:break-all; }
+
+  .divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
+  .form-row { display:flex; gap:12px; align-items:flex-end; margin-bottom:12px; flex-wrap:wrap; }
+  .form-row .field { margin-bottom:0; flex:1; min-width:120px; }
+  .input-sm { padding:8px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:14px; outline:none; width:100%; font-family:inherit; }
+  .input-sm:focus { border-color:var(--blue); }
+
+  .search-bar { display:flex; align-items:center; gap:8px; background:#fff; border:1.5px solid var(--border); border-radius:10px; padding:8px 14px; width:240px; }
+  .search-bar input { border:none; outline:none; font-size:14px; flex:1; background:transparent; }
+
+  .empty { text-align:center; padding:40px 20px; color:var(--muted); font-size:14px; }
+  .spinner { display:inline-block; width:20px; height:20px; border:3px solid #ccc; border-top-color:var(--blue); border-radius:50%; animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .toast { position:fixed; bottom:24px; right:24px; z-index:200; background:#1A1F36; color:#fff; padding:14px 20px; border-radius:12px; font-size:14px; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,.2); transform:translateY(80px); opacity:0; transition:all .25s; display:flex; align-items:center; gap:10px; max-width:360px; }
+  .toast.show { transform:translateY(0); opacity:1; }
+  .toast.success { border-left:4px solid var(--green); }
+  .toast.error { border-left:4px solid var(--red); }
+
+  .trust-bar { height:5px; background:#E5E7EB; border-radius:99px; overflow:hidden; margin-top:4px; width:80px; }
+  .trust-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#0052FF,#8B5CF6); }
+
+  .dash-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:900px) { .dash-grid { grid-template-columns:1fr; } .info-grid { grid-template-columns:1fr; } }
+
+  .notify-preview { background:var(--bg); border-radius:12px; padding:16px; margin-top:12px; border:1px solid var(--border); }
+  .notify-preview-title { font-weight:700; font-size:14px; margin-bottom:4px; }
+  .notify-preview-msg { font-size:13px; color:var(--muted); }
+
+  .setup-box { background:linear-gradient(135deg,#EEF3FF,#F5F0FF); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:20px; }
+  .setup-box h3 { font-size:16px; font-weight:700; margin-bottom:4px; }
+  .setup-box p { font-size:13px; color:var(--muted); margin-bottom:16px; }
+  pre { background:#1A1F36; color:#e2e8f0; padding:16px; border-radius:10px; font-size:12px; overflow-x:auto; line-height:1.6; }
+  code { font-family:'Courier New',monospace; }
+
+  .tier-pill { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; }
+  .tier-bronze { background:#FDE68A; color:#78350F; }
+  .tier-silver { background:#E5E7EB; color:#374151; }
+  .tier-gold { background:#FEF3C7; color:#D97706; }
+  .tier-platinum { background:#EDE9FE; color:#5B21B6; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">Flism</div>
+    <div class="login-sub">Admin Dashboard — sign in to continue</div>
+    <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="admin@flism.com" /></div>
+    <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••" /></div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In</button>
+    <div class="err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">⚡ Flism Admin</div>
+    <div class="topbar-right">
+      <span id="admin-name" style="font-size:13px;color:var(--muted);font-weight:500;"></span>
+      <div class="avatar" id="admin-avatar">A</div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="nav-section">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard"><span class="icon">📊</span>Dashboard</div>
+      <div class="nav-item" onclick="showPage('users')" id="nav-users"><span class="icon">👥</span>Users</div>
+      <div class="nav-item" onclick="showPage('loans')" id="nav-loans"><span class="icon">💰</span>Loans<span class="nav-badge" id="nb-loans" style="display:none"></span></div>
+      <div class="nav-item" onclick="showPage('assets')" id="nav-assets"><span class="icon">📦</span>Assets<span class="nav-badge" id="nb-assets" style="display:none"></span></div>
+      <div class="nav-section">Tools</div>
+      <div class="nav-item" onclick="showPage('notifications')" id="nav-notifications"><span class="icon">📢</span>Broadcast</div>
+      <div class="nav-item" onclick="showPage('settings')" id="nav-settings"><span class="icon">⚙️</span>Settings</div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard">
+        <div class="section-header">
+          <div class="section-title">Overview</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadStats();loadDashPending()">↻ Refresh</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Users</div><div class="stat-value" id="s-users">—</div></div>
+          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Verified</div><div class="stat-value" id="s-verified">—</div></div>
+          <div class="stat-card"><div class="stat-icon">🟢</div><div class="stat-label">Active Loans</div><div class="stat-value" id="s-active">—</div></div>
+          <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-label">Pending Loans</div><div class="stat-value" id="s-pending" style="color:var(--yellow)">—</div></div>
+          <div class="stat-card"><div class="stat-icon">💸</div><div class="stat-label">Total Disbursed</div><div class="stat-value" id="s-disbursed" style="font-size:18px">—</div><div class="stat-sub">GHS</div></div>
+          <div class="stat-card"><div class="stat-icon">💵</div><div class="stat-label">Total Repaid</div><div class="stat-value" id="s-repaid" style="font-size:18px;color:var(--green)">—</div><div class="stat-sub">GHS</div></div>
+          <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Pending Assets</div><div class="stat-value" id="s-assets" style="color:var(--yellow)">—</div></div>
+          <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-label">Defaulted</div><div class="stat-value" id="s-defaulted" style="color:var(--red)">—</div></div>
+        </div>
+        <div class="dash-grid">
+          <div>
+            <div class="section-header"><div class="section-title" style="font-size:15px;">⏳ Pending Loans</div><button class="btn btn-ghost btn-sm" onclick="showPage('loans')">View all →</button></div>
+            <div class="card"><div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>Amount</th><th>Actions</th></tr></thead>
+              <tbody id="dash-loans"><tr><td colspan="3" class="empty"><span class="spinner"></span></td></tr></tbody>
+            </table></div></div>
+          </div>
+          <div>
+            <div class="section-header"><div class="section-title" style="font-size:15px;">📦 Pending Assets</div><button class="btn btn-ghost btn-sm" onclick="showPage('assets')">View all →</button></div>
+            <div class="card"><div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>Asset</th><th>Actions</th></tr></thead>
+              <tbody id="dash-assets"><tr><td colspan="3" class="empty"><span class="spinner"></span></td></tr></tbody>
+            </table></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div id="page-users" style="display:none">
+        <div class="section-header">
+          <div class="section-title">All Users</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div class="search-bar"><span>🔍</span><input type="text" id="user-search" placeholder="Name, email, university…" oninput="renderUsers()" /></div>
+            <select id="user-filter-kyc" class="input-sm" onchange="renderUsers()" style="width:auto;">
+              <option value="all">All KYC</option>
+              <option value="complete">KYC Complete</option>
+              <option value="incomplete">KYC Incomplete</option>
+            </select>
+            <select id="user-filter-verified" class="input-sm" onchange="renderUsers()" style="width:auto;">
+              <option value="all">All status</option>
+              <option value="verified">Verified</option>
+              <option value="unverified">Unverified</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV('users')" title="Export CSV">⬇ Export</button>
+            <button class="btn btn-ghost btn-sm" onclick="loadUsers()">↻</button>
+          </div>
+        </div>
+        <div class="card"><div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>University</th><th>Tier</th><th>Trust</th><th>Loan Limit</th><th>KYC</th><th>Verified</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody id="users-tbody"><tr><td colspan="11" class="empty"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- LOANS -->
+      <div id="page-loans" style="display:none">
+        <div class="section-header">
+          <div class="section-title">Loan Applications</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <select id="loan-filter" class="input-sm" onchange="renderLoans()" style="width:auto;">
+              <option value="pending" selected>Pending</option>
+              <option value="active">Active</option>
+              <option value="repaid">Repaid</option>
+              <option value="rejected">Rejected</option>
+              <option value="defaulted">Defaulted</option>
+              <option value="all">All statuses</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV('loans')" title="Export CSV">⬇ Export</button>
+            <button class="btn btn-ghost btn-sm" onclick="loadLoans()">↻</button>
+          </div>
+        </div>
+        <div class="card"><div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Student</th><th>Amount</th><th>Rate</th><th>Purpose</th><th>Collateral</th><th>Status</th><th>Applied</th><th>Due</th><th>Actions</th></tr></thead>
+            <tbody id="loans-tbody"><tr><td colspan="10" class="empty"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- ASSETS -->
+      <div id="page-assets" style="display:none">
+        <div class="section-header">
+          <div class="section-title">Collateral Assets</div>
+          <div style="display:flex;gap:8px;">
+            <select id="asset-filter" class="input-sm" onchange="renderAssets()" style="width:auto;">
+              <option value="pending" selected>Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="all">All</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadAssets()">↻</button>
+          </div>
+        </div>
+        <div class="card"><div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Student</th><th>Asset</th><th>Serial / IMEI</th><th>Est. Value</th><th>Loan Value</th><th>Condition</th><th>Status</th><th>Submitted</th><th>Actions</th></tr></thead>
+            <tbody id="assets-tbody"><tr><td colspan="10" class="empty"><span class="spinner"></span></td></tr></tbody>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div id="page-notifications" style="display:none">
+        <div class="section-header"><div class="section-title">📢 Broadcast Notification</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="dash-grid">
+          <div class="card card-body">
+            <div style="font-size:15px;font-weight:700;margin-bottom:16px;">Send to All Users</div>
+            <div class="field"><label>Target audience</label>
+              <select id="n-university" class="input-sm">
+                <option value="all">All universities</option>
+                <option value="University of Ghana">University of Ghana (UG)</option>
+                <option value="KNUST">KNUST</option>
+                <option value="University of Cape Coast">UCC</option>
+                <option value="GIMPA">GIMPA</option>
+                <option value="Ashesi University">Ashesi</option>
+              </select>
+            </div>
+            <div class="field"><label>Type</label>
+              <select id="n-type" class="input-sm">
+                <option value="info">ℹ️ Info</option>
+                <option value="success">✅ Success</option>
+                <option value="warning">⚠️ Warning</option>
+              </select>
+            </div>
+            <div class="field"><label>Title</label><input type="text" id="n-title" class="input-sm" placeholder="e.g. System Maintenance" oninput="updatePreview()" /></div>
+            <div class="field"><label>Message</label><textarea id="n-message" class="input-sm" rows="3" placeholder="Type your message here…" oninput="updatePreview()" style="resize:vertical;"></textarea></div>
+            <div class="notify-preview" id="n-preview" style="display:none;">
+              <div class="notify-preview-title" id="np-title"></div>
+              <div class="notify-preview-msg" id="np-msg"></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center;" onclick="sendBroadcast()">📢 Send Broadcast</button>
+          </div>
+          <div class="card card-body">
+            <div style="font-size:15px;font-weight:700;margin-bottom:16px;">Send to Specific User</div>
+            <div class="field"><label>User ID or Email</label><input type="text" id="nu-target" class="input-sm" placeholder="e.g. 12 or student@ug.edu.gh" /></div>
+            <div class="field"><label>Type</label>
+              <select id="nu-type" class="input-sm">
+                <option value="info">ℹ️ Info</option>
+                <option value="success">✅ Success</option>
+                <option value="warning">⚠️ Warning</option>
+              </select>
+            </div>
+            <div class="field"><label>Title</label><input type="text" id="nu-title" class="input-sm" placeholder="Notification title" /></div>
+            <div class="field"><label>Message</label><textarea id="nu-message" class="input-sm" rows="3" placeholder="Personal message…" style="resize:vertical;"></textarea></div>
+            <button class="btn btn-purple" style="margin-top:16px;width:100%;justify-content:center;" onclick="sendUserNotify()">💬 Send to User</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="page-settings" style="display:none">
+        <div class="section-header"><div class="section-title">⚙️ Settings</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="dash-grid">
+          <div>
+            <div class="card card-body" style="margin-bottom:20px;">
+              <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Create Admin Account</div>
+              <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">New admins can access this dashboard with full permissions.</div>
+              <div class="field"><label>Full Name</label><input type="text" id="new-admin-name" class="input-sm" placeholder="e.g. Kofi Mensah" /></div>
+              <div class="field"><label>Email</label><input type="email" id="new-admin-email" class="input-sm" placeholder="admin@flism.com" /></div>
+              <div class="field"><label>Password</label><input type="password" id="new-admin-pass" class="input-sm" placeholder="Min 8 characters" /></div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="createAdmin()">Create Admin</button>
+            </div>
+            <div class="card card-body">
+              <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Export Data</div>
+              <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Download a CSV snapshot of your data for offline use or accounting.</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <button class="btn btn-ghost" onclick="exportCSV('users')" style="justify-content:center;">⬇ Export All Users (CSV)</button>
+                <button class="btn btn-ghost" onclick="exportCSV('loans')" style="justify-content:center;">⬇ Export All Loans (CSV)</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="setup-box">
+              <h3>🖥️ Run Locally on Your PC</h3>
+              <p>Follow these steps to run Flism on your own machine with the same live database.</p>
+              <div style="font-size:13px;font-weight:600;margin:12px 0 6px;">1. Requirements</div>
+              <pre><code>Node.js v18+    →  nodejs.org
+Git             →  git-scm.com
+PostgreSQL 14+  →  postgresql.org  (or use Replit DB)</code></pre>
+              <div style="font-size:13px;font-weight:600;margin:12px 0 6px;">2. Get the code</div>
+              <pre><code># Download ZIP from Replit → top-right menu → Download as ZIP
+# OR push to GitHub and clone:
+git clone https://github.com/YOUR_USERNAME/flism.git
+cd flism</code></pre>
+              <div style="font-size:13px;font-weight:600;margin:12px 0 6px;">3. Create <code>server/.env</code></div>
+              <pre><code># Option A — use Replit's live database (get URL from Replit Secrets):
+DATABASE_URL=postgresql://user:pass@host/db
+
+# Option B — local PostgreSQL:
+DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/flism
+JWT_SECRET=your-secret-key-here
+PORT=5000</code></pre>
+              <div style="font-size:13px;font-weight:600;margin:12px 0 6px;">4. Install &amp; run</div>
+              <pre><code>cd server && npm install && cd ..
+cd mobile && npm install && cd ..
+
+# Terminal 1 — backend:
+cd server && node index.js
+
+# Terminal 2 — mobile frontend:
+cd mobile && npx expo start --web --port 3000
+
+# Admin dashboard:  http://localhost:5000/admin
+# Mobile app:       http://localhost:5000</code></pre>
+              <div style="font-size:13px;color:var(--muted);margin-top:12px;">💡 Tip: Copy the DATABASE_URL from Replit's Secrets tab to connect to the same live data while testing locally.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- USER DETAIL MODAL -->
+<div class="modal-overlay" id="user-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="um-title">User Details</div>
+      <button class="close-btn" onclick="closeModal('user-modal')">×</button>
+    </div>
+    <div class="modal-body" id="um-body"><div style="text-align:center;padding:40px"><span class="spinner"></span></div></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('user-modal')">Close</button></div>
+  </div>
+</div>
+
+<!-- REJECT LOAN MODAL -->
+<div class="modal-overlay" id="reject-modal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header"><div class="modal-title">Reject Loan</div><button class="close-btn" onclick="closeModal('reject-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Reason (sent to student)</label><textarea id="reject-reason" class="input-sm" rows="3" placeholder="e.g. Insufficient collateral value…" style="resize:vertical;"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('reject-modal')">Cancel</button>
+      <button class="btn btn-danger" onclick="submitReject()">Reject Loan</button>
+    </div>
+  </div>
+</div>
+
+<!-- REJECT ASSET MODAL -->
+<div class="modal-overlay" id="reject-asset-modal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header"><div class="modal-title">Reject Asset</div><button class="close-btn" onclick="closeModal('reject-asset-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Reason (sent to student)</label><textarea id="reject-asset-reason" class="input-sm" rows="3" placeholder="e.g. Could not verify serial number…" style="resize:vertical;"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('reject-asset-modal')">Cancel</button>
+      <button class="btn btn-danger" onclick="submitAssetReject()">Reject Asset</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let TOKEN = localStorage.getItem('flism_admin_token') || '';
+let allUsers = [], allLoans = [], allAssets = [];
+let rejectLoanId = null, rejectAssetId = null;
+
+async function api(method, path, body) {
+  const res = await fetch('/api' + path, {
+    method,
+    headers: { 'Content-Type': 'application/json', ...(TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {}) },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3500);
+}
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-err');
+  errEl.textContent = '';
+  try {
+    const data = await api('POST', '/auth/login', { email, password: pass });
+    if (data.user.role !== 'admin') { errEl.textContent = 'This account does not have admin access.'; return; }
+    TOKEN = data.token;
+    localStorage.setItem('flism_admin_token', TOKEN);
+    initApp(data.user);
+  } catch (e) { errEl.textContent = e.message; }
+}
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function logout() {
+  TOKEN = ''; localStorage.removeItem('flism_admin_token');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+async function initApp(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('admin-name').textContent = user.full_name || user.email;
+  document.getElementById('admin-avatar').textContent = (user.full_name || user.email)[0].toUpperCase();
+  await Promise.all([loadStats(), loadDashPending()]);
+}
+
+const PAGES = ['dashboard','users','loans','assets','notifications','settings'];
+
+function showPage(page) {
+  PAGES.forEach(p => {
+    document.getElementById('page-' + p).style.display = p === page ? 'block' : 'none';
+    document.getElementById('nav-' + p).classList.toggle('active', p === page);
+  });
+  if (page === 'users' && !allUsers.length) loadUsers();
+  if (page === 'loans' && !allLoans.length) loadLoans();
+  if (page === 'assets' && !allAssets.length) loadAssets();
+}
+
+// ─── STATS ───────────────────────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const s = await api('GET', '/admin/stats');
+    document.getElementById('s-users').textContent = s.users.total;
+    document.getElementById('s-verified').textContent = s.users.verified;
+    document.getElementById('s-active').textContent = s.loans.active;
+    document.getElementById('s-pending').textContent = s.loans.pending;
+    document.getElementById('s-disbursed').textContent = 'GHS ' + fmt(s.loans.total_disbursed);
+    document.getElementById('s-repaid').textContent = 'GHS ' + fmt(s.repaid);
+    document.getElementById('s-assets').textContent = s.assets.pending;
+    document.getElementById('s-defaulted').textContent = s.loans.defaulted;
+    const nbL = document.getElementById('nb-loans');
+    const nbA = document.getElementById('nb-assets');
+    if (s.loans.pending > 0) { nbL.textContent = s.loans.pending; nbL.style.display = 'inline'; } else nbL.style.display = 'none';
+    if (s.assets.pending > 0) { nbA.textContent = s.assets.pending; nbA.style.display = 'inline'; } else nbA.style.display = 'none';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function loadDashPending() {
+  try {
+    const [loans, assets] = await Promise.all([api('GET', '/admin/loans'), api('GET', '/admin/assets')]);
+    allLoans = loans; allAssets = assets;
+    const pl = loans.filter(l => l.status === 'pending').slice(0, 6);
+    const pa = assets.filter(a => a.status === 'pending').slice(0, 6);
+    document.getElementById('dash-loans').innerHTML = pl.length ? pl.map(l => `
+      <tr>
+        <td><strong>${l.full_name}</strong><br><small style="color:var(--muted)">${l.email}</small></td>
+        <td><strong>GHS ${fmt(l.amount)}</strong></td>
+        <td><div style="display:flex;gap:5px;">
+          <button class="btn btn-success btn-sm" onclick="approveLoan(${l.id})">✓ Approve</button>
+          <button class="btn btn-danger btn-sm" onclick="openRejectLoan(${l.id})">✗</button>
+        </div></td>
+      </tr>`).join('') : '<tr><td colspan="3" class="empty">No pending loans 🎉</td></tr>';
+    document.getElementById('dash-assets').innerHTML = pa.length ? pa.map(a => `
+      <tr>
+        <td><strong>${a.full_name}</strong><br><small style="color:var(--muted)">${a.university || ''}</small></td>
+        <td>${a.brand || ''} ${a.type}</td>
+        <td><div style="display:flex;gap:5px;">
+          <button class="btn btn-success btn-sm" onclick="approveAsset(${a.id})">✓</button>
+          <button class="btn btn-danger btn-sm" onclick="openRejectAsset(${a.id})">✗</button>
+        </div></td>
+      </tr>`).join('') : '<tr><td colspan="3" class="empty">No pending assets 🎉</td></tr>';
+  } catch {}
+}
+
+// ─── USERS ────────────────────────────────────────────────────────────────────
+async function loadUsers() {
+  document.getElementById('users-tbody').innerHTML = '<tr><td colspan="11" class="empty"><span class="spinner"></span></td></tr>';
+  try { allUsers = await api('GET', '/admin/users'); renderUsers(); }
+  catch (e) { showToast(e.message, 'error'); }
+}
+
+function renderUsers() {
+  const q = (document.getElementById('user-search').value || '').toLowerCase();
+  const kyc = document.getElementById('user-filter-kyc').value;
+  const ver = document.getElementById('user-filter-verified').value;
+  let rows = allUsers.filter(u => {
+    if (q && !u.full_name.toLowerCase().includes(q) && !u.email.toLowerCase().includes(q) && !(u.university||'').toLowerCase().includes(q)) return false;
+    if (kyc === 'complete' && !u.is_kyc_complete) return false;
+    if (kyc === 'incomplete' && u.is_kyc_complete) return false;
+    if (ver === 'verified' && !u.is_verified) return false;
+    if (ver === 'unverified' && u.is_verified) return false;
+    return true;
+  });
+  const tb = document.getElementById('users-tbody');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="11" class="empty">No users found</td></tr>'; return; }
+  tb.innerHTML = rows.map(u => `<tr>
+    <td><code style="font-size:11px;color:var(--muted)">#${u.id}</code></td>
+    <td><strong>${u.full_name}</strong></td>
+    <td style="font-size:12px;color:var(--muted)">${u.email}</td>
+    <td style="font-size:12px">${u.university || '—'}</td>
+    <td>${tierPill(u.trust_score)}</td>
+    <td>
+      <span style="font-weight:700;color:var(--blue)">${u.trust_score}</span>
+      <div class="trust-bar"><div class="trust-fill" style="width:${Math.min(100,u.trust_score/5)}%"></div></div>
+    </td>
+    <td><strong>GHS ${fmt(u.loan_limit)}</strong></td>
+    <td>${kycBadge(u.kyc_step, u.is_kyc_complete)}</td>
+    <td>${u.is_verified ? '<span class="badge badge-green">✓ Verified</span>' : '<span class="badge badge-gray">Unverified</span>'}</td>
+    <td style="font-size:12px;color:var(--muted)">${fmtDate(u.created_at)}</td>
+    <td><div style="display:flex;gap:5px;">
+      <button class="btn btn-ghost btn-sm" onclick="viewUser(${u.id})">View</button>
+      ${!u.is_verified ? `<button class="btn btn-primary btn-sm" onclick="verifyUser(${u.id})">Verify</button>` : ''}
+    </div></td>
+  </tr>`).join('');
+}
+
+async function verifyUser(id) {
+  if (!confirm('Verify this user? They will receive +50 trust score.')) return;
+  try {
+    await api('PUT', '/admin/users/' + id + '/verify');
+    showToast('User verified');
+    allUsers = []; loadUsers(); loadStats();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function viewUser(id) {
+  const body = document.getElementById('um-body');
+  body.innerHTML = '<div style="text-align:center;padding:40px"><span class="spinner"></span></div>';
+  openModal('user-modal');
+  try {
+    const { user: u, loans, assets } = await api('GET', '/admin/users/' + id);
+    document.getElementById('um-title').textContent = u.full_name + ' — #' + u.id;
+    body.innerHTML = `
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+        ${tierPill(u.trust_score)}
+        ${u.is_verified ? '<span class="badge badge-green">✓ Verified</span>' : '<span class="badge badge-gray">Unverified</span>'}
+        ${kycBadge(u.kyc_step, u.is_kyc_complete)}
+      </div>
+
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Personal Info</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">Full Name</div><div class="info-value">${u.full_name}</div></div>
+        <div class="info-item"><div class="info-label">Email</div><div class="info-value">${u.email}</div></div>
+        <div class="info-item"><div class="info-label">Phone</div><div class="info-value">${u.phone || '—'}</div></div>
+        <div class="info-item"><div class="info-label">Date of Birth</div><div class="info-value">${u.date_of_birth ? fmtDate(u.date_of_birth) : '—'}</div></div>
+        <div class="info-item"><div class="info-label">Ghana Card No.</div><div class="info-value" style="font-family:monospace">${u.ghana_card_number || '—'}</div></div>
+        <div class="info-item"><div class="info-label">Address</div><div class="info-value">${u.address || '—'}</div></div>
+      </div>
+
+      <hr class="divider" />
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Student Info</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">Student ID</div><div class="info-value" style="font-family:monospace">${u.student_id || '—'}</div></div>
+        <div class="info-item"><div class="info-label">University</div><div class="info-value">${u.university || '—'}</div></div>
+        <div class="info-item"><div class="info-label">Faculty</div><div class="info-value">${u.faculty || '—'}</div></div>
+        <div class="info-item"><div class="info-label">Department</div><div class="info-value">${u.department || '—'}</div></div>
+        <div class="info-item"><div class="info-label">Year of Study</div><div class="info-value">${u.year_of_study || '—'}</div></div>
+      </div>
+
+      <hr class="divider" />
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Mobile Money</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">MoMo Number</div><div class="info-value" style="font-family:monospace">${u.momo_number || '—'}</div></div>
+        <div class="info-item"><div class="info-label">Provider</div><div class="info-value">${u.momo_provider || '—'}</div></div>
+      </div>
+
+      <hr class="divider" />
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Loan Qualification</div>
+      <div class="form-row">
+        <div class="field"><label>Loan Limit (GHS)</label><input type="number" id="edit-limit" class="input-sm" value="${parseFloat(u.loan_limit).toFixed(2)}" min="50" max="10000" step="50" /></div>
+        <div class="field"><label>Trust Score (0–500)</label><input type="number" id="edit-trust" class="input-sm" value="${u.trust_score}" min="0" max="500" /></div>
+        <button class="btn btn-primary" onclick="saveLoanLimit(${u.id})" style="flex-shrink:0;margin-top:20px">Save</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="setPreset(${u.id},300,150)">Bronze preset</button>
+        <button class="btn btn-ghost btn-sm" onclick="setPreset(${u.id},1000,250)">Silver preset</button>
+        <button class="btn btn-ghost btn-sm" onclick="setPreset(${u.id},2500,350)">Gold preset</button>
+        <button class="btn btn-ghost btn-sm" onclick="setPreset(${u.id},5000,450)">Platinum preset</button>
+      </div>
+      ${!u.is_verified ? `<button class="btn btn-success btn-sm" style="margin-top:12px" onclick="verifyUser(${u.id});closeModal('user-modal')">✓ Verify Account (+50 trust pts)</button>` : ''}
+
+      <hr class="divider" />
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Send Notification</div>
+      <div class="form-row">
+        <div class="field"><label>Type</label>
+          <select id="um-ntype" class="input-sm"><option value="info">ℹ️ Info</option><option value="success">✅ Success</option><option value="warning">⚠️ Warning</option></select>
+        </div>
+        <div class="field"><label>Title</label><input type="text" id="um-ntitle" class="input-sm" placeholder="Notification title" /></div>
+      </div>
+      <div class="field"><label>Message</label><textarea id="um-nmsg" class="input-sm" rows="2" style="resize:vertical;" placeholder="Message to send…"></textarea></div>
+      <button class="btn btn-purple btn-sm" onclick="sendDirectNotify(${u.id})">💬 Send Notification</button>
+
+      <hr class="divider" />
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Loan History (${loans.length})</div>
+      ${loans.length ? `<div class="card"><div class="table-wrap"><table>
+        <thead><tr><th>ID</th><th>Amount</th><th>Purpose</th><th>Status</th><th>Applied</th><th>Due</th></tr></thead>
+        <tbody>${loans.map(l => `<tr>
+          <td>#${l.id}</td><td>GHS ${fmt(l.amount)}</td>
+          <td style="font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.purpose||'—'}</td>
+          <td>${statusBadge(l.status)}</td>
+          <td style="font-size:12px;color:var(--muted)">${fmtDate(l.created_at)}</td>
+          <td style="font-size:12px;color:var(--muted)">${fmtDate(l.repayment_date)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div></div>` : '<div class="empty" style="padding:12px 0">No loan history</div>'}
+
+      <hr class="divider" />
+      <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Assets (${assets.length})</div>
+      ${assets.length ? `<div class="card"><div class="table-wrap"><table>
+        <thead><tr><th>Asset</th><th>Est. Value</th><th>Loan Value</th><th>Condition</th><th>Status</th></tr></thead>
+        <tbody>${assets.map(a => `<tr>
+          <td>${a.brand||''} ${a.model||''} ${a.type}</td>
+          <td>GHS ${fmt(a.estimated_value)}</td>
+          <td>GHS ${fmt(a.loan_value||0)}</td>
+          <td><span class="badge badge-gray">${a.condition||'good'}</span></td>
+          <td>${statusBadge(a.status)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div></div>` : '<div class="empty" style="padding:12px 0">No assets</div>'}
+    `;
+  } catch (e) {
+    body.innerHTML = '<div class="err" style="text-align:center;padding:32px">' + e.message + '</div>';
+  }
+}
+
+function setPreset(userId, limit, trust) {
+  document.getElementById('edit-limit').value = limit;
+  document.getElementById('edit-trust').value = trust;
+}
+
+async function saveLoanLimit(id) {
+  const limit = parseFloat(document.getElementById('edit-limit').value);
+  const trust = parseInt(document.getElementById('edit-trust').value);
+  if (isNaN(limit) || limit < 50) { showToast('Loan limit must be at least GHS 50', 'error'); return; }
+  if (isNaN(trust) || trust < 0 || trust > 500) { showToast('Trust score must be 0–500', 'error'); return; }
+  try {
+    await api('PUT', '/admin/users/' + id + '/loan-limit', { loan_limit: limit, trust_score: trust });
+    showToast('Loan limit & trust score updated');
+    allUsers = []; closeModal('user-modal');
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function sendDirectNotify(id) {
+  const title = document.getElementById('um-ntitle').value.trim();
+  const message = document.getElementById('um-nmsg').value.trim();
+  const type = document.getElementById('um-ntype').value;
+  if (!title || !message) { showToast('Title and message required', 'error'); return; }
+  try {
+    await api('POST', '/admin/notify/user/' + id, { title, message, type });
+    showToast('Notification sent');
+    document.getElementById('um-ntitle').value = '';
+    document.getElementById('um-nmsg').value = '';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── LOANS ────────────────────────────────────────────────────────────────────
+async function loadLoans() {
+  document.getElementById('loans-tbody').innerHTML = '<tr><td colspan="10" class="empty"><span class="spinner"></span></td></tr>';
+  try { allLoans = await api('GET', '/admin/loans'); renderLoans(); }
+  catch (e) { showToast(e.message, 'error'); }
+}
+
+function renderLoans() {
+  const filter = document.getElementById('loan-filter').value;
+  const rows = filter === 'all' ? allLoans : allLoans.filter(l => l.status === filter);
+  const tb = document.getElementById('loans-tbody');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="10" class="empty">No loans found</td></tr>'; return; }
+  tb.innerHTML = rows.map(l => `<tr>
+    <td><code style="font-size:11px;color:var(--muted)">#${l.id}</code></td>
+    <td><strong>${l.full_name}</strong><br><small style="color:var(--muted)">${l.email}</small></td>
+    <td><strong>GHS ${fmt(l.amount)}</strong></td>
+    <td>${parseFloat(l.interest_rate).toFixed(1)}%</td>
+    <td style="font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.purpose||'—'}</td>
+    <td style="font-size:12px">${l.asset_brand?l.asset_brand+' ':''}${l.asset_type||'—'}</td>
+    <td>${statusBadge(l.status)}</td>
+    <td style="font-size:12px;color:var(--muted)">${fmtDate(l.created_at)}</td>
+    <td style="font-size:12px;color:var(--muted)">${fmtDate(l.repayment_date)}</td>
+    <td>${l.status==='pending'?`<div style="display:flex;gap:5px;">
+      <button class="btn btn-success btn-sm" onclick="approveLoan(${l.id})">✓ Approve</button>
+      <button class="btn btn-danger btn-sm" onclick="openRejectLoan(${l.id})">✗</button>
+    </div>`:'<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+  </tr>`).join('');
+}
+
+async function approveLoan(id) {
+  if (!confirm('Approve this loan? Funds will be disbursed to the student.')) return;
+  try {
+    await api('PUT', '/admin/loans/' + id + '/approve');
+    showToast('Loan approved & disbursed');
+    allLoans = []; if (document.getElementById('page-loans').style.display !== 'none') loadLoans();
+    loadDashPending(); loadStats();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+function openRejectLoan(id) { rejectLoanId = id; document.getElementById('reject-reason').value = ''; openModal('reject-modal'); }
+
+async function submitReject() {
+  const reason = document.getElementById('reject-reason').value.trim();
+  try {
+    await api('PUT', '/admin/loans/' + rejectLoanId + '/reject', { reason });
+    showToast('Loan rejected');
+    closeModal('reject-modal');
+    allLoans = []; if (document.getElementById('page-loans').style.display !== 'none') loadLoans();
+    loadDashPending(); loadStats();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── ASSETS ───────────────────────────────────────────────────────────────────
+async function loadAssets() {
+  document.getElementById('assets-tbody').innerHTML = '<tr><td colspan="10" class="empty"><span class="spinner"></span></td></tr>';
+  try { allAssets = await api('GET', '/admin/assets'); renderAssets(); }
+  catch (e) { showToast(e.message, 'error'); }
+}
+
+function renderAssets() {
+  const filter = document.getElementById('asset-filter').value;
+  const rows = filter === 'all' ? allAssets : allAssets.filter(a => a.status === filter);
+  const tb = document.getElementById('assets-tbody');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="10" class="empty">No assets found</td></tr>'; return; }
+  tb.innerHTML = rows.map(a => `<tr>
+    <td><code style="font-size:11px;color:var(--muted)">#${a.id}</code></td>
+    <td><strong>${a.full_name}</strong><br><small style="color:var(--muted)">${a.email}</small></td>
+    <td><strong>${a.brand||''} ${a.model||''} ${a.type}</strong></td>
+    <td style="font-family:monospace;font-size:12px">${a.serial_number||'—'}</td>
+    <td>GHS ${fmt(a.estimated_value)}</td>
+    <td>GHS ${fmt(a.loan_value||0)}</td>
+    <td><span class="badge badge-gray">${a.condition||'good'}</span></td>
+    <td>${statusBadge(a.status)}</td>
+    <td style="font-size:12px;color:var(--muted)">${fmtDate(a.created_at)}</td>
+    <td>${a.status==='pending'?`<div style="display:flex;gap:5px;">
+      <button class="btn btn-success btn-sm" onclick="approveAsset(${a.id})">✓ Approve</button>
+      <button class="btn btn-danger btn-sm" onclick="openRejectAsset(${a.id})">✗</button>
+    </div>`:'<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+  </tr>`).join('');
+}
+
+async function approveAsset(id) {
+  if (!confirm('Approve this asset? The student gets +15 trust score.')) return;
+  try {
+    await api('PUT', '/admin/assets/' + id + '/approve');
+    showToast('Asset approved — trust score updated');
+    allAssets = []; if (document.getElementById('page-assets').style.display !== 'none') loadAssets();
+    loadDashPending(); loadStats();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+function openRejectAsset(id) { rejectAssetId = id; document.getElementById('reject-asset-reason').value = ''; openModal('reject-asset-modal'); }
+
+async function submitAssetReject() {
+  const reason = document.getElementById('reject-asset-reason').value.trim();
+  try {
+    await api('PUT', '/admin/assets/' + rejectAssetId + '/reject', { reason });
+    showToast('Asset rejected');
+    closeModal('reject-asset-modal');
+    allAssets = []; if (document.getElementById('page-assets').style.display !== 'none') loadAssets();
+    loadDashPending(); loadStats();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── NOTIFICATIONS ────────────────────────────────────────────────────────────
+function updatePreview() {
+  const t = document.getElementById('n-title').value.trim();
+  const m = document.getElementById('n-message').value.trim();
+  const p = document.getElementById('n-preview');
+  if (t || m) {
+    p.style.display = 'block';
+    document.getElementById('np-title').textContent = t || 'Title…';
+    document.getElementById('np-msg').textContent = m || 'Message…';
+  } else { p.style.display = 'none'; }
+}
+
+async function sendBroadcast() {
+  const title = document.getElementById('n-title').value.trim();
+  const message = document.getElementById('n-message').value.trim();
+  const type = document.getElementById('n-type').value;
+  const university = document.getElementById('n-university').value;
+  if (!title || !message) { showToast('Title and message required', 'error'); return; }
+  const target = university === 'all' ? 'all students' : university + ' students';
+  if (!confirm(`Send "${title}" to ${target}?`)) return;
+  try {
+    const r = await api('POST', '/admin/notify/broadcast', { title, message, type, university });
+    showToast(`Sent to ${r.sent} student${r.sent !== 1 ? 's' : ''}`);
+    document.getElementById('n-title').value = '';
+    document.getElementById('n-message').value = '';
+    document.getElementById('n-preview').style.display = 'none';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function sendUserNotify() {
+  const target = document.getElementById('nu-target').value.trim();
+  const title = document.getElementById('nu-title').value.trim();
+  const message = document.getElementById('nu-message').value.trim();
+  const type = document.getElementById('nu-type').value;
+  if (!target || !title || !message) { showToast('All fields required', 'error'); return; }
+  try {
+    let userId = target;
+    if (isNaN(target)) {
+      const users = allUsers.length ? allUsers : await api('GET', '/admin/users');
+      if (!allUsers.length) allUsers = users;
+      const u = users.find(u => u.email.toLowerCase() === target.toLowerCase());
+      if (!u) { showToast('User not found with that email', 'error'); return; }
+      userId = u.id;
+    }
+    await api('POST', '/admin/notify/user/' + userId, { title, message, type });
+    showToast('Notification sent');
+    document.getElementById('nu-title').value = '';
+    document.getElementById('nu-message').value = '';
+    document.getElementById('nu-target').value = '';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+async function createAdmin() {
+  const name = document.getElementById('new-admin-name').value.trim();
+  const email = document.getElementById('new-admin-email').value.trim();
+  const pass = document.getElementById('new-admin-pass').value;
+  if (!name || !email || !pass) { showToast('All fields required', 'error'); return; }
+  if (pass.length < 8) { showToast('Password must be at least 8 characters', 'error'); return; }
+  try {
+    const r = await api('POST', '/admin/admins', { email, password: pass, full_name: name });
+    showToast('Admin account created for ' + r.email);
+    document.getElementById('new-admin-name').value = '';
+    document.getElementById('new-admin-email').value = '';
+    document.getElementById('new-admin-pass').value = '';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+function exportCSV(type) {
+  const a = document.createElement('a');
+  a.href = '/api/admin/export/' + type + '?token=' + encodeURIComponent(TOKEN);
+  a.download = 'flism-' + type + '.csv';
+  a.click();
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function statusBadge(s) {
+  const m = { active:'badge-green', pending:'badge-yellow', repaid:'badge-blue', rejected:'badge-red', defaulted:'badge-red', approved:'badge-green' };
+  return `<span class="badge ${m[s]||'badge-gray'}">${s}</span>`;
+}
+function kycBadge(step, complete) {
+  if (complete) return '<span class="badge badge-green">✓ KYC Done</span>';
+  if (!step) return '<span class="badge badge-gray">Not started</span>';
+  return `<span class="badge badge-yellow">Step ${step}/4</span>`;
+}
+function tierPill(score) {
+  if (score >= 400) return '<span class="tier-pill tier-platinum">💎 Platinum</span>';
+  if (score >= 275) return '<span class="tier-pill tier-gold">🥇 Gold</span>';
+  if (score >= 175) return '<span class="tier-pill tier-silver">🥈 Silver</span>';
+  return '<span class="tier-pill tier-bronze">🥉 Bronze</span>';
+}
+function fmt(n) { return parseFloat(n||0).toLocaleString('en-GH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtDate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+
+// ─── CSV TOKEN SUPPORT ────────────────────────────────────────────────────────
+// Allow token via query param for CSV downloads
+// (handled server-side via middleware check)
+
+// ─── AUTO-LOGIN ───────────────────────────────────────────────────────────────
+if (TOKEN) {
+  api('GET', '/users/me').then(u => {
+    if (u.role === 'admin') initApp(u);
+    else { TOKEN = ''; localStorage.removeItem('flism_admin_token'); }
+  }).catch(() => { TOKEN = ''; localStorage.removeItem('flism_admin_token'); });
+}
+</script>
+</body>
+</html>
