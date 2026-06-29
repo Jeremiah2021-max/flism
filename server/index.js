@@ -1,5 +1,5 @@
-require("dotenv").config();
-console.log(process.env.DATABASE_URL);
+const path = require("path");
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });console.log(process.env.DATABASE_URL);
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -19,7 +19,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
-app.use(cors({ origin: '*' }));
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 
 app.use('/api/auth', authRoutes);

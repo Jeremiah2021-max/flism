@@ -3,13 +3,51 @@
  * Usage: node server/scripts/create-admin.js <email> <password> <full_name>
  * Example: node server/scripts/create-admin.js admin@flism.gh Admin1234! "Flism Admin"
  */
-
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 async function createAdmin(email, password, fullName) {
+  try {
+    const password = "Admin@Flism2024";
+
+    const hash = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      `
+      INSERT INTO users 
+      (email, password_hash, full_name, role, trust_score, loan_limit, is_verified, is_kyc_complete, kyc_step)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      ON CONFLICT (email)
+      DO UPDATE SET 
+        password_hash = EXCLUDED.password_hash,
+        role = 'admin'
+      `,
+      [
+        "admin@flism.com",
+        hash,
+        "Flism Admin",
+        "admin",
+        500,
+        10000,
+        true,
+        true,
+        4
+      ]
+    );
+
+    console.log("✅ Admin created/updated successfully");
+    process.exit(0);
+  } catch (err) {
+    console.error("❌ Error creating admin:", err);
+    process.exit(1);
+  }
+
+
+
+
   if (!email || !password || !fullName) {
     console.error('Usage: node create-admin.js <email> <password> <full_name>');
     process.exit(1);
