@@ -1,8 +1,7 @@
 const path = require("path");
-require("dotenv").config({ path: require("path").join(__dirname, ".env") });console.log(process.env.DATABASE_URL);
+require("dotenv").config({ path: path.join(__dirname, ".env") });console.log(process.env.DATABASE_URL);
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const { initDb } = require('./db');
 
 const authRoutes = require('./routes/auth');
@@ -18,6 +17,19 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const IS_PROD = process.env.NODE_ENV === 'production';
+
+// Manual CORS middleware as fallback to ensure headers are always set
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.use(cors({
   origin: '*',
