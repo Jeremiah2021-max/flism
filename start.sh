@@ -1,17 +1,16 @@
 #!/bin/bash
-echo "=== Installing server dependencies ==="
-cd /home/runner/workspace/server && npm install --silent 2>&1 | grep -v "^npm"
+WORKSPACE=/home/runner/workspace
 
-echo "=== Installing mobile dependencies ==="  
-cd /home/runner/workspace/mobile && npm install --silent 2>&1 | grep -v "^npm"
+echo "=== Installing dependencies ==="
+cd "$WORKSPACE" && npm install --silent 2>&1 | grep -v "^npm warn" | grep -v "^$" || true
 
 echo "=== Starting Expo web on port 3000 ==="
-cd /home/runner/workspace/mobile && EXPO_NO_ORIGIN_CHECK=1 npx expo start --web --port 3000 --host lan &
+cd "$WORKSPACE/mobile" && EXPO_NO_ORIGIN_CHECK=1 "$WORKSPACE/node_modules/.bin/expo" start --web --port 3000 --no-dev &
 EXPO_PID=$!
 echo "Expo started with PID $EXPO_PID"
 
 echo "=== Waiting for Expo to boot ==="
-sleep 12
+sleep 15
 
 echo "=== Starting Flism backend on port 5000 ==="
-cd /home/runner/workspace/server && node index.js
+cd "$WORKSPACE/server" && node index.js

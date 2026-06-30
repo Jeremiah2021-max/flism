@@ -1,15 +1,12 @@
 const { Pool } = require('pg');
-require("dotenv").config({ path: require("path").join(__dirname, ".env") });
-
-console.log("NODE_ENV =", process.env.NODE_ENV);
-
-const isRemoteDb = process.env.DATABASE_URL &&
-  !process.env.DATABASE_URL.includes('localhost') &&
-  !process.env.DATABASE_URL.includes('127.0.0.1');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: isRemoteDb ? { rejectUnauthorized: false } : false,
+  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('replit') 
+    ? false 
+    : process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost') && !process.env.DATABASE_URL.includes('127.0.0.1')
+      ? { rejectUnauthorized: false }
+      : false,
 });
 
 async function initDb() {
@@ -53,7 +50,6 @@ async function initDb() {
     ALTER TABLE users ADD COLUMN IF NOT EXISTS kyc_step INTEGER DEFAULT 0;
     ALTER TABLE users ADD COLUMN IF NOT EXISTS is_student_verified BOOLEAN DEFAULT false;
 
-    -- Bank account fields for Paystack disbursements
     ALTER TABLE users ADD COLUMN IF NOT EXISTS bank_name VARCHAR(100);
     ALTER TABLE users ADD COLUMN IF NOT EXISTS bank_code VARCHAR(20);
     ALTER TABLE users ADD COLUMN IF NOT EXISTS account_number VARCHAR(20);
