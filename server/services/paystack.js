@@ -105,6 +105,42 @@ async function resolveAccount(accountNumber, bankCode) {
   }
 }
 
+/* Ghana MoMo provider codes for Paystack Charge API */
+const MOMO_PROVIDERS = {
+  'MTN MoMo':        'mtn',
+  'mtn':             'mtn',
+  'Vodafone Cash':   'vod',
+  'vod':             'vod',
+  'AirtelTigo Money':'tgo',
+  'tgo':             'tgo',
+};
+
+/**
+ * Initiate a Paystack Mobile Money charge (Ghana).
+ * Paystack sends a USSD/push prompt to the user's phone.
+ */
+async function chargeMobileMoney({ amount, email, phone, provider, reference, metadata = {} }) {
+  const providerCode = MOMO_PROVIDERS[provider] || 'mtn';
+  const response = await paystackRequest('POST', '/charge', {
+    amount: Math.round(amount * 100),
+    email,
+    currency: 'GHS',
+    reference,
+    mobile_money: { phone, provider: providerCode },
+    metadata,
+  });
+  return response;
+}
+
+/**
+ * Check the status of a Paystack charge by reference.
+ * Statuses: 'pending', 'pay_offline', 'success', 'failed'
+ */
+async function checkCharge(reference) {
+  const response = await paystackRequest('GET', `/charge/${encodeURIComponent(reference)}`);
+  return response;
+}
+
 module.exports = {
   initializePayment,
   verifyPayment,
@@ -112,4 +148,7 @@ module.exports = {
   createRecipient,
   getBanks,
   resolveAccount,
+  chargeMobileMoney,
+  checkCharge,
+  MOMO_PROVIDERS,
 };
