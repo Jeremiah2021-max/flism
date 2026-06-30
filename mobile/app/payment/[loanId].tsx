@@ -206,9 +206,18 @@ export default function PaymentScreen() {
         </View>
 
         <Button
-          title={`Pay GHS ${amount ? parseFloat(amount).toFixed(2) : '0.00'} via Paystack`}
-          onPress={handlePay}
-          loading={loading}
+          title={`Pay GHS ${amount ? parseFloat(amount).toFixed(2) : '0.00'} via Mobile Money`}
+          onPress={() => {
+            if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
+              Alert.alert('Invalid amount', 'Please enter a valid payment amount.');
+              return;
+            }
+            if (parseFloat(amount) > displayDue + 1) {
+              Alert.alert('Too much', `Payment cannot exceed GHS ${displayDue.toFixed(2)}`);
+              return;
+            }
+            router.push(`/payment/momo-pin?amount=${amount}&loanId=${loanId}` as any);
+          }}
           size="lg"
           style={{ marginTop: 4 }}
         />

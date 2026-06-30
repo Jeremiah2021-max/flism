@@ -16,7 +16,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://flism-app.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://flism.onrender.com"
       }
     },
     "production": {
@@ -24,7 +24,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://flism-app.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://flism.onrender.com"
       }
     }
   },

@@ -74,8 +74,19 @@ router.post('/', authMiddleware, async (req, res) => {
   try {
     const user = await pool.query('SELECT loan_limit, trust_score FROM users WHERE id = $1', [req.userId]);
     const { loan_limit, trust_score } = user.rows[0];
-    if (parseFloat(amount) > parseFloat(loan_limit)) {
-      return res.status(400).json({ error: `Loan amount exceeds your limit of GHS ${loan_limit}` });
+    
+    // Check total outstanding loans
+    const activeLoans = await pool.query(
+      `SELECT COALESCE(SUM(amount), 0) as total_outstanding FROM loans WHERE user_id = $1 AND status IN ('active', 'pending')`,
+      [req.userId]
+    );
+    const totalOutstanding = parseFloat(activeLoans.rows[0].total_outstanding);
+    const newTotal = totalOutstanding + parseFloat(amount);
+    
+    if (newTotal > parseFloat(loan_limit)) {
+      return res.status(400).json({ 
+        error: `Loan amount exceeds your limit. You have GHS ${totalOutstanding.toFixed(2)} in active loans and your limit is GHS ${loan_limit}. Maximum additional loan: GHS ${(parseFloat(loan_limit) - totalOutstanding).toFixed(2)}` 
+      });
     }
     if (parseFloat(amount) < 50) {
       return res.status(400).json({ error: 'Minimum loan amount is GHS 50' });

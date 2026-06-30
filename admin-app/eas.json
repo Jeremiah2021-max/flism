@@ -7,7 +7,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://flism-app.onrender.com"
+        "EXPO_PUBLIC_API_URL": "http://localhost:5000"
       }
     },
     "preview": {
@@ -16,7 +16,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://flism-app.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://flism-admin.onrender.com"
       }
     },
     "production": {
@@ -24,7 +24,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://flism-app.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://flism-admin.onrender.com"
       }
     }
   },

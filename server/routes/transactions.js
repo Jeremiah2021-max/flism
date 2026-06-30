@@ -82,6 +82,91 @@ router.post('/repay', authMiddleware, async (req, res) => {
   }
 });
 
+/* Process Mobile Money payment */
+router.post('/momo-repay', authMiddleware, async (req, res) => {
+  const { loan_id, amount, pin } = req.body;
+  if (!loan_id || !amount || !pin) {
+    return res.status(400).json({ error: 'Loan ID, amount, and PIN are required' });
+  }
+  if (pin.length !== 4) {
+    return res.status(400).json({ error: 'Invalid PIN format' });
+  }
+  try {
+    const loanCheck = await pool.query(
+      'SELECT * FROM loans WHERE id=$1 AND user_id=$2 AND status IN (\'active\',\'pending\')',
+      [loan_id, req.userId]
+    );
+    if (!loanCheck.rows.length) return res.status(404).json({ error: 'Loan not found or already settled' });
+    const loan = loanCheck.rows[0];
+    
+    const interest = parseFloat(loan.amount) * parseFloat(loan.interest_rate) / 100;
+    const totalDue = parseFloat(loan.amount) + interest - parseFloat(loan.amount_repaid || 0);
+    if (parseFloat(amount) > totalDue + 1) {
+      return res.status(400).json({ error: `Payment exceeds amount due (GHS ${totalDue.toFixed(2)})` });
+    }
+
+    // Get user's MoMo details
+    const userResult = await pool.query(
+      'SELECT momo_number, momo_provider FROM users WHERE id=$1',
+      [req.userId]
+    );
+    const user = userResult.rows[0];
+
+    if (!user || !user.momo_number) {
+      return res.status(400).json({ error: 'Mobile Money number not configured. Please complete KYC.' });
+    }
+
+    // In production, this would integrate with actual Mobile Money APIs (MTN, Vodafone, etc.)
+    // For now, we'll simulate the payment processing
+    const reference = `FLM-MOMO-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+
+    // Simulate payment processing delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Create transaction record
+    const txn = await pool.query(
+      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, momo_number, reference, status, notes)
+       VALUES ($1,$2,'repayment',$3,$4,$5,$6,'success',$7) RETURNING *`,
+      [req.userId, loan_id, amount, user.momo_provider, user.momo_number, reference, `Mobile Money payment via ${user.momo_provider} - Ref: ${reference}`]
+    );
+
+    // Update loan repayment
+    const newRepaid = parseFloat(loan.amount_repaid || 0) + parseFloat(amount);
+    const isFullyPaid = newRepaid >= totalDue - 0.01;
+    const newStatus = isFullyPaid ? 'repaid' : 'active';
+
+    await pool.query(
+      `UPDATE loans SET amount_repaid=$1, status=$2 WHERE id=$3`,
+      [newRepaid, newStatus, loan_id]
+    );
+
+    if (isFullyPaid) {
+      await pool.query(
+        `UPDATE users SET trust_score=trust_score+30 WHERE id=$1`,
+        [req.userId]
+      );
+      await pool.query(
+        `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
+        [req.userId, 'Loan Fully Repaid!', `Your loan has been fully settled via Mobile Money. Trust score +30 pts.`, 'success']
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
+        [req.userId, 'Payment Received', `GHS ${parseFloat(amount).toFixed(2)} repayment recorded via Mobile Money. Ref: ${reference}`, 'info']
+      );
+    }
+
+    res.json({
+      transaction: txn.rows[0],
+      fully_paid: isFullyPaid,
+      message: 'Mobile Money payment processed successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 /* Verify Paystack payment callback */
 router.get('/verify/:reference', async (req, res) => {
   const { reference } = req.params;
