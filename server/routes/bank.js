@@ -1,7 +1,7 @@
 const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
-const { getBanks, resolveAccount, createRecipient } = require('../services/paystack');
+const { getBanks, resolveAccount, createRecipient, createMoMoRecipient } = require('../services/paystack');
 
 const router = express.Router();
 
@@ -76,33 +76,70 @@ router.post('/account', authMiddleware, async (req, res) => {
   }
 });
 
-/* Get user's bank account details */
+/* Get user's disbursement account details (MoMo + bank) */
 router.get('/account', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT bank_name, bank_code, account_number, account_name FROM users WHERE id=$1',
+      `SELECT bank_name, bank_code, account_number, account_name, 
+              momo_number, momo_provider, momo_recipient_code, recipient_code
+       FROM users WHERE id=$1`,
       [req.userId]
     );
-
-    if (!result.rows.length) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const user = result.rows[0];
-    
-    if (!user.bank_name || !user.account_number) {
-      return res.json({ has_account: false });
-    }
-
+    if (!result.rows.length) return res.status(404).json({ error: 'User not found' });
+    const u = result.rows[0];
     res.json({
-      has_account: true,
-      bank_name: user.bank_name,
-      bank_code: user.bank_code,
-      account_number: user.account_number,
-      account_name: user.account_name,
+      has_momo: !!(u.momo_number && u.momo_recipient_code),
+      momo_number: u.momo_number,
+      momo_provider: u.momo_provider,
+      momo_registered: !!u.momo_recipient_code,
+      has_bank: !!(u.bank_name && u.account_number),
+      bank_name: u.bank_name,
+      bank_code: u.bank_code,
+      account_number: u.account_number,
+      account_name: u.account_name,
     });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+/* Register user's MoMo wallet as a Paystack transfer recipient for disbursements */
+router.post('/momo-recipient', authMiddleware, async (req, res) => {
+  try {
+    const userResult = await pool.query(
+      'SELECT full_name, momo_number, momo_provider FROM users WHERE id=$1',
+      [req.userId]
+    );
+    const user = userResult.rows[0];
+    if (!user?.momo_number) {
+      return res.status(400).json({ error: 'No Mobile Money number on file. Please complete KYC first.' });
+    }
+
+    const recipient = await createMoMoRecipient({
+      name: user.full_name,
+      phone: user.momo_number,
+      provider: user.momo_provider || 'MTN MoMo',
+    });
+
+    if (!recipient.status) {
+      return res.status(400).json({ error: recipient.message || 'Failed to register MoMo wallet with Paystack' });
+    }
+
+    const recipientCode = recipient.data.recipient_code;
+    await pool.query(
+      'UPDATE users SET momo_recipient_code=$1 WHERE id=$2',
+      [recipientCode, req.userId]
+    );
+
+    res.json({
+      message: 'Mobile Money wallet registered for disbursements',
+      momo_number: user.momo_number,
+      momo_provider: user.momo_provider,
+      recipient_code: recipientCode,
+    });
+  } catch (err) {
+    console.error('MoMo recipient error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });

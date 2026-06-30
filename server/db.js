@@ -54,6 +54,7 @@ async function initDb() {
     ALTER TABLE users ADD COLUMN IF NOT EXISTS account_number VARCHAR(20);
     ALTER TABLE users ADD COLUMN IF NOT EXISTS account_name VARCHAR(255);
     ALTER TABLE users ADD COLUMN IF NOT EXISTS recipient_code VARCHAR(100);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS momo_recipient_code VARCHAR(100);
 
     CREATE TABLE IF NOT EXISTS assets (
       id SERIAL PRIMARY KEY,

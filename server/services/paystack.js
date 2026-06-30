@@ -105,7 +105,32 @@ async function resolveAccount(accountNumber, bankCode) {
   }
 }
 
-/* Ghana MoMo provider codes for Paystack Charge API */
+/* Ghana MoMo provider codes — Charge API (collection) vs Transfer API (disbursement) */
+const MOMO_TRANSFER_BANK_CODES = {
+  'MTN MoMo':         'MTN',
+  'mtn':              'MTN',
+  'Vodafone Cash':    'VOD',
+  'vod':              'VOD',
+  'AirtelTigo Money': 'ATL',
+  'tgo':              'ATL',
+};
+
+/**
+ * Create a Paystack Mobile Money transfer recipient (Ghana).
+ * Required before initiating a MoMo disbursement transfer.
+ */
+async function createMoMoRecipient({ name, phone, provider, currency = 'GHS' }) {
+  const bankCode = MOMO_TRANSFER_BANK_CODES[provider] || 'MTN';
+  const response = await paystackRequest('POST', '/transferrecipient', {
+    type: 'mobile_money',
+    name,
+    account_number: phone,
+    bank_code: bankCode,
+    currency,
+  });
+  return response;
+}
+
 const MOMO_PROVIDERS = {
   'MTN MoMo':        'mtn',
   'mtn':             'mtn',
@@ -146,9 +171,11 @@ module.exports = {
   verifyPayment,
   initiateTransfer,
   createRecipient,
+  createMoMoRecipient,
   getBanks,
   resolveAccount,
   chargeMobileMoney,
   checkCharge,
   MOMO_PROVIDERS,
+  MOMO_TRANSFER_BANK_CODES,
 };

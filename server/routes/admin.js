@@ -1,7 +1,7 @@
 const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
-const { initiateTransfer } = require('../services/paystack');
+const { initiateTransfer, createMoMoRecipient } = require('../services/paystack');
 
 const router = express.Router();
 
@@ -95,6 +95,65 @@ router.get('/loans', authMiddleware, adminOnly, async (req, res) => {
   }
 });
 
+/* Helper: attempt disbursement via Paystack, trying MoMo first then bank */
+async function attemptDisbursement(loan, user) {
+  const reference = `FLM-DIS-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+  const amount = parseFloat(loan.amount);
+
+  // 1. Try pre-registered MoMo recipient
+  if (user.momo_recipient_code) {
+    const transfer = await initiateTransfer({
+      amount,
+      recipient_code: user.momo_recipient_code,
+      reference,
+      reason: `Flism loan disbursement — ${loan.purpose}`,
+    });
+    if (transfer.status) {
+      return { ok: true, reference, method: 'momo', label: `${user.momo_provider} wallet (${user.momo_number})` };
+    }
+  }
+
+  // 2. Try creating MoMo recipient on the fly from KYC data
+  if (user.momo_number && user.full_name) {
+    try {
+      const recipientRes = await createMoMoRecipient({
+        name: user.full_name,
+        phone: user.momo_number,
+        provider: user.momo_provider || 'MTN MoMo',
+      });
+      if (recipientRes.status) {
+        const momoCode = recipientRes.data.recipient_code;
+        // Save for next time
+        await pool.query('UPDATE users SET momo_recipient_code=$1 WHERE id=$2', [momoCode, user.id]);
+        const transfer = await initiateTransfer({
+          amount,
+          recipient_code: momoCode,
+          reference,
+          reason: `Flism loan disbursement — ${loan.purpose}`,
+        });
+        if (transfer.status) {
+          return { ok: true, reference, method: 'momo', label: `${user.momo_provider} wallet (${user.momo_number})` };
+        }
+      }
+    } catch (_e) { /* fall through to bank */ }
+  }
+
+  // 3. Try bank account recipient
+  if (user.recipient_code) {
+    const transfer = await initiateTransfer({
+      amount,
+      recipient_code: user.recipient_code,
+      reference,
+      reason: `Flism loan disbursement — ${loan.purpose}`,
+    });
+    if (transfer.status) {
+      return { ok: true, reference, method: 'bank', label: `${user.bank_name} (${user.account_number})` };
+    }
+  }
+
+  return { ok: false, reference, method: 'manual', label: 'No payment method on file' };
+}
+
 router.put('/loans/:id/approve', authMiddleware, adminOnly, async (req, res) => {
   try {
     const result = await pool.query(
@@ -104,66 +163,101 @@ router.put('/loans/:id/approve', authMiddleware, adminOnly, async (req, res) => 
     if (!result.rows.length) return res.status(404).json({ error: 'Loan not found or not pending' });
     const loan = result.rows[0];
 
-    // Get user's bank account details
     const userResult = await pool.query(
-      'SELECT recipient_code, account_number, bank_name FROM users WHERE id=$1',
+      `SELECT id, full_name, momo_number, momo_provider, momo_recipient_code,
+              recipient_code, account_number, bank_name
+       FROM users WHERE id=$1`,
       [loan.user_id]
     );
     const user = userResult.rows[0];
 
-    let transferStatus = 'pending';
-    let transferReference = null;
-
-    // Initiate Paystack transfer if user has bank account
-    if (user && user.recipient_code) {
-      try {
-        const reference = `FLM-DIS-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
-        const transfer = await initiateTransfer({
-          amount: parseFloat(loan.amount),
-          recipient_code: user.recipient_code,
-          reference,
-          reason: `Loan disbursement for ${loan.purpose}`,
-        });
-        transferStatus = 'success';
-        transferReference = reference;
-      } catch (transferError) {
-        console.error('Transfer initiation failed:', transferError);
-        transferStatus = 'failed';
-      }
+    let disbursement = { ok: false, reference: `MANUAL-${Date.now()}`, method: 'manual', label: 'No payment method' };
+    try {
+      disbursement = await attemptDisbursement(loan, user);
+    } catch (e) {
+      console.error('Disbursement error:', e.message);
     }
 
-    // Create transaction record
     const txn = await pool.query(
-      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, reference, status, notes) 
-       VALUES ($1,$2,'disbursement',$3,'Paystack',$4,$5,$6) RETURNING *`,
+      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, reference, status, notes)
+       VALUES ($1,$2,'disbursement',$3,$4,$5,$6,$7) RETURNING *`,
       [
-        loan.user_id,
-        loan.id,
-        loan.amount,
-        transferReference || `MANUAL-${Date.now()}`,
-        transferStatus,
-        transferStatus === 'success' 
-          ? `Disbursed to ${user.bank_name} - ${user.account_number}` 
-          : 'Manual disbursement required - User bank account not configured or transfer failed'
+        loan.user_id, loan.id, loan.amount,
+        disbursement.method === 'momo' ? 'Paystack MoMo' : disbursement.method === 'bank' ? 'Paystack Bank' : 'Manual',
+        disbursement.reference,
+        disbursement.ok ? 'success' : 'failed',
+        disbursement.ok
+          ? `Disbursed via ${disbursement.label} — Ref: ${disbursement.reference}`
+          : `Manual disbursement required — ${disbursement.label}`,
       ]
     );
 
+    const notifMsg = disbursement.ok
+      ? `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved and sent to your ${disbursement.method === 'momo' ? 'Mobile Money wallet' : 'bank account'} (${disbursement.label}).`
+      : `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved. Please ensure your Mobile Money wallet is set up to receive funds.`;
+
     await pool.query(
-      `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
-      [
-        loan.user_id,
-        'Loan Approved!',
-        transferStatus === 'success'
-          ? `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved and disbursed to your bank account.`
-          : `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved. Please add your bank account details for disbursement.`,
-        'success'
-      ]
+      `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,'success')`,
+      [loan.user_id, 'Loan Approved! 🎉', notifMsg]
     );
 
     res.json({
       loan: result.rows[0],
       transaction: txn.rows[0],
-      transfer_status: transferStatus,
+      transfer_status: disbursement.ok ? 'success' : 'manual_required',
+      disbursement_method: disbursement.method,
+      disbursement_label: disbursement.label,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+/* Retry disbursement for an already-active loan (admin use) */
+router.post('/loans/:id/disburse', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const loanResult = await pool.query(
+      "SELECT * FROM loans WHERE id=$1 AND status='active'",
+      [req.params.id]
+    );
+    if (!loanResult.rows.length) return res.status(404).json({ error: 'Active loan not found' });
+    const loan = loanResult.rows[0];
+
+    const userResult = await pool.query(
+      `SELECT id, full_name, momo_number, momo_provider, momo_recipient_code,
+              recipient_code, account_number, bank_name
+       FROM users WHERE id=$1`,
+      [loan.user_id]
+    );
+    const user = userResult.rows[0];
+
+    const disbursement = await attemptDisbursement(loan, user);
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, reference, status, notes)
+       VALUES ($1,$2,'disbursement',$3,$4,$5,$6,$7)`,
+      [
+        loan.user_id, loan.id, loan.amount,
+        disbursement.method === 'momo' ? 'Paystack MoMo' : 'Paystack Bank',
+        disbursement.reference,
+        disbursement.ok ? 'success' : 'failed',
+        disbursement.ok ? `Retry disbursement via ${disbursement.label}` : `Retry failed — ${disbursement.label}`,
+      ]
+    );
+
+    if (disbursement.ok) {
+      await pool.query(
+        `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,'success')`,
+        [loan.user_id, 'Funds Sent', `GHS ${parseFloat(loan.amount).toFixed(2)} has been sent to your ${disbursement.label}.`]
+      );
+    }
+
+    res.json({
+      ok: disbursement.ok,
+      method: disbursement.method,
+      label: disbursement.label,
+      reference: disbursement.reference,
     });
   } catch (err) {
     console.error(err);
