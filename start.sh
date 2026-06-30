@@ -1,6 +1,11 @@
 #!/bin/bash
 WORKSPACE=/home/runner/workspace
 
+echo "=== Cleaning up previous processes ==="
+fuser -k 3000/tcp 2>/dev/null || true
+fuser -k 5000/tcp 2>/dev/null || true
+sleep 2
+
 echo "=== Installing dependencies ==="
 cd "$WORKSPACE" && npm install --silent 2>&1 | grep -v "^npm warn" | grep -v "^$" || true
 
