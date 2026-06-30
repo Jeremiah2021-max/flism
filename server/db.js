@@ -1,12 +1,11 @@
 const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('replit') 
-    ? false 
-    : process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost') && !process.env.DATABASE_URL.includes('127.0.0.1')
-      ? { rejectUnauthorized: false }
-      : false,
+  ssl: process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost') && !process.env.DATABASE_URL.includes('127.0.0.1')
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
 async function initDb() {
@@ -134,6 +133,23 @@ async function initDb() {
       created_at TIMESTAMP DEFAULT NOW()
     );
   `);
+
+  // Seed default admin account
+  try {
+    const existing = await pool.query(`SELECT id FROM users WHERE email = 'admin@flism.com'`);
+    if (existing.rows.length === 0) {
+      const hash = await bcrypt.hash('Admin@Flism2024', 10);
+      await pool.query(
+        `INSERT INTO users (email, password_hash, full_name, role, trust_score, loan_limit, is_verified, is_kyc_complete, kyc_step)
+         VALUES ($1, $2, 'Flism Admin', 'admin', 500, 10000, true, true, 4)`,
+        ['admin@flism.com', hash]
+      );
+      console.log('Default admin created: admin@flism.com / Admin@Flism2024');
+    }
+  } catch (err) {
+    console.error('Admin seed warning:', err.message);
+  }
+
   console.log('Database schema initialized');
 }
 
