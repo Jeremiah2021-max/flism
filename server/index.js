@@ -13,6 +13,7 @@ const notificationRoutes = require('./routes/notifications');
 const guarantorRoutes = require('./routes/guarantors');
 const transactionRoutes = require('./routes/transactions');
 const adminRoutes = require('./routes/admin');
+const bankRoutes = require('./routes/bank');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -48,6 +49,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/guarantors', guarantorRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/bank', bankRoutes);
 app.get('/api/health', (_req, res) =>
   res.json({ status: 'ok', app: 'Flism API', env: process.env.NODE_ENV || 'development' })
 );

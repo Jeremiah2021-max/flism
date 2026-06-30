@@ -12,6 +12,7 @@ import { useColors } from '@/hooks/useColors';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/Button';
 import { apiPost } from '@/lib/api';
+import * as Haptics from 'expo-haptics';
 
 const STEPS = [
   { title: 'Identity', icon: 'card-outline', desc: 'Verify with your Ghana Card' },
@@ -33,6 +34,7 @@ export default function KYCScreen() {
 
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [ghanaCard, setGhanaCard] = useState('');
   const [dob, setDob] = useState('');
@@ -105,17 +107,50 @@ export default function KYCScreen() {
         await apiPost('/api/users/kyc/complete', {});
         await refreshUser();
         queryClient.invalidateQueries({ queryKey: ['/api/trust'] });
-        Alert.alert(
-          'KYC Submitted!',
-          'Your identity has been verified. Your trust score and loan limit have increased.',
-          [{ text: 'Continue', onPress: () => router.back() }]
-        );
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        setShowSuccess(true);
       } catch (e: any) {
         Alert.alert('Error', e.message);
       } finally {
         setLoading(false);
       }
     }
+  }
+
+  if (showSuccess) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <LinearGradient colors={['#1B5E20', '#2E7D32']} style={[styles.successHero, { paddingTop: topPad + 20 }]}>
+          <View style={styles.successIcon}>
+            <Ionicons name="shield-checkmark" size={64} color="#fff" />
+          </View>
+          <Text style={styles.successTitle}>KYC Verified!</Text>
+          <Text style={styles.successAmount}>+50 Trust Points</Text>
+          <Text style={styles.successRef}>Loan limit increased</Text>
+        </LinearGradient>
+        <View style={{ padding: 24, gap: 16 }}>
+          <View style={[styles.confirmCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Ionicons name="checkmark-circle" size={20} color="#3B7D4A" />
+            <Text style={[styles.confirmText, { color: colors.foreground }]}>
+              Your identity has been successfully verified.
+            </Text>
+          </View>
+          <View style={[styles.confirmCard, { backgroundColor: '#E8F5E9', borderColor: '#A5D6A7' }]}>
+            <Ionicons name="ribbon" size={20} color="#3B7D4A" />
+            <Text style={[styles.confirmText, { color: '#3B7D4A' }]}>
+              Trust score increased by 50 points. Your loan limit has been raised by GHS 200.
+            </Text>
+          </View>
+          <View style={[styles.confirmCard, { backgroundColor: colors.surfaceVariant, borderColor: colors.border }]}>
+            <Ionicons name="wallet-outline" size={20} color={colors.primaryContainer} />
+            <Text style={[styles.confirmText, { color: colors.foreground }]}>
+              You can now apply for loans with better terms and higher limits.
+            </Text>
+          </View>
+          <Button title="Back to Profile" onPress={() => router.replace('/(tabs)/profile')} size="lg" />
+        </View>
+      </View>
+    );
   }
 
   return (
@@ -361,4 +396,15 @@ const styles = StyleSheet.create({
   },
   reviewLabel: { fontSize: 11, fontFamily: 'PlusJakartaSans_400Regular' },
   reviewValue: { fontSize: 14, fontWeight: '600', fontFamily: 'PlusJakartaSans_600SemiBold' },
+  successHero: { paddingHorizontal: 24, paddingBottom: 40, alignItems: 'center', gap: 8 },
+  successIcon: {
+    width: 88, height: 88, borderRadius: 44,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center', justifyContent: 'center', marginBottom: 8,
+  },
+  successTitle: { fontSize: 24, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold' },
+  successAmount: { fontSize: 32, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold', letterSpacing: -0.5 },
+  successRef: { fontSize: 12, color: 'rgba(255,255,255,0.7)', fontFamily: 'PlusJakartaSans_400Regular' },
+  confirmCard: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 14, borderWidth: 1 },
+  confirmText: { flex: 1, fontSize: 14, fontFamily: 'PlusJakartaSans_500Medium', lineHeight: 20 },
 });

@@ -13,12 +13,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/Button';
 import { apiGet, apiPost } from '@/lib/api';
 
-const PROVIDERS = [
-  { name: 'MTN MoMo', color: '#FFCC00', bg: '#FFF9E6', icon: 'phone-portrait-outline' as const },
-  { name: 'Telecel Cash', color: '#E30613', bg: '#FFF0F0', icon: 'phone-portrait-outline' as const },
-  { name: 'AirtelTigo Money', color: '#EE2B2B', bg: '#FFF0F0', icon: 'phone-portrait-outline' as const },
-];
-
 interface Loan {
   id: number; amount: string; interest_rate: string; amount_repaid: string;
   purpose: string; status: string; repayment_date: string;
@@ -34,8 +28,6 @@ export default function PaymentScreen() {
   const queryClient = useQueryClient();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
-  const [provider, setProvider] = useState(user?.momo_provider ?? 'MTN MoMo');
-  const [momoNumber, setMomoNumber] = useState(user?.momo_number ?? '');
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{ reference: string; amount: string; fully_paid: boolean } | null>(null);
@@ -51,10 +43,6 @@ export default function PaymentScreen() {
   const displayDue = Math.max(totalDue, 0);
 
   async function handlePay() {
-    if (!momoNumber.trim()) {
-      Alert.alert('Required', 'Please enter your Mobile Money number.');
-      return;
-    }
     const payAmount = parseFloat(amount);
     if (!amount || isNaN(payAmount) || payAmount <= 0) {
       Alert.alert('Invalid amount', 'Please enter a valid payment amount.');
@@ -67,28 +55,63 @@ export default function PaymentScreen() {
 
     Alert.alert(
       'Confirm Payment',
-      `Pay GHS ${payAmount.toFixed(2)} via ${provider}\n\nTo: ${momoNumber}\n\nThis will be applied to your loan.`,
+      `Pay GHS ${payAmount.toFixed(2)} via Paystack\n\nThis will be applied to your loan.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Confirm & Pay',
+          text: 'Proceed to Pay',
           onPress: async () => {
             setLoading(true);
             try {
               const result = await apiPost('/api/transactions/repay', {
                 loan_id: parseInt(loanId),
                 amount: payAmount,
-                provider,
-                momo_number: momoNumber.trim(),
               });
-              queryClient.invalidateQueries({ queryKey: ['/api/loans'] });
-              queryClient.invalidateQueries({ queryKey: [`/api/loans/${loanId}`] });
-              queryClient.invalidateQueries({ queryKey: ['/api/trust'] });
-              setSuccess({
-                reference: result.reference,
-                amount: payAmount.toFixed(2),
-                fully_paid: result.fully_paid,
-              });
+
+              if (result.payment_url) {
+                // Open Paystack payment page
+                if (Platform.OS === 'web') {
+                  window.open(result.payment_url, '_blank');
+                } else {
+                  // For mobile, we would use WebView or in-app browser
+                  // For now, we'll show a message with the URL
+                  Alert.alert(
+                    'Payment Initiated',
+                    'Complete your payment in the browser. You will be redirected back after payment.',
+                    [
+                      { text: 'Open Payment', onPress: () => {
+                        // In a real app, you would use expo-web-browser or similar
+                        Alert.alert('Payment URL', result.payment_url);
+                      }},
+                      { text: 'Cancel', style: 'cancel' }
+                    ]
+                  );
+                }
+              }
+
+              // Poll for payment verification
+              const checkPayment = setInterval(async () => {
+                try {
+                  const verifyResult = await apiGet(`/api/transactions/verify/${result.reference}`);
+                  if (verifyResult.transaction?.status === 'success') {
+                    clearInterval(checkPayment);
+                    queryClient.invalidateQueries({ queryKey: ['/api/loans'] });
+                    queryClient.invalidateQueries({ queryKey: [`/api/loans/${loanId}`] });
+                    queryClient.invalidateQueries({ queryKey: ['/api/trust'] });
+                    setSuccess({
+                      reference: result.reference,
+                      amount: payAmount.toFixed(2),
+                      fully_paid: verifyResult.fully_paid,
+                    });
+                  }
+                } catch (e) {
+                  // Ignore verification errors during polling
+                }
+              }, 3000);
+
+              // Stop polling after 5 minutes
+              setTimeout(() => clearInterval(checkPayment), 300000);
+
             } catch (e: any) {
               Alert.alert('Payment Failed', e.message);
             } finally {
@@ -113,9 +136,9 @@ export default function PaymentScreen() {
         </LinearGradient>
         <View style={{ padding: 24, gap: 16 }}>
           <View style={[styles.confirmCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Ionicons name="phone-portrait-outline" size={20} color={colors.primaryContainer} />
+            <Ionicons name="card-outline" size={20} color={colors.primaryContainer} />
             <Text style={[styles.confirmText, { color: colors.foreground }]}>
-              {provider} payment of GHS {success.amount} received.
+              Paystack payment of GHS {success.amount} received.
             </Text>
           </View>
           {success.fully_paid && (
@@ -160,44 +183,6 @@ export default function PaymentScreen() {
           </LinearGradient>
         )}
 
-        {/* Provider selection */}
-        <View style={{ gap: 8 }}>
-          <Text style={[styles.sectionLabel, { color: colors.muted }]}>MOBILE MONEY PROVIDER</Text>
-          {PROVIDERS.map(p => (
-            <TouchableOpacity
-              key={p.name}
-              onPress={() => setProvider(p.name)}
-              style={[styles.providerRow, {
-                backgroundColor: provider === p.name ? p.bg : colors.surface,
-                borderColor: provider === p.name ? p.color : colors.border,
-              }]}
-              activeOpacity={0.8}
-            >
-              <View style={[styles.providerDot, { backgroundColor: p.color }]} />
-              <Text style={[styles.providerName, { color: colors.foreground }]}>{p.name}</Text>
-              {provider === p.name && (
-                <Ionicons name="checkmark-circle" size={20} color={p.color} />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* MoMo number */}
-        <View style={{ gap: 6 }}>
-          <Text style={[styles.sectionLabel, { color: colors.muted }]}>MOBILE MONEY NUMBER</Text>
-          <View style={[styles.inputWrap, { borderColor: colors.border, backgroundColor: colors.surface }]}>
-            <Ionicons name="call-outline" size={18} color={colors.muted} />
-            <TextInput
-              style={[styles.input, { color: colors.foreground }]}
-              placeholder="024 XXX XXXX"
-              placeholderTextColor={colors.muted}
-              value={momoNumber}
-              onChangeText={setMomoNumber}
-              keyboardType="phone-pad"
-            />
-          </View>
-        </View>
-
         {/* Amount */}
         <View style={{ gap: 6 }}>
           <Text style={[styles.sectionLabel, { color: colors.muted }]}>PAYMENT AMOUNT (GHS)</Text>
@@ -221,7 +206,7 @@ export default function PaymentScreen() {
         </View>
 
         <Button
-          title={`Pay GHS ${amount ? parseFloat(amount).toFixed(2) : '0.00'} via ${provider.split(' ')[0]}`}
+          title={`Pay GHS ${amount ? parseFloat(amount).toFixed(2) : '0.00'} via Paystack`}
           onPress={handlePay}
           loading={loading}
           size="lg"

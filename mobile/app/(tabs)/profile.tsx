@@ -174,6 +174,17 @@ export default function ProfileScreen() {
           )}
         </SectionGroup>
 
+        {/* Bank Account */}
+        <SectionGroup title="Bank Account" colors={colors}>
+          <MenuAction
+            icon="business-outline"
+            label="Setup Bank Account"
+            sublabel="For loan disbursements"
+            colors={colors}
+            onPress={() => router.push('/bank-account/setup')}
+          />
+        </SectionGroup>
+
         {/* Guarantors */}
         <SectionGroup title="Guarantors" colors={colors}>
           <View style={{ paddingHorizontal: 14, paddingTop: 10 }}>

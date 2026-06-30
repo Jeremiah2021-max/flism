@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 
 console.log("NODE_ENV =", process.env.NODE_ENV);
 
@@ -51,6 +52,13 @@ async function initDb() {
     ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'student';
     ALTER TABLE users ADD COLUMN IF NOT EXISTS kyc_step INTEGER DEFAULT 0;
     ALTER TABLE users ADD COLUMN IF NOT EXISTS is_student_verified BOOLEAN DEFAULT false;
+
+    -- Bank account fields for Paystack disbursements
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS bank_name VARCHAR(100);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS bank_code VARCHAR(20);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS account_number VARCHAR(20);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS account_name VARCHAR(255);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS recipient_code VARCHAR(100);
 
     CREATE TABLE IF NOT EXISTS assets (
       id SERIAL PRIMARY KEY,

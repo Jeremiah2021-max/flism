@@ -11,6 +11,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useColors } from '@/hooks/useColors';
 import { Button } from '@/components/Button';
 import { apiGet, apiPost, apiDelete } from '@/lib/api';
+import * as Haptics from 'expo-haptics';
 
 const RELATIONSHIPS = ['Parent', 'Guardian', 'Sibling', 'Relative', 'Lecturer', 'Friend'];
 
@@ -31,6 +32,7 @@ export default function GuarantorScreen() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [relationship, setRelationship] = useState('Parent');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const { data: guarantors = [], isLoading } = useQuery({
     queryKey: ['/api/guarantors'],
@@ -44,7 +46,8 @@ export default function GuarantorScreen() {
       queryClient.invalidateQueries({ queryKey: ['/api/trust'] });
       setShowForm(false);
       setName(''); setPhone(''); setEmail(''); setRelationship('Parent');
-      Alert.alert('Guarantor Added', 'Your guarantor has been added. Trust score +10 pts.');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      setShowSuccess(true);
     },
     onError: (e: any) => Alert.alert('Error', e.message),
   });
@@ -68,6 +71,42 @@ export default function GuarantorScreen() {
       { text: 'Cancel', style: 'cancel' },
       { text: 'Remove', style: 'destructive', onPress: () => deleteMutation.mutate(g.id) },
     ]);
+  }
+
+  if (showSuccess) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <LinearGradient colors={['#1B5E20', '#2E7D32']} style={[styles.successHero, { paddingTop: topPad + 20 }]}>
+          <View style={styles.successIcon}>
+            <Ionicons name="people" size={64} color="#fff" />
+          </View>
+          <Text style={styles.successTitle}>Guarantor Added!</Text>
+          <Text style={styles.successAmount}>+10 Trust Points</Text>
+          <Text style={styles.successRef}>{relationship}: {name}</Text>
+        </LinearGradient>
+        <View style={{ padding: 24, gap: 16 }}>
+          <View style={[styles.confirmCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Ionicons name="checkmark-circle" size={20} color="#3B7D4A" />
+            <Text style={[styles.confirmText, { color: colors.foreground }]}>
+              Your guarantor has been successfully added to your account.
+            </Text>
+          </View>
+          <View style={[styles.confirmCard, { backgroundColor: '#E8F5E9', borderColor: '#A5D6A7' }]}>
+            <Ionicons name="ribbon" size={20} color="#3B7D4A" />
+            <Text style={[styles.confirmText, { color: '#3B7D4A' }]}>
+              Trust score increased by 10 points. Maximum 3 guarantors allowed.
+            </Text>
+          </View>
+          <View style={[styles.confirmCard, { backgroundColor: colors.surfaceVariant, borderColor: colors.border }]}>
+            <Ionicons name="information-circle-outline" size={20} color={colors.primaryContainer} />
+            <Text style={[styles.confirmText, { color: colors.foreground }]}>
+              Your guarantor will be contacted for verification if needed.
+            </Text>
+          </View>
+          <Button title="Back to Profile" onPress={() => router.replace('/(tabs)/profile')} size="lg" />
+        </View>
+      </View>
+    );
   }
 
   return (
@@ -237,4 +276,15 @@ const styles = StyleSheet.create({
   emptyCard: { borderRadius: 20, padding: 36, alignItems: 'center', gap: 10, borderWidth: 1 },
   emptyTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'PlusJakartaSans_700Bold' },
   emptyText: { fontSize: 13, fontFamily: 'PlusJakartaSans_400Regular', textAlign: 'center', lineHeight: 20 },
+  successHero: { paddingHorizontal: 24, paddingBottom: 40, alignItems: 'center', gap: 8 },
+  successIcon: {
+    width: 88, height: 88, borderRadius: 44,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center', justifyContent: 'center', marginBottom: 8,
+  },
+  successTitle: { fontSize: 24, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold' },
+  successAmount: { fontSize: 32, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold', letterSpacing: -0.5 },
+  successRef: { fontSize: 12, color: 'rgba(255,255,255,0.7)', fontFamily: 'PlusJakartaSans_400Regular' },
+  confirmCard: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 14, borderWidth: 1 },
+  confirmText: { flex: 1, fontSize: 14, fontFamily: 'PlusJakartaSans_500Medium', lineHeight: 20 },
 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
+const { initiateTransfer } = require('../services/paystack');
 
 const router = express.Router();
 
@@ -102,16 +103,70 @@ router.put('/loans/:id/approve', authMiddleware, adminOnly, async (req, res) => 
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Loan not found or not pending' });
     const loan = result.rows[0];
+
+    // Get user's bank account details
+    const userResult = await pool.query(
+      'SELECT recipient_code, account_number, bank_name FROM users WHERE id=$1',
+      [loan.user_id]
+    );
+    const user = userResult.rows[0];
+
+    let transferStatus = 'pending';
+    let transferReference = null;
+
+    // Initiate Paystack transfer if user has bank account
+    if (user && user.recipient_code) {
+      try {
+        const reference = `FLM-DIS-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+        const transfer = await initiateTransfer({
+          amount: parseFloat(loan.amount),
+          recipient_code: user.recipient_code,
+          reference,
+          reason: `Loan disbursement for ${loan.purpose}`,
+        });
+        transferStatus = 'success';
+        transferReference = reference;
+      } catch (transferError) {
+        console.error('Transfer initiation failed:', transferError);
+        transferStatus = 'failed';
+      }
+    }
+
+    // Create transaction record
+    const txn = await pool.query(
+      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, reference, status, notes) 
+       VALUES ($1,$2,'disbursement',$3,'Paystack',$4,$5,$6) RETURNING *`,
+      [
+        loan.user_id,
+        loan.id,
+        loan.amount,
+        transferReference || `MANUAL-${Date.now()}`,
+        transferStatus,
+        transferStatus === 'success' 
+          ? `Disbursed to ${user.bank_name} - ${user.account_number}` 
+          : 'Manual disbursement required - User bank account not configured or transfer failed'
+      ]
+    );
+
     await pool.query(
       `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
-      [loan.user_id, 'Loan Approved!', `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved and disbursed.`, 'success']
+      [
+        loan.user_id,
+        'Loan Approved!',
+        transferStatus === 'success'
+          ? `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved and disbursed to your bank account.`
+          : `Your loan of GHS ${parseFloat(loan.amount).toFixed(2)} has been approved. Please add your bank account details for disbursement.`,
+        'success'
+      ]
     );
-    await pool.query(
-      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, status, notes) VALUES ($1,$2,'disbursement',$3,'Flism','success','Loan disbursement')`,
-      [loan.user_id, loan.id, loan.amount]
-    );
-    res.json(result.rows[0]);
+
+    res.json({
+      loan: result.rows[0],
+      transaction: txn.rows[0],
+      transfer_status: transferStatus,
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 });

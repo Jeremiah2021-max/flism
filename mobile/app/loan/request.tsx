@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useColors } from '@/hooks/useColors';
@@ -51,6 +52,8 @@ export default function RequestLoanScreen() {
   const interest = amountNum > 0 ? amountNum * 0.05 : 0;
   const totalRepay = amountNum + interest;
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const mutation = useMutation({
     mutationFn: () => apiPost('/api/loans', {
       amount: amountNum,
@@ -62,9 +65,7 @@ export default function RequestLoanScreen() {
       queryClient.invalidateQueries({ queryKey: ['/api/loans'] });
       queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      Alert.alert('Application Submitted!', 'Your loan application is under review. You will be notified within 24 hours.', [
-        { text: 'OK', onPress: () => router.back() }
-      ]);
+      setShowSuccess(true);
     },
     onError: (err: any) => Alert.alert('Error', err.message),
   });
@@ -86,6 +87,44 @@ export default function RequestLoanScreen() {
   }
 
   const quickAmounts = [50, 100, 200, Math.min(300, loanLimit)].filter(a => a <= loanLimit);
+
+  if (showSuccess) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <LinearGradient colors={['#1B5E20', '#2E7D32']} style={[styles.successHero, { paddingTop: topPad + 20 }]}>
+          <View style={styles.successIcon}>
+            <Ionicons name="checkmark-circle" size={64} color="#fff" />
+          </View>
+          <Text style={styles.successTitle}>Application Submitted!</Text>
+          <Text style={styles.successAmount}>GHS {amountNum.toFixed(2)}</Text>
+          <Text style={styles.successRef}>Loan ID: FL-{Date.now().toString().slice(-6)}</Text>
+        </LinearGradient>
+        <View style={{ padding: 24, gap: 16 }}>
+          <View style={[styles.confirmCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Ionicons name="time-outline" size={20} color={colors.primaryContainer} />
+            <Text style={[styles.confirmText, { color: colors.foreground }]}>
+              Your application is under review. You will be notified within 24 hours.
+            </Text>
+          </View>
+          <View style={[styles.confirmCard, { backgroundColor: '#E8F5E9', borderColor: '#A5D6A7' }]}>
+            <Ionicons name="information-circle-outline" size={20} color="#3B7D4A" />
+            <Text style={[styles.confirmText, { color: '#3B7D4A' }]}>
+              Purpose: {purpose === 'Other' ? customPurpose : purpose} · Duration: {duration} days
+            </Text>
+          </View>
+          {selectedAsset && (
+            <View style={[styles.confirmCard, { backgroundColor: colors.surfaceVariant, borderColor: colors.border }]}>
+              <Ionicons name="shield-outline" size={20} color={colors.primaryContainer} />
+              <Text style={[styles.confirmText, { color: colors.foreground }]}>
+                Collateral: {selectedAsset.brand ? `${selectedAsset.brand} ${selectedAsset.type}` : selectedAsset.type}
+              </Text>
+            </View>
+          )}
+          <Button title="Back to Loans" onPress={() => router.replace('/(tabs)/loans')} size="lg" />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -313,4 +352,15 @@ const styles = StyleSheet.create({
   divider: { height: 1 },
   warningBox: { flexDirection: 'row', gap: 8, padding: 12, borderRadius: 10, borderWidth: 1 },
   warningText: { flex: 1, fontSize: 12, fontFamily: 'PlusJakartaSans_400Regular', lineHeight: 18 },
+  successHero: { paddingHorizontal: 24, paddingBottom: 40, alignItems: 'center', gap: 8 },
+  successIcon: {
+    width: 88, height: 88, borderRadius: 44,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center', justifyContent: 'center', marginBottom: 8,
+  },
+  successTitle: { fontSize: 24, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold' },
+  successAmount: { fontSize: 36, fontWeight: '800', color: '#fff', fontFamily: 'PlusJakartaSans_800ExtraBold', letterSpacing: -1 },
+  successRef: { fontSize: 12, color: 'rgba(255,255,255,0.7)', fontFamily: 'PlusJakartaSans_400Regular' },
+  confirmCard: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 14, borderWidth: 1 },
+  confirmText: { flex: 1, fontSize: 14, fontFamily: 'PlusJakartaSans_500Medium', lineHeight: 20 },
 });
