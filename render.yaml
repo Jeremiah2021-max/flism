@@ -5,7 +5,9 @@ services:
     region: frankfurt
     plan: free
     buildCommand: |
-      cd mobile && npm install && npx expo export --platform web
+      npm install
+      cd mobile && npx expo export --platform web --output-dir dist
+      cd ../admin-app && npx expo export --platform web --output-dir dist
       cd ../server && npm install
     startCommand: NODE_ENV=production node server/index.js
     envVars:
@@ -15,3 +17,5 @@ services:
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      - key: PAYSTACK_SECRET_KEY
+        sync: false

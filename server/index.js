@@ -16,8 +16,8 @@ const bankRoutes = require('./routes/bank');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const IS_PROD = process.env.NODE_ENV === 'production';
 
-// On Replit, all requests are proxied — allow all origins in development
 app.use(cors({
   origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -42,38 +42,57 @@ app.get('/api/health', (_req, res) =>
   res.json({ status: 'ok', app: 'Flism API', env: process.env.NODE_ENV || 'development' })
 );
 
-// Proxy non-API requests to Expo web dev server on port 3000
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const EXPO_PORT = 3000;
-const expoProxy = createProxyMiddleware({
-  target: `http://localhost:${EXPO_PORT}`,
-  changeOrigin: true,
-  ws: true,
-  on: {
-    error: (_err, _req, res) => {
-      if (res && typeof res.writeHead === 'function') {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(`<html><head><title>Flism</title>
-          <style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;background:#0052FF;color:#fff;}
-          h1{font-size:2.5rem;margin-bottom:8px;}p{opacity:.75;}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;margin:0 3px;animation:bounce .8s infinite alternate;}.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
-          @keyframes bounce{to{transform:translateY(-8px);opacity:.3;}}</style>
-          <script>setTimeout(()=>location.reload(),2500)</script></head>
-          <body><h1>Flism</h1><p>Starting<span class=dot></span><span class=dot></span><span class=dot></span></p></body></html>`);
+if (IS_PROD) {
+  // Serve admin panel at /admin
+  const adminDist = path.join(__dirname, '../admin-app/dist');
+  app.use('/admin', express.static(adminDist));
+  app.get('/admin/*', (_req, res) => res.sendFile(path.join(adminDist, 'index.html')));
+
+  // Serve student app at root
+  const mobileDist = path.join(__dirname, '../mobile/dist');
+  app.use(express.static(mobileDist));
+  app.get('*', (_req, res) => res.sendFile(path.join(mobileDist, 'index.html')));
+} else {
+  // Dev: proxy to Expo dev servers
+  const { createProxyMiddleware } = require('http-proxy-middleware');
+  const EXPO_PORT = 3000;
+  const expoProxy = createProxyMiddleware({
+    target: `http://localhost:${EXPO_PORT}`,
+    changeOrigin: true,
+    ws: true,
+    on: {
+      error: (_err, _req, res) => {
+        if (res && typeof res.writeHead === 'function') {
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(`<html><head><title>Flism</title>
+            <style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;background:#0052FF;color:#fff;}
+            h1{font-size:2.5rem;margin-bottom:8px;}p{opacity:.75;}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;margin:0 3px;animation:bounce .8s infinite alternate;}.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+            @keyframes bounce{to{transform:translateY(-8px);opacity:.3;}}</style>
+            <script>setTimeout(()=>location.reload(),2500)</script></head>
+            <body><h1>Flism</h1><p>Starting<span class=dot></span><span class=dot></span><span class=dot></span></p></body></html>`);
+        }
       }
     }
-  }
-});
-
-app.use('/', expoProxy);
+  });
+  app.use('/', expoProxy);
+}
 
 initDb()
   .then(() => {
-    const wsProxy = createProxyMiddleware({ target: `http://localhost:${EXPO_PORT}`, ws: true });
-    const server = app.listen(PORT, '0.0.0.0', () => {
-      console.log(`Flism dev server → http://0.0.0.0:${PORT}`);
-      console.log(`Expo proxy       → http://localhost:${EXPO_PORT}`);
-    });
-    server.on('upgrade', wsProxy.upgrade);
+    if (IS_PROD) {
+      app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Flism production → http://0.0.0.0:${PORT}`);
+        console.log(`Admin panel      → http://0.0.0.0:${PORT}/admin`);
+      });
+    } else {
+      const { createProxyMiddleware } = require('http-proxy-middleware');
+      const EXPO_PORT = 3000;
+      const wsProxy = createProxyMiddleware({ target: `http://localhost:${EXPO_PORT}`, ws: true });
+      const server = app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Flism dev server → http://localhost:${PORT}`);
+      });
+      server.on('upgrade', wsProxy.upgrade);
+    }
   })
   .catch((err) => {
     console.error('DB init failed:', err.message);
