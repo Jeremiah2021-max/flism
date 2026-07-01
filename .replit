@@ -4,6 +4,7 @@ channel = "stable-25_05"
 
 [agent]
 expertMode = true
+stack = "BEST_EFFORT_FALLBACK"
 
 [workflows]
 runButton = "Project"
@@ -40,3 +41,8 @@ externalPort = 3002
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+JWT_SECRET = "b11edf2580b53aa5d3905970193bbba51894944bb6f72d7bc5217d6a691813a5aa3dbe67934f331b74b3f80f9c55ae4e"

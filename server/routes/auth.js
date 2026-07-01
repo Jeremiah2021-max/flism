@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
   }
   try {
     const result = await pool.query(
-      `SELECT id, email, full_name, password_hash, trust_score, loan_limit, is_verified, is_kyc_complete, university, phone, student_id, profile_image
+      `SELECT id, email, full_name, password_hash, trust_score, loan_limit, is_verified, is_kyc_complete, university, phone, student_id, profile_image, role
        FROM users WHERE email = $1`,
       [email]
     );

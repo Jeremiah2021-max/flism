@@ -1,7 +1,7 @@
 const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
-const { initializePayment, verifyPayment } = require('../services/paystack');
+const { initializePayment, verifyPayment, chargeMobileMoney, checkCharge } = require('../services/paystack');
 
 const router = express.Router();
 
@@ -82,87 +82,146 @@ router.post('/repay', authMiddleware, async (req, res) => {
   }
 });
 
-/* Process Mobile Money payment */
-router.post('/momo-repay', authMiddleware, async (req, res) => {
-  const { loan_id, amount, pin } = req.body;
-  if (!loan_id || !amount || !pin) {
-    return res.status(400).json({ error: 'Loan ID, amount, and PIN are required' });
-  }
-  if (pin.length !== 4) {
-    return res.status(400).json({ error: 'Invalid PIN format' });
-  }
+/* Initiate a real Paystack Mobile Money charge (Ghana) */
+router.post('/momo-charge', authMiddleware, async (req, res) => {
+  const { loan_id, amount } = req.body;
+  if (!loan_id || !amount) return res.status(400).json({ error: 'Loan ID and amount are required' });
+
   try {
     const loanCheck = await pool.query(
-      'SELECT * FROM loans WHERE id=$1 AND user_id=$2 AND status IN (\'active\',\'pending\')',
+      "SELECT * FROM loans WHERE id=$1 AND user_id=$2 AND status IN ('active','pending')",
       [loan_id, req.userId]
     );
     if (!loanCheck.rows.length) return res.status(404).json({ error: 'Loan not found or already settled' });
     const loan = loanCheck.rows[0];
-    
+
     const interest = parseFloat(loan.amount) * parseFloat(loan.interest_rate) / 100;
     const totalDue = parseFloat(loan.amount) + interest - parseFloat(loan.amount_repaid || 0);
     if (parseFloat(amount) > totalDue + 1) {
       return res.status(400).json({ error: `Payment exceeds amount due (GHS ${totalDue.toFixed(2)})` });
     }
 
-    // Get user's MoMo details
     const userResult = await pool.query(
-      'SELECT momo_number, momo_provider FROM users WHERE id=$1',
+      'SELECT email, momo_number, momo_provider FROM users WHERE id=$1',
       [req.userId]
     );
     const user = userResult.rows[0];
 
-    if (!user || !user.momo_number) {
+    if (!user?.momo_number) {
       return res.status(400).json({ error: 'Mobile Money number not configured. Please complete KYC.' });
     }
 
-    // In production, this would integrate with actual Mobile Money APIs (MTN, Vodafone, etc.)
-    // For now, we'll simulate the payment processing
     const reference = `FLM-MOMO-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
 
-    // Simulate payment processing delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Call Paystack Charge API — sends USSD prompt to user's phone
+    const paystackRes = await chargeMobileMoney({
+      amount: parseFloat(amount),
+      email: user.email,
+      phone: user.momo_number,
+      provider: user.momo_provider || 'MTN MoMo',
+      reference,
+      metadata: { loan_id, user_id: req.userId, type: 'loan_repayment' },
+    });
 
-    // Create transaction record
-    const txn = await pool.query(
-      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, momo_number, reference, status, notes)
-       VALUES ($1,$2,'repayment',$3,$4,$5,$6,'success',$7) RETURNING *`,
-      [req.userId, loan_id, amount, user.momo_provider, user.momo_number, reference, `Mobile Money payment via ${user.momo_provider} - Ref: ${reference}`]
-    );
-
-    // Update loan repayment
-    const newRepaid = parseFloat(loan.amount_repaid || 0) + parseFloat(amount);
-    const isFullyPaid = newRepaid >= totalDue - 0.01;
-    const newStatus = isFullyPaid ? 'repaid' : 'active';
-
-    await pool.query(
-      `UPDATE loans SET amount_repaid=$1, status=$2 WHERE id=$3`,
-      [newRepaid, newStatus, loan_id]
-    );
-
-    if (isFullyPaid) {
-      await pool.query(
-        `UPDATE users SET trust_score=trust_score+30 WHERE id=$1`,
-        [req.userId]
-      );
-      await pool.query(
-        `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
-        [req.userId, 'Loan Fully Repaid!', `Your loan has been fully settled via Mobile Money. Trust score +30 pts.`, 'success']
-      );
-    } else {
-      await pool.query(
-        `INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,$4)`,
-        [req.userId, 'Payment Received', `GHS ${parseFloat(amount).toFixed(2)} repayment recorded via Mobile Money. Ref: ${reference}`, 'info']
-      );
+    if (!paystackRes.status) {
+      return res.status(400).json({ error: paystackRes.message || 'Failed to initiate MoMo charge' });
     }
 
+    // Save pending transaction so we can track it
+    await pool.query(
+      `INSERT INTO transactions (user_id, loan_id, type, amount, provider, momo_number, reference, status, notes)
+       VALUES ($1,$2,'repayment',$3,$4,$5,$6,'pending',$7)`,
+      [req.userId, loan_id, amount, user.momo_provider, user.momo_number, reference,
+       `Paystack MoMo charge initiated - Ref: ${reference}`]
+    );
+
     res.json({
-      transaction: txn.rows[0],
-      fully_paid: isFullyPaid,
-      message: 'Mobile Money payment processed successfully',
+      reference,
+      status: paystackRes.data?.status || 'pending',
+      message: 'Payment prompt sent to your phone. Approve it to complete.',
     });
   } catch (err) {
-    console.error(err);
+    console.error('MoMo charge error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+/* Poll Paystack charge status (called by mobile app every ~3s) */
+router.get('/momo-status/:reference', authMiddleware, async (req, res) => {
+  const { reference } = req.params;
+  try {
+    // First check our own DB — avoids hammering Paystack if already settled
+    const existing = await pool.query(
+      "SELECT * FROM transactions WHERE reference=$1 AND user_id=$2",
+      [reference, req.userId]
+    );
+    if (!existing.rows.length) return res.status(404).json({ error: 'Transaction not found' });
+    const txn = existing.rows[0];
+
+    if (txn.status === 'success') {
+      const loanRow = await pool.query('SELECT amount_repaid, amount, interest_rate FROM loans WHERE id=$1', [txn.loan_id]);
+      const loan = loanRow.rows[0];
+      const interest = parseFloat(loan.amount) * parseFloat(loan.interest_rate) / 100;
+      const totalDue = parseFloat(loan.amount) + interest;
+      const fullyPaid = parseFloat(loan.amount_repaid) >= totalDue - 0.01;
+      return res.json({ status: 'success', fully_paid: fullyPaid });
+    }
+    if (txn.status === 'failed') return res.json({ status: 'failed' });
+
+    // Query Paystack for live status
+    const paystackRes = await checkCharge(reference);
+    const chargeStatus = paystackRes.data?.status;
+
+    if (chargeStatus === 'success') {
+      const paidAmount = paystackRes.data.amount / 100; // pesewas → GHS
+
+      // Fetch loan to update
+      const loanRow = await pool.query(
+        "SELECT * FROM loans WHERE id=$1",
+        [txn.loan_id]
+      );
+      const loan = loanRow.rows[0];
+      const interest = parseFloat(loan.amount) * parseFloat(loan.interest_rate) / 100;
+      const totalDue = parseFloat(loan.amount) + interest;
+      const newRepaid = parseFloat(loan.amount_repaid || 0) + paidAmount;
+      const isFullyPaid = newRepaid >= totalDue - 0.01;
+      const newStatus = isFullyPaid ? 'repaid' : 'active';
+
+      // Mark transaction success
+      await pool.query(
+        "UPDATE transactions SET status='success', notes=$1 WHERE reference=$2",
+        [`Paystack MoMo confirmed - Ref: ${reference}`, reference]
+      );
+      // Update loan balance
+      await pool.query(
+        'UPDATE loans SET amount_repaid=$1, status=$2 WHERE id=$3',
+        [newRepaid, newStatus, loan.id]
+      );
+      // Trust score & notification
+      if (isFullyPaid) {
+        await pool.query('UPDATE users SET trust_score=trust_score+30 WHERE id=$1', [req.userId]);
+        await pool.query(
+          "INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,'success')",
+          [req.userId, 'Loan Fully Repaid!', `Your loan has been fully settled via Mobile Money. Trust score +30 pts.`]
+        );
+      } else {
+        await pool.query(
+          "INSERT INTO notifications (user_id, title, message, type) VALUES ($1,$2,$3,'info')",
+          [req.userId, 'Payment Received', `GHS ${paidAmount.toFixed(2)} repayment recorded via Mobile Money. Ref: ${reference}`]
+        );
+      }
+      return res.json({ status: 'success', fully_paid: isFullyPaid });
+    }
+
+    if (chargeStatus === 'failed') {
+      await pool.query("UPDATE transactions SET status='failed' WHERE reference=$1", [reference]);
+      return res.json({ status: 'failed' });
+    }
+
+    // Still pending / pay_offline
+    return res.json({ status: 'pending' });
+  } catch (err) {
+    console.error('MoMo status check error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });

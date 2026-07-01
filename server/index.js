@@ -1,5 +1,8 @@
 const path = require("path");
+<<<<<<< HEAD
 require("dotenv").config({ path: path.join(__dirname, ".env") });
+=======
+>>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
 const express = require('express');
 const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -20,6 +23,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
+<<<<<<< HEAD
 // CORS configuration
 const allowedOrigins = IS_PROD
   ? [
@@ -39,11 +43,16 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
+=======
+app.use(cors({
+  origin: true,
+>>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
+<<<<<<< HEAD
 // Manual CORS fallback to ensure headers are always set
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -59,6 +68,8 @@ app.use((req, res, next) => {
   }
 });
 
+=======
+>>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
 app.use(express.json({ limit: '10mb' }));
 
 app.use('/api/auth', authRoutes);
@@ -71,15 +82,27 @@ app.use('/api/guarantors', guarantorRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/bank', bankRoutes);
+
 app.get('/api/health', (_req, res) =>
   res.json({ status: 'ok', app: 'Flism API', env: process.env.NODE_ENV || 'development' })
 );
 
 if (IS_PROD) {
-  const distPath = path.join(__dirname, '../mobile/dist');
-  app.use(express.static(distPath));
-  app.get('*', (_req, res) => res.sendFile(path.join(distPath, 'index.html')));
+  // Serve admin panel at /admin
+  const adminDist = path.join(__dirname, '../admin-app/dist');
+  app.use('/admin', express.static(adminDist));
+  app.get('/admin/*', (_req, res) => res.sendFile(path.join(adminDist, 'index.html')));
+
+  // Serve student app at root
+  const mobileDist = path.join(__dirname, '../mobile/dist');
+  app.use(express.static(mobileDist));
+  app.get('*', (_req, res) => res.sendFile(path.join(mobileDist, 'index.html')));
 } else {
+<<<<<<< HEAD
+=======
+  // Dev: proxy to Expo dev servers
+  const { createProxyMiddleware } = require('http-proxy-middleware');
+>>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
   const EXPO_PORT = 3000;
   const expoProxy = createProxyMiddleware({
     target: `http://localhost:${EXPO_PORT}`,
@@ -106,14 +129,14 @@ initDb()
   .then(() => {
     if (IS_PROD) {
       app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Flism production server → http://0.0.0.0:${PORT}`);
+        console.log(`Flism production → http://0.0.0.0:${PORT}`);
+        console.log(`Admin panel      → http://0.0.0.0:${PORT}/admin`);
       });
     } else {
       const EXPO_PORT = 3000;
       const wsProxy = createProxyMiddleware({ target: `http://localhost:${EXPO_PORT}`, ws: true });
       const server = app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Flism dev server     → http://localhost:${PORT}`);
-        console.log(`Expo proxy           → http://localhost:${EXPO_PORT}`);
+        console.log(`Flism dev server → http://localhost:${PORT}`);
       });
       server.on('upgrade', wsProxy.upgrade);
     }

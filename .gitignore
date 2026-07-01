@@ -1,10 +1,12 @@
 node_modules/
 mobile/node_modules/
 server/node_modules/
+admin-app/node_modules/
 mobile/.expo/
-mobile/dist/
+admin-app/.expo/
 .env
 .env.local
 .env.production
 *.log
 .DS_Store
+zipFile.zip
