@@ -11,7 +11,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useColors } from '@/hooks/useColors';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/Button';
-import { apiGet, apiPost } from '@/lib/api';
+import { apiGet } from '@/lib/api';
 
 interface Loan {
   id: number; amount: string; interest_rate: string; amount_repaid: string;
@@ -29,7 +29,6 @@ export default function PaymentScreen() {
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
 
   const [amount, setAmount] = useState('');
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{ reference: string; amount: string; fully_paid: boolean } | null>(null);
 
   const { data: loan } = useQuery({
@@ -41,87 +40,6 @@ export default function PaymentScreen() {
   const totalDue = loan?.total_due
     ?? (loan ? parseFloat(loan.amount) * (1 + parseFloat(loan.interest_rate) / 100) - parseFloat(loan.amount_repaid || '0') : 0);
   const displayDue = Math.max(totalDue, 0);
-
-  async function handlePay() {
-    const payAmount = parseFloat(amount);
-    if (!amount || isNaN(payAmount) || payAmount <= 0) {
-      Alert.alert('Invalid amount', 'Please enter a valid payment amount.');
-      return;
-    }
-    if (payAmount > displayDue + 1) {
-      Alert.alert('Too much', `Payment cannot exceed GHS ${displayDue.toFixed(2)}`);
-      return;
-    }
-
-    Alert.alert(
-      'Confirm Payment',
-      `Pay GHS ${payAmount.toFixed(2)} via Paystack\n\nThis will be applied to your loan.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Proceed to Pay',
-          onPress: async () => {
-            setLoading(true);
-            try {
-              const result = await apiPost('/api/transactions/repay', {
-                loan_id: parseInt(loanId),
-                amount: payAmount,
-              });
-
-              if (result.payment_url) {
-                // Open Paystack payment page
-                if (Platform.OS === 'web') {
-                  window.open(result.payment_url, '_blank');
-                } else {
-                  // For mobile, we would use WebView or in-app browser
-                  // For now, we'll show a message with the URL
-                  Alert.alert(
-                    'Payment Initiated',
-                    'Complete your payment in the browser. You will be redirected back after payment.',
-                    [
-                      { text: 'Open Payment', onPress: () => {
-                        // In a real app, you would use expo-web-browser or similar
-                        Alert.alert('Payment URL', result.payment_url);
-                      }},
-                      { text: 'Cancel', style: 'cancel' }
-                    ]
-                  );
-                }
-              }
-
-              // Poll for payment verification
-              const checkPayment = setInterval(async () => {
-                try {
-                  const verifyResult = await apiGet(`/api/transactions/verify/${result.reference}`);
-                  if (verifyResult.transaction?.status === 'success') {
-                    clearInterval(checkPayment);
-                    queryClient.invalidateQueries({ queryKey: ['/api/loans'] });
-                    queryClient.invalidateQueries({ queryKey: [`/api/loans/${loanId}`] });
-                    queryClient.invalidateQueries({ queryKey: ['/api/trust'] });
-                    setSuccess({
-                      reference: result.reference,
-                      amount: payAmount.toFixed(2),
-                      fully_paid: verifyResult.fully_paid,
-                    });
-                  }
-                } catch (e) {
-                  // Ignore verification errors during polling
-                }
-              }, 3000);
-
-              // Stop polling after 5 minutes
-              setTimeout(() => clearInterval(checkPayment), 300000);
-
-            } catch (e: any) {
-              Alert.alert('Payment Failed', e.message);
-            } finally {
-              setLoading(false);
-            }
-          }
-        }
-      ]
-    );
-  }
 
   if (success) {
     return (

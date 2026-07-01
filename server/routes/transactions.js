@@ -175,6 +175,20 @@ router.get('/momo-status/:reference', authMiddleware, async (req, res) => {
     if (chargeStatus === 'success') {
       const paidAmount = paystackRes.data.amount / 100; // pesewas → GHS
 
+      // Race-condition guard: only one concurrent poll can win this update.
+      // If status is already 'success' (another poll beat us here), RETURNING
+      // returns 0 rows and we fall through to the already-settled check above
+      // on the next poll cycle.
+      const claimed = await pool.query(
+        `UPDATE transactions SET status='success', notes=$1
+         WHERE reference=$2 AND status='pending' RETURNING *`,
+        [`Paystack MoMo confirmed - Ref: ${reference}`, reference]
+      );
+      if (!claimed.rows.length) {
+        // Another poll already processed this — return success without double-crediting
+        return res.json({ status: 'success', fully_paid: false });
+      }
+
       // Fetch loan to update
       const loanRow = await pool.query(
         "SELECT * FROM loans WHERE id=$1",
@@ -187,11 +201,6 @@ router.get('/momo-status/:reference', authMiddleware, async (req, res) => {
       const isFullyPaid = newRepaid >= totalDue - 0.01;
       const newStatus = isFullyPaid ? 'repaid' : 'active';
 
-      // Mark transaction success
-      await pool.query(
-        "UPDATE transactions SET status='success', notes=$1 WHERE reference=$2",
-        [`Paystack MoMo confirmed - Ref: ${reference}`, reference]
-      );
       // Update loan balance
       await pool.query(
         'UPDATE loans SET amount_repaid=$1, status=$2 WHERE id=$3',
@@ -226,18 +235,24 @@ router.get('/momo-status/:reference', authMiddleware, async (req, res) => {
   }
 });
 
-/* Verify Paystack payment callback */
-router.get('/verify/:reference', async (req, res) => {
+/* Verify Paystack payment callback — requires auth so only the paying user can trigger processing */
+router.get('/verify/:reference', authMiddleware, async (req, res) => {
   const { reference } = req.params;
   try {
     const verification = await verifyPayment(reference);
 
-    if (!verification.data.status || verification.data.status !== 'success') {
+    if (!verification.data || verification.data.status !== 'success') {
       return res.status(400).json({ error: 'Payment not successful' });
     }
 
-    const metadata = verification.data.metadata;
-    const { loan_id, user_id } = metadata;
+    const metadata = verification.data.metadata || {};
+    // Fall back to the authenticated user if Paystack strips metadata
+    const user_id = metadata.user_id ?? req.userId;
+    const loan_id = metadata.loan_id;
+
+    if (!loan_id) {
+      return res.status(400).json({ error: 'Payment reference missing loan information' });
+    }
     const amount = verification.data.amount / 100; // Convert from kobo to GHS
 
     // Check if transaction already processed
