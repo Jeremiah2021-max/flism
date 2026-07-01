@@ -1,10 +1,9 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 const express = require('express');
-const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const { initDb } = require('./db');
-
+ 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const loanRoutes = require('./routes/loans');
@@ -15,52 +14,56 @@ const guarantorRoutes = require('./routes/guarantors');
 const transactionRoutes = require('./routes/transactions');
 const adminRoutes = require('./routes/admin');
 const bankRoutes = require('./routes/bank');
-
+ 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const IS_PROD = process.env.NODE_ENV === 'production';
-
-// CORS configuration
-const allowedOrigins = IS_PROD
+ 
+const ALLOWED_ORIGINS = IS_PROD
   ? [
       'https://flism-admin.onrender.com',
+      'https://flism-server.onrender.com',
       'https://flism.onrender.com',
       'https://jeremiah2021-max.github.io',
     ]
-  : ['http://localhost:3000', 'http://localhost:5000'];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
-
-// Manual CORS fallback to ensure headers are always set
+  : [
+      'http://localhost:3000',
+      'http://localhost:5000',
+      'http://localhost:8081',
+    ];
+ 
+// Single unified CORS handler — handles both preflight OPTIONS and real requests.
+// Must be registered BEFORE all routes.
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin) || !origin) {
-    res.header('Access-Control-Allow-Origin', origin || '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    if (req.method === 'OPTIONS') return res.sendStatus(200);
-    next();
+ 
+  // Always set the origin header if it's allowed (or if there's no origin, e.g. mobile app / curl)
+  if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
   } else {
-    return res.status(403).json({ error: 'Origin not allowed by CORS' });
+    // Unknown origin — still need to respond to OPTIONS or the browser gets a network error
+    // Return 403 with a plain message (not a CORS rejection, which gives no body)
+    if (req.method === 'OPTIONS') {
+      return res.status(403).end();
+    }
+    return res.status(403).json({ error: 'Origin not allowed' });
   }
+ 
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '86400'); // cache preflight for 24 hours
+ 
+  // Respond to preflight immediately — no need to hit route handlers
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+ 
+  next();
 });
-
+ 
 app.use(express.json({ limit: '10mb' }));
-
+ 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/loans', loanRoutes);
@@ -71,23 +74,22 @@ app.use('/api/guarantors', guarantorRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/bank', bankRoutes);
-
+ 
 app.get('/api/health', (_req, res) =>
   res.json({ status: 'ok', app: 'Flism API', env: process.env.NODE_ENV || 'development' })
 );
-
+ 
 if (IS_PROD) {
   // Serve admin panel at /admin
   const adminDist = path.join(__dirname, '../admin-app/dist');
   app.use('/admin', express.static(adminDist));
   app.get('/admin/*', (_req, res) => res.sendFile(path.join(adminDist, 'index.html')));
-
+ 
   // Serve student app at root
   const mobileDist = path.join(__dirname, '../mobile/dist');
   app.use(express.static(mobileDist));
   app.get('*', (_req, res) => res.sendFile(path.join(mobileDist, 'index.html')));
 } else {
-  // Dev: proxy to Expo dev server (createProxyMiddleware already imported at top)
   const EXPO_PORT = 3000;
   const expoProxy = createProxyMiddleware({
     target: `http://localhost:${EXPO_PORT}`,
@@ -109,7 +111,7 @@ if (IS_PROD) {
   });
   app.use('/', expoProxy);
 }
-
+ 
 initDb()
   .then(() => {
     if (IS_PROD) {
