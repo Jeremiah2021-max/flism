@@ -70,19 +70,49 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Admin: approve asset (for demo, accessible by any user to simulate approval)
+// Admin only: approve or reject an asset
 router.post('/:id/approve', authMiddleware, async (req, res) => {
+  // Security: only admins may approve assets
+  if (req.userRole !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
   try {
     const result = await pool.query(
-      `UPDATE assets SET status = 'approved' WHERE id = $1 AND user_id = $2 RETURNING *`,
-      [req.params.id, req.userId]
+      `UPDATE assets SET status = 'approved' WHERE id = $1 RETURNING *`,
+      [req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Asset not found' });
+    const asset = result.rows[0];
+    // Notify the asset owner
     await pool.query(
       `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
-      [req.userId, 'Asset Approved!', `Your ${result.rows[0].type} has been approved as collateral. You can now use it to request a loan.`, 'success']
+      [asset.user_id, 'Asset Approved!', `Your ${asset.type} has been approved as collateral. You can now use it to request a loan.`, 'success']
     );
-    res.json(result.rows[0]);
+    res.json(asset);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Admin only: reject an asset
+router.post('/:id/reject', authMiddleware, async (req, res) => {
+  if (req.userRole !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+  const { reason } = req.body;
+  try {
+    const result = await pool.query(
+      `UPDATE assets SET status = 'rejected' WHERE id = $1 RETURNING *`,
+      [req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Asset not found' });
+    const asset = result.rows[0];
+    await pool.query(
+      `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
+      [asset.user_id, 'Asset Not Approved', reason || `Your ${asset.type} could not be verified as collateral.`, 'error']
+    );
+    res.json(asset);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });

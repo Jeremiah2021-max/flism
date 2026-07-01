@@ -113,7 +113,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const me = await apiFetch<User>('/api/users/me');
       setUser(me);
-    } catch { /* ignore */ }
+    } catch (err: any) {
+      // If the server returns 401 the token is expired/invalid — clear auth so
+      // the user is redirected to login rather than being stuck in a broken state.
+      const msg: string = err?.message ?? '';
+      if (msg.includes('401') || msg.toLowerCase().includes('invalid token') || msg.toLowerCase().includes('no token')) {
+        await clearToken();
+        setTokenState(null);
+        setUser(null);
+      }
+      // For non-auth errors (network outage, 5xx) keep the current session alive
+      // so the user isn't logged out just because the server is temporarily down.
+    }
   }
 
   const value = useMemo(() => ({

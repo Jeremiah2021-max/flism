@@ -164,8 +164,16 @@ router.post('/:id/repay', authMiddleware, async (req, res) => {
       `UPDATE loans SET amount_repaid = $1, status = $2 WHERE id = $3`,
       [newRepaid.toFixed(2), newStatus, req.params.id]
     );
+    // PostgreSQL does not support LIMIT on UPDATE; use a ctid subquery to mark
+    // only the earliest pending repayment row as paid.
     await pool.query(
-      `UPDATE repayments SET status = 'paid', paid_at = NOW() WHERE loan_id = $1 AND status = 'pending' LIMIT 1`,
+      `UPDATE repayments SET status = 'paid', paid_at = NOW()
+       WHERE ctid = (
+         SELECT ctid FROM repayments
+         WHERE loan_id = $1 AND status = 'pending'
+         ORDER BY due_date ASC
+         LIMIT 1
+       )`,
       [req.params.id]
     );
 

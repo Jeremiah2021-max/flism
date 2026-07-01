@@ -18,11 +18,13 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-router.put('/:id/read', authMiddleware, async (req, res) => {
+// /read-all MUST be registered before /:id/read so Express doesn't treat
+// 'read-all' as a value for :id on a future ambiguous match.
+router.put('/read-all', authMiddleware, async (req, res) => {
   try {
     await pool.query(
-      `UPDATE notifications SET is_read = true WHERE id = $1 AND user_id = $2`,
-      [req.params.id, req.userId]
+      `UPDATE notifications SET is_read = true WHERE user_id = $1`,
+      [req.userId]
     );
     res.json({ success: true });
   } catch (err) {
@@ -31,11 +33,11 @@ router.put('/:id/read', authMiddleware, async (req, res) => {
   }
 });
 
-router.put('/read-all', authMiddleware, async (req, res) => {
+router.put('/:id/read', authMiddleware, async (req, res) => {
   try {
     await pool.query(
-      `UPDATE notifications SET is_read = true WHERE user_id = $1`,
-      [req.userId]
+      `UPDATE notifications SET is_read = true WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.userId]
     );
     res.json({ success: true });
   } catch (err) {

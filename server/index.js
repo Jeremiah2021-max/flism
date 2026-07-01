@@ -1,7 +1,8 @@
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });console.log(process.env.DATABASE_URL);
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 const express = require('express');
 const cors = require('cors');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const { initDb } = require('./db');
 
 const authRoutes = require('./routes/auth');
@@ -19,7 +20,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
-// CORS configuration - allow specific origins in production, all in development
+// CORS configuration
 const allowedOrigins = IS_PROD
   ? [
       'https://flism-admin.onrender.com',
@@ -30,9 +31,8 @@ const allowedOrigins = IS_PROD
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, etc.)
+    // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
-    
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -44,7 +44,7 @@ app.use(cors({
   credentials: true,
 }));
 
-// Manual CORS middleware as fallback to ensure headers are always set
+// Manual CORS fallback to ensure headers are always set
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin) || !origin) {
@@ -52,16 +52,13 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
-    
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
+    if (req.method === 'OPTIONS') return res.sendStatus(200);
     next();
   } else {
-    // Reject unauthorized origins
     return res.status(403).json({ error: 'Origin not allowed by CORS' });
   }
 });
+
 app.use(express.json({ limit: '10mb' }));
 
 app.use('/api/auth', authRoutes);
@@ -83,7 +80,6 @@ if (IS_PROD) {
   app.use(express.static(distPath));
   app.get('*', (_req, res) => res.sendFile(path.join(distPath, 'index.html')));
 } else {
-  const { createProxyMiddleware } = require('http-proxy-middleware');
   const EXPO_PORT = 3000;
   const expoProxy = createProxyMiddleware({
     target: `http://localhost:${EXPO_PORT}`,
@@ -113,7 +109,6 @@ initDb()
         console.log(`Flism production server → http://0.0.0.0:${PORT}`);
       });
     } else {
-      const { createProxyMiddleware } = require('http-proxy-middleware');
       const EXPO_PORT = 3000;
       const wsProxy = createProxyMiddleware({ target: `http://localhost:${EXPO_PORT}`, ws: true });
       const server = app.listen(PORT, '0.0.0.0', () => {
