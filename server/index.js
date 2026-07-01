@@ -1,8 +1,5 @@
 const path = require("path");
-<<<<<<< HEAD
 require("dotenv").config({ path: path.join(__dirname, ".env") });
-=======
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
 const express = require('express');
 const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -23,7 +20,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
-<<<<<<< HEAD
 // CORS configuration
 const allowedOrigins = IS_PROD
   ? [
@@ -43,16 +39,11 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-=======
-app.use(cors({
-  origin: true,
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
-<<<<<<< HEAD
 // Manual CORS fallback to ensure headers are always set
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -68,8 +59,6 @@ app.use((req, res, next) => {
   }
 });
 
-=======
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
 app.use(express.json({ limit: '10mb' }));
 
 app.use('/api/auth', authRoutes);
@@ -98,11 +87,7 @@ if (IS_PROD) {
   app.use(express.static(mobileDist));
   app.get('*', (_req, res) => res.sendFile(path.join(mobileDist, 'index.html')));
 } else {
-<<<<<<< HEAD
-=======
-  // Dev: proxy to Expo dev servers
-  const { createProxyMiddleware } = require('http-proxy-middleware');
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
+  // Dev: proxy to Expo dev server (createProxyMiddleware already imported at top)
   const EXPO_PORT = 3000;
   const expoProxy = createProxyMiddleware({
     target: `http://localhost:${EXPO_PORT}`,

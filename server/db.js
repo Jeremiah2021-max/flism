@@ -3,13 +3,9 @@ const bcrypt = require('bcryptjs');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-<<<<<<< HEAD
   ssl: process.env.DATABASE_URL &&
     !process.env.DATABASE_URL.includes('localhost') &&
     !process.env.DATABASE_URL.includes('127.0.0.1')
-=======
-  ssl: process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('localhost') && !process.env.DATABASE_URL.includes('127.0.0.1')
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
     ? { rejectUnauthorized: false }
     : false,
 });
@@ -54,10 +50,6 @@ async function initDb() {
     ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'student';
     ALTER TABLE users ADD COLUMN IF NOT EXISTS kyc_step INTEGER DEFAULT 0;
     ALTER TABLE users ADD COLUMN IF NOT EXISTS is_student_verified BOOLEAN DEFAULT false;
-<<<<<<< HEAD
-=======
-
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
     ALTER TABLE users ADD COLUMN IF NOT EXISTS bank_name VARCHAR(100);
     ALTER TABLE users ADD COLUMN IF NOT EXISTS bank_code VARCHAR(20);
     ALTER TABLE users ADD COLUMN IF NOT EXISTS account_number VARCHAR(20);
@@ -144,11 +136,7 @@ async function initDb() {
     );
   `);
 
-<<<<<<< HEAD
   // Seed default admin account if none exists
-=======
-  // Seed default admin account
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
   try {
     const existing = await pool.query(`SELECT id FROM users WHERE email = 'admin@flism.com'`);
     if (existing.rows.length === 0) {
@@ -158,11 +146,7 @@ async function initDb() {
          VALUES ($1, $2, 'Flism Admin', 'admin', 500, 10000, true, true, 4)`,
         ['admin@flism.com', hash]
       );
-<<<<<<< HEAD
       console.log('Default admin seeded: admin@flism.com / Admin@Flism2024');
-=======
-      console.log('Default admin created: admin@flism.com / Admin@Flism2024');
->>>>>>> 4f596b7708877f2d15ed2d647c600864a3a90ac6
     }
   } catch (err) {
     console.error('Admin seed warning:', err.message);
