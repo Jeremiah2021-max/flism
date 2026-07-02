@@ -1,17 +1,15 @@
 services:
   # ─────────────────────────────────────────────────────────────
-  # 1. API + Student App  →  https://flism-app.onrender.com
+  # 1. Express API  →  https://flism-app.onrender.com
   # ─────────────────────────────────────────────────────────────
   - type: web
     name: flism-app
     runtime: node
     region: frankfurt
     plan: free
-    buildCommand: >-
-      npm install --prefix server &&
-      npm install --prefix mobile &&
-      npx --prefix mobile expo export --platform web --output-dir dist
-    startCommand: NODE_ENV=production node server/index.js
+    rootDir: server
+    buildCommand: npm install --no-workspaces
+    startCommand: node index.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -23,24 +21,18 @@ services:
         sync: false
       - key: PAYSTACK_PUBLIC_KEY
         sync: false
-      - key: EXPO_PUBLIC_API_URL
-        value: https://flism-app.onrender.com
-      - key: ADMIN_APP_URL
-        value: https://flism-admin.onrender.com
-      - key: STUDENT_APP_URL
-        value: https://flism-app.onrender.com
 
   # ─────────────────────────────────────────────────────────────
-  # 2. Admin App (static site)  →  https://flism-admin.onrender.com
+  # 2. Admin Panel  →  https://flism-admin.onrender.com
   # ─────────────────────────────────────────────────────────────
   - type: web
     name: flism-admin
     runtime: static
-    buildCommand: >-
-      npm install --prefix admin-app &&
-      EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
-      npx --prefix admin-app expo export --platform web --output-dir admin-app/dist
+    buildCommand: cd admin-app && npm install && npx expo export --platform web --output-dir dist
     staticPublishPath: admin-app/dist
+    envVars:
+      - key: EXPO_PUBLIC_API_URL
+        value: https://flism-app.onrender.com
     headers:
       - path: /*
         name: Cache-Control
