@@ -1,8 +1,6 @@
 services:
   # ─────────────────────────────────────────────────────────────
-  # 1. API + Student App
-  #    URL: https://flism-app.onrender.com
-  #    Serves: Express API on /api/* + Expo web student bundle at /
+  # 1. API + Student App  →  https://flism-app.onrender.com
   # ─────────────────────────────────────────────────────────────
   - type: web
     name: flism-app
@@ -33,14 +31,12 @@ services:
         value: https://flism-app.onrender.com
 
   # ─────────────────────────────────────────────────────────────
-  # 2. Admin App (static site)
-  #    URL: https://flism-admin.onrender.com
-  #    Built with EXPO_PUBLIC_API_URL pointing to the API service
+  # 2. Admin App (static site)  →  https://flism-admin.onrender.com
   # ─────────────────────────────────────────────────────────────
   - type: web
     name: flism-admin
     runtime: static
-    plan: free
+    region: frankfurt
     buildCommand: >-
       npm install --prefix admin-app &&
       EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
