@@ -21,14 +21,11 @@ const IS_PROD = process.env.NODE_ENV === 'production';
  
 const ALLOWED_ORIGINS = IS_PROD
   ? [
-      // Student app service
-      process.env.STUDENT_APP_URL,
-      // Admin app service
-      process.env.ADMIN_APP_URL,
-      // Render auto-assigns this env var to the current service's own URL
-      process.env.RENDER_EXTERNAL_URL,
-      // Fallback / custom domains
+      'https://flism-app.onrender.com',
+      'https://flism-admin.onrender.com',
       'https://jeremiah2021-max.github.io',
+      // Also allow any Render preview URLs for this service
+      process.env.RENDER_EXTERNAL_URL,
     ].filter(Boolean)
   : [
       'http://localhost:3000',
@@ -85,11 +82,16 @@ app.get('/api/health', (_req, res) =>
 );
  
 if (IS_PROD) {
-  // Serve student app at root
-  const mobileDist = path.join(__dirname, '../mobile/dist');
-  app.use(express.static(mobileDist));
-  app.get('*', (_req, res) => res.sendFile(path.join(mobileDist, 'index.html')));
-} else {
+  // Serve the Expo web build (built into server/public/ during Render build step)
+  const publicDir = path.join(__dirname, 'public');
+  app.use(express.static(publicDir));
+  // All non-API routes serve the mobile web app's index.html (SPA routing)
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api/')) {
+      res.sendFile(path.join(publicDir, 'index.html'));
+    }
+  });
+} else if (!IS_PROD) {
   const EXPO_PORT = 3000;
   const expoProxy = createProxyMiddleware({
     target: `http://localhost:${EXPO_PORT}`,
