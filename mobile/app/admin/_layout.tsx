@@ -11,7 +11,7 @@ export default function AdminLayout() {
       if (!user) router.replace('/(auth)');
       else if (user.role !== 'admin') router.replace('/(tabs)');
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, router]);
 
   if (!user || user.role !== 'admin') return null;
 

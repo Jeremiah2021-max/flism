@@ -1,14 +1,18 @@
 services:
+  # ─────────────────────────────────────────────────────────────
+  # 1. API + Student App
+  #    URL: https://flism-app.onrender.com
+  #    Serves: Express API on /api/* + Expo web student bundle at /
+  # ─────────────────────────────────────────────────────────────
   - type: web
     name: flism-app
     runtime: node
     region: frankfurt
     plan: free
-    buildCommand: |
-      npm install
-      cd mobile && npx expo export --platform web --output-dir dist
-      cd ../admin-app && npx expo export --platform web --output-dir dist
-      cd ../server && npm install
+    buildCommand: >-
+      npm install --prefix server &&
+      npm install --prefix mobile &&
+      npx --prefix mobile expo export --platform web --output-dir dist
     startCommand: NODE_ENV=production node server/index.js
     envVars:
       - key: NODE_ENV
@@ -19,3 +23,39 @@ services:
         generateValue: true
       - key: PAYSTACK_SECRET_KEY
         sync: false
+      - key: PAYSTACK_PUBLIC_KEY
+        sync: false
+      # URL of this service itself (used in Paystack callback URL)
+      - key: EXPO_PUBLIC_API_URL
+        value: https://flism-app.onrender.com
+      # URL of the admin service — added to CORS allowlist
+      - key: ADMIN_APP_URL
+        value: https://flism-admin.onrender.com
+      # URL of this service — added to CORS allowlist automatically
+      - key: STUDENT_APP_URL
+        value: https://flism-app.onrender.com
+
+  # ─────────────────────────────────────────────────────────────
+  # 2. Admin App (static site)
+  #    URL: https://flism-admin.onrender.com
+  #    Built with EXPO_PUBLIC_API_URL pointing to the API service
+  #    so all /api/* calls go to flism-app.onrender.com
+  # ─────────────────────────────────────────────────────────────
+  - type: web
+    name: flism-admin
+    runtime: static
+    region: frankfurt
+    plan: free
+    buildCommand: >-
+      npm install --prefix admin-app &&
+      EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
+      npx --prefix admin-app expo export --platform web --output-dir admin-app/dist
+    staticPublishPath: admin-app/dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

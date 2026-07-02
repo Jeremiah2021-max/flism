@@ -163,7 +163,7 @@ export default function MomoPinScreen() {
         </LinearGradient>
         <View style={{ padding: 24, gap: 14 }}>
           <Button title="Try Again" onPress={() => { setStage('confirm'); setReference(''); setErrorMsg(''); }} size="lg" />
-          <Button title="Back to Loans" onPress={() => router.replace('/(tabs)/loans')} size="lg" variant="outline" />
+          <Button title="Back to Loans" onPress={() => router.replace('/(tabs)/loans')} size="lg" variant="ghost" />
         </View>
       </View>
     );

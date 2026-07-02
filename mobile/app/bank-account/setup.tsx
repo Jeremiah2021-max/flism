@@ -66,7 +66,7 @@ export default function DisbursementSetupScreen() {
 
   const resolveMutation = useMutation({
     mutationFn: (data: { account_number: string; bank_code: string }) => apiPost('/api/bank/resolve', data),
-    onSuccess: (data) => { setAccountName(data.account_name); setIsResolving(false); },
+    onSuccess: (data: any) => { setAccountName((data as any).account_name); setIsResolving(false); },
     onError: (e: any) => { Alert.alert('Resolution Failed', e.message); setIsResolving(false); },
   });
 

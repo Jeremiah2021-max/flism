@@ -21,13 +21,18 @@ const IS_PROD = process.env.NODE_ENV === 'production';
  
 const ALLOWED_ORIGINS = IS_PROD
   ? [
-      'https://flism-admin.onrender.com',
-      'https://flism-server.onrender.com',
-      'https://flism.onrender.com',
+      // Student app service
+      process.env.STUDENT_APP_URL,
+      // Admin app service
+      process.env.ADMIN_APP_URL,
+      // Render auto-assigns this env var to the current service's own URL
+      process.env.RENDER_EXTERNAL_URL,
+      // Fallback / custom domains
       'https://jeremiah2021-max.github.io',
-    ]
+    ].filter(Boolean)
   : [
       'http://localhost:3000',
+      'http://localhost:3001',
       'http://localhost:5000',
       'http://localhost:8081',
     ];
@@ -80,11 +85,6 @@ app.get('/api/health', (_req, res) =>
 );
  
 if (IS_PROD) {
-  // Serve admin panel at /admin
-  const adminDist = path.join(__dirname, '../admin-app/dist');
-  app.use('/admin', express.static(adminDist));
-  app.get('/admin/*', (_req, res) => res.sendFile(path.join(adminDist, 'index.html')));
- 
   // Serve student app at root
   const mobileDist = path.join(__dirname, '../mobile/dist');
   app.use(express.static(mobileDist));
@@ -116,8 +116,7 @@ initDb()
   .then(() => {
     if (IS_PROD) {
       app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Flism production → http://0.0.0.0:${PORT}`);
-        console.log(`Admin panel      → http://0.0.0.0:${PORT}/admin`);
+        console.log(`Flism API + student app → http://0.0.0.0:${PORT}`);
       });
     } else {
       const EXPO_PORT = 3000;

@@ -24,7 +24,7 @@ function RootGuard() {
     const inAuth = segments[0] === '(auth)';
     if (!user && !inAuth) router.replace('/(auth)');
     else if (user && inAuth) router.replace('/dashboard');
-  }, [user, isLoading]);
+  }, [user, isLoading, segments, router]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -54,7 +54,7 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <SafeAreaProvider>
           <QueryClientProvider client={queryClient}>

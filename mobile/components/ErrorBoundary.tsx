@@ -1,7 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { reloadAppAsync } from 'expo';
 
 interface ErrorBoundaryProps { children: ReactNode }
 interface ErrorBoundaryState { hasError: boolean; error?: Error }
@@ -14,7 +13,7 @@ function ErrorFallback({ error, onRetry }: { error?: Error; onRetry: () => void 
       <Text style={styles.title}>Something went wrong</Text>
       <Text style={styles.message}>{error?.message || 'An unexpected error occurred'}</Text>
       <TouchableOpacity style={styles.button} onPress={onRetry}>
-        <Text style={styles.buttonText}>Restart App</Text>
+        <Text style={styles.buttonText}>Try Again</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,7 +32,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
   render() {
     if (this.state.hasError) {
-      return <ErrorFallback error={this.state.error} onRetry={() => reloadAppAsync()} />;
+      return (
+        <ErrorFallback
+          error={this.state.error}
+          onRetry={() => this.setState({ hasError: false, error: undefined })}
+        />
+      );
     }
     return this.props.children;
   }

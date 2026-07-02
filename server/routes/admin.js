@@ -95,20 +95,24 @@ router.get('/loans', authMiddleware, adminOnly, async (req, res) => {
   }
 });
 
-/* Helper: attempt disbursement via Paystack, trying MoMo first then bank */
+/* Helper: attempt disbursement via Paystack, trying MoMo first then bank.
+   Each attempt gets its own unique reference to avoid Paystack duplicate-reference errors. */
 async function attemptDisbursement(loan, user) {
-  const reference = `FLM-DIS-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
   const amount = parseFloat(loan.amount);
+  const baseRef = `FLM-DIS-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
 
   // 1. Try pre-registered MoMo recipient
   if (user.momo_recipient_code) {
+    const reference = `${baseRef}-MM`;
     const transfer = await initiateTransfer({
       amount,
       recipient_code: user.momo_recipient_code,
       reference,
       reason: `Flism loan disbursement — ${loan.purpose}`,
     });
-    if (transfer.status) {
+    // transfer.status is true when Paystack accepted the request (pending/otp/success)
+    // We treat any non-error acceptance as ok — Paystack will finalise asynchronously
+    if (transfer.status && transfer.data) {
       return { ok: true, reference, method: 'momo', label: `${user.momo_provider} wallet (${user.momo_number})` };
     }
   }
@@ -121,17 +125,18 @@ async function attemptDisbursement(loan, user) {
         phone: user.momo_number,
         provider: user.momo_provider || 'MTN MoMo',
       });
-      if (recipientRes.status) {
+      if (recipientRes.status && recipientRes.data) {
         const momoCode = recipientRes.data.recipient_code;
         // Save for next time
         await pool.query('UPDATE users SET momo_recipient_code=$1 WHERE id=$2', [momoCode, user.id]);
+        const reference = `${baseRef}-MN`;
         const transfer = await initiateTransfer({
           amount,
           recipient_code: momoCode,
           reference,
           reason: `Flism loan disbursement — ${loan.purpose}`,
         });
-        if (transfer.status) {
+        if (transfer.status && transfer.data) {
           return { ok: true, reference, method: 'momo', label: `${user.momo_provider} wallet (${user.momo_number})` };
         }
       }
@@ -140,18 +145,19 @@ async function attemptDisbursement(loan, user) {
 
   // 3. Try bank account recipient
   if (user.recipient_code) {
+    const reference = `${baseRef}-BK`;
     const transfer = await initiateTransfer({
       amount,
       recipient_code: user.recipient_code,
       reference,
       reason: `Flism loan disbursement — ${loan.purpose}`,
     });
-    if (transfer.status) {
+    if (transfer.status && transfer.data) {
       return { ok: true, reference, method: 'bank', label: `${user.bank_name} (${user.account_number})` };
     }
   }
 
-  return { ok: false, reference, method: 'manual', label: 'No payment method on file' };
+  return { ok: false, reference: baseRef, method: 'manual', label: 'No payment method on file' };
 }
 
 router.put('/loans/:id/approve', authMiddleware, adminOnly, async (req, res) => {

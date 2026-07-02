@@ -37,7 +37,7 @@ async function initializePayment(amount, email, reference, metadata = {}) {
       email,
       reference,
       metadata,
-      callback_url: `${process.env.EXPO_PUBLIC_API_URL || 'http://localhost:5000'}/api/payments/verify`,
+      callback_url: `${process.env.EXPO_PUBLIC_API_URL || 'http://localhost:5000'}/api/transactions/verify/${reference}`,
     });
     return response;
   } catch (error) {
@@ -162,8 +162,13 @@ async function chargeMobileMoney({ amount, email, phone, provider, reference, me
  * Statuses: 'pending', 'pay_offline', 'success', 'failed'
  */
 async function checkCharge(reference) {
-  const response = await paystackRequest('GET', `/charge/${encodeURIComponent(reference)}`);
-  return response;
+  try {
+    const response = await paystackRequest('GET', `/charge/${encodeURIComponent(reference)}`);
+    return response;
+  } catch (error) {
+    console.error('Paystack charge check error:', error);
+    throw new Error('Failed to check charge status');
+  }
 }
 
 module.exports = {

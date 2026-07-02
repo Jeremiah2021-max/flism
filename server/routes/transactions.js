@@ -123,7 +123,7 @@ router.post('/momo-charge', authMiddleware, async (req, res) => {
       metadata: { loan_id, user_id: req.userId, type: 'loan_repayment' },
     });
 
-    if (!paystackRes.status) {
+    if (!paystackRes.status || !paystackRes.data) {
       return res.status(400).json({ error: paystackRes.message || 'Failed to initiate MoMo charge' });
     }
 
@@ -161,6 +161,7 @@ router.get('/momo-status/:reference', authMiddleware, async (req, res) => {
     if (txn.status === 'success') {
       const loanRow = await pool.query('SELECT amount_repaid, amount, interest_rate FROM loans WHERE id=$1', [txn.loan_id]);
       const loan = loanRow.rows[0];
+      if (!loan) return res.json({ status: 'success', fully_paid: false });
       const interest = parseFloat(loan.amount) * parseFloat(loan.interest_rate) / 100;
       const totalDue = parseFloat(loan.amount) + interest;
       const fullyPaid = parseFloat(loan.amount_repaid) >= totalDue - 0.01;

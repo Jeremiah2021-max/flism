@@ -10,7 +10,7 @@ export default function AuthLayout() {
     if (!isLoading && user) {
       router.replace('/(tabs)');
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, router]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

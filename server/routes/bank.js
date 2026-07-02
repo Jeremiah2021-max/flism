@@ -5,10 +5,13 @@ const { getBanks, resolveAccount, createRecipient, createMoMoRecipient } = requi
 
 const router = express.Router();
 
-/* Get list of Nigerian banks for Paystack */
+/* Get list of Ghana banks from Paystack */
 router.get('/banks', async (req, res) => {
   try {
     const banks = await getBanks();
+    if (!banks.status || !banks.data) {
+      return res.status(502).json({ error: 'Failed to fetch banks from Paystack' });
+    }
     res.json(banks.data);
   } catch (err) {
     console.error(err);
@@ -24,6 +27,9 @@ router.post('/resolve', authMiddleware, async (req, res) => {
   }
   try {
     const resolution = await resolveAccount(account_number, bank_code);
+    if (!resolution.status || !resolution.data) {
+      return res.status(400).json({ error: resolution.message || 'Could not resolve account. Check the number and bank.' });
+    }
     res.json({
       account_name: resolution.data.account_name,
       account_number: resolution.data.account_number,
@@ -49,6 +55,10 @@ router.post('/account', authMiddleware, async (req, res) => {
       account_number,
       bank_code,
     });
+
+    if (!recipient.status || !recipient.data) {
+      return res.status(400).json({ error: recipient.message || 'Failed to register account with Paystack' });
+    }
 
     const recipientCode = recipient.data.recipient_code;
 
@@ -122,7 +132,7 @@ router.post('/momo-recipient', authMiddleware, async (req, res) => {
       provider: user.momo_provider || 'MTN MoMo',
     });
 
-    if (!recipient.status) {
+    if (!recipient.status || !recipient.data) {
       return res.status(400).json({ error: recipient.message || 'Failed to register MoMo wallet with Paystack' });
     }
 
