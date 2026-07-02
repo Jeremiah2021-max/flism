@@ -36,7 +36,6 @@ services:
   - type: web
     name: flism-admin
     runtime: static
-    region: frankfurt
     buildCommand: >-
       npm install --prefix admin-app &&
       EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
