@@ -25,13 +25,10 @@ services:
         sync: false
       - key: PAYSTACK_PUBLIC_KEY
         sync: false
-      # URL of this service itself (used in Paystack callback URL)
       - key: EXPO_PUBLIC_API_URL
         value: https://flism-app.onrender.com
-      # URL of the admin service — added to CORS allowlist
       - key: ADMIN_APP_URL
         value: https://flism-admin.onrender.com
-      # URL of this service — added to CORS allowlist automatically
       - key: STUDENT_APP_URL
         value: https://flism-app.onrender.com
 
@@ -39,12 +36,10 @@ services:
   # 2. Admin App (static site)
   #    URL: https://flism-admin.onrender.com
   #    Built with EXPO_PUBLIC_API_URL pointing to the API service
-  #    so all /api/* calls go to flism-app.onrender.com
   # ─────────────────────────────────────────────────────────────
   - type: web
     name: flism-admin
     runtime: static
-    region: frankfurt
     plan: free
     buildCommand: >-
       npm install --prefix admin-app &&
