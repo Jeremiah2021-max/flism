@@ -11,7 +11,7 @@ services:
     nodeVersion: 20
     buildCommand: >-
       cd server && npm install --no-workspaces && cd ../mobile &&
-      npm install -g pnpm && pnpm install && EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
+      npm install -g npm@10 && npm install --legacy-peer-deps --force && EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
       npx expo export --platform web --output-dir ../server/public
     startCommand: NODE_ENV=production node server/index.js
     envVars:
