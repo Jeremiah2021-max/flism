@@ -8,7 +8,6 @@ services:
     env: node
     region: frankfurt
     plan: free
-    nodeVersion: 20
     buildCommand: >-
       cd server && npm install --no-workspaces && cd ../mobile &&
       npm install --legacy-peer-deps --no-audit --no-fund --no-save && EXPO_PUBLIC_API_URL=https://flism-app.onrender.com
