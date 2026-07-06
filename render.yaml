@@ -17,7 +17,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        sync: false
+        value: postgresql://flism_db_user:IcNC394fhAxK4s7xFV4Xjnjl0ouHw8ip@dpg-d8vcbhb7uimc73amohbg-a.frankfurt-postgres.render.com/flism_db
       - key: JWT_SECRET
         generateValue: true
       - key: PAYSTACK_SECRET_KEY
