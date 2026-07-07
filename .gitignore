@@ -4,6 +4,8 @@ server/node_modules/
 admin-app/node_modules/
 mobile/.expo/
 admin-app/.expo/
+server/public/
+admin-app/dist/
 .env
 .env.local
 .env.production
