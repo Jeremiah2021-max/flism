@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       "/api/auth/login",
       {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
       },
     );
     if (res.user.role !== "admin")

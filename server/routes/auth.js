@@ -47,11 +47,12 @@ router.post('/register', validate(registerSchema), async (req, res) => {
 
 router.post('/login', validate(loginSchema), async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = String(email || '').trim().toLowerCase();
   try {
     const result = await pool.query(
       `SELECT id, email, full_name, password_hash, trust_score, loan_limit, is_verified, is_kyc_complete, university, phone, student_id, profile_image, role
-       FROM users WHERE email = $1`,
-      [email]
+       FROM users WHERE LOWER(email) = $1`,
+      [normalizedEmail]
     );
     if (result.rows.length === 0) {
       logger.warn('Login attempt with non-existent email', { email });

@@ -11,6 +11,9 @@
   "license": "ISC",
   "description": "Flism - Student Asset-Based Lending Platform",
   "private": true,
+  "devDependencies": {
+    "babel-preset-expo": "^12.0.12"
+  },
   "workspaces": [
     "server",
     "mobile",
