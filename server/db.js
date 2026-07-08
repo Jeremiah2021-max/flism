@@ -137,16 +137,19 @@ async function initDb() {
   `);
 
   // Seed default admin account if none exists
+  // NOTE: In production, use the create-admin.js script instead of hardcoded credentials
   try {
-    const existing = await pool.query(`SELECT id FROM users WHERE email = 'admin@flism.com'`);
-    if (existing.rows.length === 0) {
-      const hash = await bcrypt.hash('Admin@Flism2024', 10);
+    const existing = await pool.query(`SELECT id FROM users WHERE email = $1`, [process.env.ADMIN_EMAIL || 'admin@flism.com']);
+    if (existing.rows.length === 0 && process.env.ADMIN_PASSWORD) {
+      const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
       await pool.query(
         `INSERT INTO users (email, password_hash, full_name, role, trust_score, loan_limit, is_verified, is_kyc_complete, kyc_step)
-         VALUES ($1, $2, 'Flism Admin', 'admin', 500, 10000, true, true, 4)`,
-        ['admin@flism.com', hash]
+         VALUES ($1, $2, $3, 'admin', 500, 10000, true, true, 4)`,
+        [process.env.ADMIN_EMAIL || 'admin@flism.com', hash, process.env.ADMIN_NAME || 'Flism Admin']
       );
-      console.log('Default admin seeded: admin@flism.com / Admin@Flism2024');
+      console.log('Default admin seeded from environment variables');
+    } else if (existing.rows.length === 0) {
+      console.warn('No admin account exists. Set ADMIN_EMAIL and ADMIN_PASSWORD environment variables or run create-admin.js script');
     }
   } catch (err) {
     console.error('Admin seed warning:', err.message);

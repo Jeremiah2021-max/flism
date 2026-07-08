@@ -2,7 +2,8 @@ const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const { initDb } = require('./db');
+const { initDb, pool } = require('./db');
+const rateLimit = require('express-rate-limit');
  
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
@@ -33,6 +34,23 @@ const ALLOWED_ORIGINS = IS_PROD
       'http://localhost:5000',
       'http://localhost:8081',
     ];
+
+// Rate limiting configuration
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: { error: 'Too many requests from this IP, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 auth requests per windowMs
+  message: { error: 'Too many authentication attempts, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
  
 // Single unified CORS handler — handles both preflight OPTIONS and real requests.
 // Must be registered BEFORE all routes.
@@ -64,9 +82,13 @@ app.use((req, res, next) => {
   next();
 });
  
+app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
+
+// Serve uploaded files (Note: Render filesystem is ephemeral - use cloud storage for production)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
  
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/loans', loanRoutes);
 app.use('/api/assets', assetRoutes);
@@ -77,9 +99,30 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/bank', bankRoutes);
  
-app.get('/api/health', (_req, res) =>
-  res.json({ status: 'ok', app: 'Flism API', env: process.env.NODE_ENV || 'development' })
-);
+app.get('/api/health', async (_req, res) => {
+  try {
+    // Check database connection
+    const dbCheck = await pool.query('SELECT NOW()');
+    
+    res.json({
+      status: 'ok',
+      app: 'Flism API',
+      env: process.env.NODE_ENV || 'development',
+      timestamp: new Date().toISOString(),
+      database: dbCheck.rows[0].now ? 'connected' : 'disconnected',
+      uptime: process.uptime()
+    });
+  } catch (err) {
+    res.status(503).json({
+      status: 'error',
+      app: 'Flism API',
+      env: process.env.NODE_ENV || 'development',
+      timestamp: new Date().toISOString(),
+      database: 'disconnected',
+      error: 'Database connection failed'
+    });
+  }
+});
  
 if (IS_PROD) {
   // Serve the Expo web build (built into server/public/ during Render build step)
@@ -116,9 +159,18 @@ if (IS_PROD) {
  
 initDb()
   .then(() => {
+    // Run migrations if in production
     if (IS_PROD) {
-      app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Flism API + student app → http://0.0.0.0:${PORT}`);
+      const { exec } = require('child_process');
+      exec('npm run migrate', (err, stdout, stderr) => {
+        if (err) {
+          console.error('Migration error:', err);
+        } else {
+          console.log('Migrations completed:', stdout);
+        }
+        app.listen(PORT, '0.0.0.0', () => {
+          console.log(`Flism API + student app → http://0.0.0.0:${PORT}`);
+        });
       });
     } else {
       const EXPO_PORT = 3000;

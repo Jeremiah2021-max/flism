@@ -1,128 +1,122 @@
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
 const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const { initDb } = require('./db');
- 
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
-const loanRoutes = require('./routes/loans');
-const assetRoutes = require('./routes/assets');
-const trustRoutes = require('./routes/trust');
-const notificationRoutes = require('./routes/notifications');
-const guarantorRoutes = require('./routes/guarantors');
-const transactionRoutes = require('./routes/transactions');
-const adminRoutes = require('./routes/admin');
-const bankRoutes = require('./routes/bank');
- 
-const app = express();
-const PORT = process.env.PORT || 5000;
-const IS_PROD = process.env.NODE_ENV === 'production';
- 
-const ALLOWED_ORIGINS = IS_PROD
-  ? [
-      // Student app service
-      process.env.STUDENT_APP_URL,
-      // Admin app service
-      process.env.ADMIN_APP_URL,
-      // Render auto-assigns this env var to the current service's own URL
-      process.env.RENDER_EXTERNAL_URL,
-      // Fallback / custom domains
-      'https://jeremiah2021-max.github.io',
-    ].filter(Boolean)
-  : [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:5000',
-      'http://localhost:8081',
-    ];
- 
-// Single unified CORS handler — handles both preflight OPTIONS and real requests.
-// Must be registered BEFORE all routes.
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
- 
-  // Always set the origin header if it's allowed (or if there's no origin, e.g. mobile app / curl)
-  if (!origin || ALLOWED_ORIGINS.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin || '*');
-  } else {
-    // Unknown origin — still need to respond to OPTIONS or the browser gets a network error
-    // Return 403 with a plain message (not a CORS rejection, which gives no body)
-    if (req.method === 'OPTIONS') {
-      return res.status(403).end();
-    }
-    return res.status(403).json({ error: 'Origin not allowed' });
+const { pool } = require('../db');
+const { authMiddleware } = require('../middleware/auth');
+const { notifyAdmins } = require('../lib/notifyAdmins');
+const { validate, assetSchema } = require('../middleware/validation');
+const logger = require('../lib/logger');
+const upload = require('../middleware/upload');
+
+const router = express.Router();
+
+// Upload asset images
+router.post('/upload', authMiddleware, upload.array('images', 5), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: 'No files uploaded' });
   }
- 
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Max-Age', '86400'); // cache preflight for 24 hours
- 
-  // Respond to preflight immediately — no need to hit route handlers
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
- 
-  next();
+  
+  const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+  logger.info('Images uploaded', { userId: req.userId, count: req.files.length });
+  res.json({ images: imageUrls });
 });
- 
-app.use(express.json({ limit: '10mb' }));
- 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/loans', loanRoutes);
-app.use('/api/assets', assetRoutes);
-app.use('/api/trust', trustRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/guarantors', guarantorRoutes);
-app.use('/api/transactions', transactionRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/bank', bankRoutes);
- 
-app.get('/api/health', (_req, res) =>
-  res.json({ status: 'ok', app: 'Flism API', env: process.env.NODE_ENV || 'development' })
-);
- 
-if (!IS_PROD) {
-  const EXPO_PORT = 3000;
-  const expoProxy = createProxyMiddleware({
-    target: `http://localhost:${EXPO_PORT}`,
-    changeOrigin: true,
-    ws: true,
-    on: {
-      error: (_err, _req, res) => {
-        if (res && typeof res.writeHead === 'function') {
-          res.writeHead(200, { 'Content-Type': 'text/html' });
-          res.end(`<html><head><title>Flism</title>
-            <style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;background:#0052FF;color:#fff;}
-            h1{font-size:2.5rem;margin-bottom:8px;}p{opacity:.75;}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;margin:0 3px;animation:bounce .8s infinite alternate;}.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
-            @keyframes bounce{to{transform:translateY(-8px);opacity:.3;}}</style>
-            <script>setTimeout(()=>location.reload(),2500)</script></head>
-            <body><h1>Flism</h1><p>Starting<span class=dot></span><span class=dot></span><span class=dot></span></p></body></html>`);
-        }
-      }
-    }
-  });
-  app.use('/', expoProxy);
-}
- 
-initDb()
-  .then(() => {
-    if (IS_PROD) {
-      app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Flism API + student app → http://0.0.0.0:${PORT}`);
-      });
-    } else {
-      const EXPO_PORT = 3000;
-      const wsProxy = createProxyMiddleware({ target: `http://localhost:${EXPO_PORT}`, ws: true });
-      const server = app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Flism dev server → http://localhost:${PORT}`);
-      });
-      server.on('upgrade', wsProxy.upgrade);
-    }
-  })
-  .catch((err) => {
-    console.error('DB init failed:', err.message);
-    process.exit(1);
-  });
+
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM assets WHERE user_id = $1 ORDER BY created_at DESC`,
+      [req.userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    logger.error('Error fetching assets', { error: err.message, userId: req.userId });
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/:id', authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM assets WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Asset not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    logger.error('Error fetching asset', { error: err.message, assetId: req.params.id, userId: req.userId });
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.post('/', authMiddleware, validate(assetSchema), async (req, res) => {
+  const { type, description, serial_number, estimated_value, brand, model, condition, images } = req.body;
+  try {
+    const result = await pool.query(
+      `INSERT INTO assets (user_id, type, description, serial_number, estimated_value, brand, model, condition, images)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING *`,
+      [req.userId, type, description || null, serial_number || null, estimated_value, brand || null, model || null, condition || 'good', images || []]
+    );
+    const asset = result.rows[0];
+    
+    await pool.query(
+      `INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)`,
+      [req.userId, 'Asset Submitted', `Your ${brand ? brand + ' ' : ''}${type} has been submitted for review.`, 'info']
+    );
+    
+    const userRow = await pool.query('SELECT full_name, university FROM users WHERE id = $1', [req.userId]);
+    const u = userRow.rows[0];
+    await notifyAdmins(
+      '📦 New Asset Submitted',
+      `${u.full_name} (${u.university}) submitted a ${brand ? brand + ' ' : ''}${type} valued at GHS ${parseFloat(estimated_value).toFixed(2)}.`,
+      'info'
+    );
+
+    logger.info('Asset submitted', { assetId: asset.id, userId: req.userId, type, value: estimated_value });
+    res.status(201).json(asset);
+  } catch (err) {
+    logger.error('Error creating asset', { error: err.message, userId: req.userId });
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.put('/:id', authMiddleware, async (req, res) => {
+  const { type, description, serial_number, estimated_value, brand, model, condition, images } = req.body;
+  try {
+    const result = await pool.query(
+      `UPDATE assets 
+       SET type = COALESCE($1, type),
+           description = COALESCE($2, description),
+           serial_number = COALESCE($3, serial_number),
+           estimated_value = COALESCE($4, estimated_value),
+           brand = COALESCE($5, brand),
+           model = COALESCE($6, model),
+           condition = COALESCE($7, condition),
+           images = COALESCE($8, images)
+       WHERE id = $9 AND user_id = $10 AND status = 'pending'
+       RETURNING *`,
+      [type, description, serial_number, estimated_value, brand, model, condition, images, req.params.id, req.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Asset not found or cannot be edited' });
+    logger.info('Asset updated', { assetId: req.params.id, userId: req.userId });
+    res.json(result.rows[0]);
+  } catch (err) {
+    logger.error('Error updating asset', { error: err.message, assetId: req.params.id, userId: req.userId });
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.delete('/:id', authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `DELETE FROM assets WHERE id = $1 AND user_id = $2 AND status = 'pending' RETURNING *`,
+      [req.params.id, req.userId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Asset not found or cannot be deleted' });
+    logger.info('Asset deleted', { assetId: req.params.id, userId: req.userId });
+    res.json({ success: true });
+  } catch (err) {
+    logger.error('Error deleting asset', { error: err.message, assetId: req.params.id, userId: req.userId });
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+module.exports = router;

@@ -45,6 +45,10 @@ After the Blueprint creates the services, go to **flism-app → Environment** an
 | `EXPO_PUBLIC_API_URL` | `https://flism-app.onrender.com` — already set |
 | `ADMIN_APP_URL` | `https://flism-admin.onrender.com` — already set |
 | `STUDENT_APP_URL` | `https://flism-app.onrender.com` — already set |
+| `ADMIN_EMAIL` | Admin account email (e.g., admin@yourdomain.com) |
+| `ADMIN_PASSWORD` | Strong password for admin account |
+| `ADMIN_NAME` | Display name for admin account |
+| `LOG_LEVEL` | Optional: `info` (default), `error`, `debug` |
 
 ### 4. Trigger a deploy
 
@@ -52,14 +56,25 @@ Both services will build automatically on first push. If not, click **Manual Dep
 
 ### 5. Create the admin account
 
+**Option 1: Auto-seed via environment variables**
+Set `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME` in the Render dashboard. The admin account will be created automatically on first deployment.
+
+**Option 2: Manual creation via shell**
 Once `flism-app` is live, open the Render Shell for `flism-app` and run:
 
 ```sh
 node server/scripts/create-admin.js admin@yourdomain.com YourPassword123! "Your Name"
 ```
 
-Or use the auto-seeded default: `admin@flism.com` / `Admin@Flism2024`  
-**Change this immediately after first login.**
+### 6. Database migrations
+
+Migrations run automatically on deployment. If you need to run them manually:
+
+```sh
+# In Render Shell
+cd server
+npm run migrate
+```
 
 ---
 
@@ -96,3 +111,23 @@ cd admin-app && npm install && EXPO_PUBLIC_API_URL=http://localhost:5000 npx exp
 
 The student app is accessed at `http://localhost:5000` (Express proxies to port 3000).  
 The admin app is accessed directly at `http://localhost:3001`.
+
+---
+
+## Important Notes
+
+### File Uploads
+The current implementation uses local file storage (`server/uploads/`). **Render's filesystem is ephemeral**, meaning uploaded files will be lost on redeploy. For production, consider:
+- AWS S3
+- Cloudflare R2
+- DigitalOcean Spaces
+- Or any cloud storage service
+
+### Database Migrations
+Migrations run automatically on production deployment. The migration system uses `node-pg-migrate` and tracks applied migrations in the database.
+
+### Security Features
+- Rate limiting: 100 requests/15min general, 5 requests/15min for auth
+- Input validation on all endpoints using Zod
+- Structured logging with Winston
+- Health check endpoint at `/api/health`

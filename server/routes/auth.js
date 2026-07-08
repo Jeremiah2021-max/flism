@@ -4,14 +4,13 @@ const jwt = require('jsonwebtoken');
 const { pool } = require('../db');
 const { JWT_SECRET } = require('../middleware/auth');
 const { notifyAdmins } = require('../lib/notifyAdmins');
+const { validate, registerSchema, loginSchema } = require('../middleware/validation');
+const logger = require('../lib/logger');
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', validate(registerSchema), async (req, res) => {
   const { email, password, full_name, phone, university, student_id, department, faculty, year_of_study, momo_number, momo_provider } = req.body;
-  if (!email || !password || !full_name) {
-    return res.status(400).json({ error: 'Email, password and full name are required' });
-  }
   try {
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) {
@@ -41,16 +40,13 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign({ userId: user.id, role: user.role || 'student' }, JWT_SECRET, { expiresIn: '30d' });
     res.status(201).json({ user, token });
   } catch (err) {
-    console.error(err);
+    logger.error('Registration error', { error: err.message, email });
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', validate(loginSchema), async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
-  }
   try {
     const result = await pool.query(
       `SELECT id, email, full_name, password_hash, trust_score, loan_limit, is_verified, is_kyc_complete, university, phone, student_id, profile_image, role
@@ -58,18 +54,21 @@ router.post('/login', async (req, res) => {
       [email]
     );
     if (result.rows.length === 0) {
+      logger.warn('Login attempt with non-existent email', { email });
       return res.status(401).json({ error: 'Invalid email or password' });
     }
     const user = result.rows[0];
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
+      logger.warn('Login attempt with invalid password', { email, userId: user.id });
       return res.status(401).json({ error: 'Invalid email or password' });
     }
     const { password_hash, ...safeUser } = user;
     const token = jwt.sign({ userId: user.id, role: user.role || 'student' }, JWT_SECRET, { expiresIn: '30d' });
+    logger.info('User logged in', { userId: user.id, email });
     res.json({ user: safeUser, token });
   } catch (err) {
-    console.error(err);
+    logger.error('Login error', { error: err.message, email });
     res.status(500).json({ error: 'Server error' });
   }
 });

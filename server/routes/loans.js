@@ -2,6 +2,8 @@ const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
 const { notifyAdmins } = require('../lib/notifyAdmins');
+const { validate, loanSchema } = require('../middleware/validation');
+
 const router = express.Router();
 
 function calcPenalty(loan) {
@@ -66,11 +68,8 @@ router.get('/:id', authMiddleware, async (req, res) => {
   }
 });
 
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, validate(loanSchema), async (req, res) => {
   const { amount, purpose, asset_id, duration_days } = req.body;
-  if (!amount || !purpose) {
-    return res.status(400).json({ error: 'Amount and purpose are required' });
-  }
   try {
     const user = await pool.query('SELECT loan_limit, trust_score FROM users WHERE id = $1', [req.userId]);
     const { loan_limit, trust_score } = user.rows[0];

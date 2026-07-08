@@ -16,7 +16,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        value: postgresql://flism_db_user:IcNC394fhAxK4s7xFV4Xjnjl0ouHw8ip@dpg-d8vcbhb7uimc73amohbg-a.frankfurt-postgres.render.com/flism_db
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: PAYSTACK_SECRET_KEY
@@ -25,6 +25,12 @@ services:
         sync: false
       - key: RENDER_EXTERNAL_URL
         value: https://flism-app.onrender.com
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        sync: false
 
   # ─────────────────────────────────────────────────────────────
   # Admin Panel  →  https://flism-admin.onrender.com

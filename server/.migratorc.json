@@ -1,0 +1,8 @@
+{
+  "migrationsDir": "migrations",
+  "migrationTableName": "migrations",
+  "singleTransaction": true,
+  "noLock": false,
+  "dir": "migrations",
+  "checkOrder": false
+}

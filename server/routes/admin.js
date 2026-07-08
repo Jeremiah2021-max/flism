@@ -2,6 +2,7 @@ const express = require('express');
 const { pool } = require('../db');
 const { authMiddleware } = require('../middleware/auth');
 const { initiateTransfer, createMoMoRecipient } = require('../services/paystack');
+const { validate, broadcastSchema } = require('../middleware/validation');
 
 const router = express.Router();
 
@@ -331,9 +332,8 @@ router.put('/assets/:id/reject', authMiddleware, adminOnly, async (req, res) => 
   }
 });
 
-router.post('/notify/broadcast', authMiddleware, adminOnly, async (req, res) => {
+router.post('/notify/broadcast', authMiddleware, adminOnly, validate(broadcastSchema), async (req, res) => {
   const { title, message, type, university } = req.body;
-  if (!title || !message) return res.status(400).json({ error: 'Title and message required' });
   try {
     let query = 'SELECT id FROM users WHERE role != $1';
     const params = ['admin'];
