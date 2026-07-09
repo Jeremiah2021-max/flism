@@ -1,13 +1,14 @@
-const { Pool } = require('pg');
-const bcrypt = require('bcryptjs');
+const { Pool } = require("pg");
+const bcrypt = require("bcryptjs");
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL &&
-    !process.env.DATABASE_URL.includes('localhost') &&
-    !process.env.DATABASE_URL.includes('127.0.0.1')
-    ? { rejectUnauthorized: false }
-    : false,
+  ssl:
+    process.env.DATABASE_URL &&
+    !process.env.DATABASE_URL.includes("localhost") &&
+    !process.env.DATABASE_URL.includes("127.0.0.1")
+      ? { rejectUnauthorized: false }
+      : false,
 });
 
 async function initDb() {
@@ -138,40 +139,51 @@ async function initDb() {
 
   // Seed or upgrade default admin account from environment variables
   try {
-    const adminEmail = String(process.env.ADMIN_EMAIL || 'admin@flism.com').trim().toLowerCase();
+    const adminEmail = String(process.env.ADMIN_EMAIL || "admin@flism.com")
+      .trim()
+      .toLowerCase();
     const adminPassword = process.env.ADMIN_PASSWORD;
-    const adminName = process.env.ADMIN_NAME || 'Flism Admin';
+    const adminName = process.env.ADMIN_NAME || "Flism Admin";
 
-    const existing = await pool.query(`SELECT id, role FROM users WHERE LOWER(email) = $1`, [adminEmail]);
+    const existing = await pool.query(
+      `SELECT id, role FROM users WHERE LOWER(email) = $1`,
+      [adminEmail],
+    );
     if (existing.rows.length === 0) {
       if (adminPassword) {
         const hash = await bcrypt.hash(adminPassword, 10);
         await pool.query(
           `INSERT INTO users (email, password_hash, full_name, role, trust_score, loan_limit, is_verified, is_kyc_complete, kyc_step)
            VALUES ($1, $2, $3, 'admin', 500, 10000, true, true, 4)`,
-          [adminEmail, hash, adminName]
+          [adminEmail, hash, adminName],
         );
-        console.log('Default admin seeded from environment variables');
+        console.log("Default admin seeded from environment variables");
       } else {
-        console.warn('No admin account exists. Set ADMIN_EMAIL and ADMIN_PASSWORD environment variables or run create-admin.js script');
+        console.warn(
+          "No admin account exists. Set ADMIN_EMAIL and ADMIN_PASSWORD environment variables or run create-admin.js script",
+        );
       }
-    } else if (existing.rows[0].role !== 'admin') {
+    } else if (existing.rows[0].role !== "admin") {
       if (adminPassword) {
         const hash = await bcrypt.hash(adminPassword, 10);
         await pool.query(
           `UPDATE users SET password_hash = $1, role = 'admin', full_name = $2, is_verified = true, is_kyc_complete = true, kyc_step = 4 WHERE id = $3`,
-          [hash, adminName, existing.rows[0].id]
+          [hash, adminName, existing.rows[0].id],
         );
-        console.log('Existing user upgraded to admin using environment variables');
+        console.log(
+          "Existing user upgraded to admin using environment variables",
+        );
       } else {
-        console.warn('Existing user found for ADMIN_EMAIL but ADMIN_PASSWORD is not set; set ADMIN_PASSWORD to upgrade to admin');
+        console.warn(
+          "Existing user found for ADMIN_EMAIL but ADMIN_PASSWORD is not set; set ADMIN_PASSWORD to upgrade to admin",
+        );
       }
     }
   } catch (err) {
-    console.error('Admin seed warning:', err.message);
+    console.error("Admin seed warning:", err.message);
   }
 
-  console.log('Database schema initialized');
+  console.log("Database schema initialized");
 }
 
 module.exports = { pool, initDb };
