@@ -60,6 +60,11 @@ export default function LoansScreen() {
   });
 
   function handleApprove(loan: AdminLoan) {
+    if (Platform.OS === 'web') {
+      const confirm = window.confirm(`Approve GHS ${parseFloat(loan.amount).toFixed(2)} loan for ${loan.full_name}?\n\nPurpose: ${loan.purpose}`);
+      if (confirm) approveMutation.mutate(loan.id);
+      return;
+    }
     Alert.alert(
       'Approve Loan',
       `Approve GHS ${parseFloat(loan.amount).toFixed(2)} loan for ${loan.full_name}?\n\nPurpose: ${loan.purpose}\nCollateral: ${[loan.asset_brand, loan.asset_type].filter(Boolean).join(' ')}`,
@@ -71,6 +76,13 @@ export default function LoansScreen() {
   }
 
   function handleReject(loan: AdminLoan) {
+    if (Platform.OS === 'web') {
+      const reason = window.prompt(`Reason for rejecting ${loan.full_name}'s loan application:`, 'Insufficient collateral value');
+      if (reason !== null) {
+        rejectMutation.mutate({ id: loan.id, reason: reason || 'Application could not be approved at this time.' });
+      }
+      return;
+    }
     Alert.prompt
       ? Alert.prompt(
           'Reject Loan',
